@@ -68,7 +68,7 @@ const Hero = () => {
               <Link key={index} href={button.href} className="w-full">
                 <Button
                   size="lg"
-                  variant={button.primary ? "default" : "outline"}
+                  variant={button.primary ? "primary" : "outline"}
                   className={`w-full justify-start text-lg h-14 px-6 rounded-xl active:scale-98 transition-transform ${button.primary
                       ? 'bg-[#4A90A4] hover:bg-[#3b7d8f] text-white shadow-lg border-none'
                       : 'border-white/30 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm'

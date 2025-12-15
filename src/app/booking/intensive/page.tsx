@@ -164,11 +164,10 @@ export default function BookingIntensivePage() {
               <button
                 onClick={() => canProceed && setStep('form')}
                 disabled={!canProceed}
-                className={`w-full py-3 px-6 rounded-xl font-medium transition ${
-                  canProceed
+                className={`w-full py-3 px-6 rounded-xl font-medium transition ${canProceed
                     ? 'bg-[#4A90A4] text-white hover:bg-[#3b7d8f]'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 Продолжить к заполнению формы
               </button>

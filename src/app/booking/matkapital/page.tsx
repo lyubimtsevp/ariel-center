@@ -180,11 +180,10 @@ export default function BookingMatkapitalPage() {
               <button
                 onClick={() => canProceed && setStep('form')}
                 disabled={!canProceed}
-                className={`w-full py-3 px-6 rounded-xl font-medium transition ${
-                  canProceed
+                className={`w-full py-3 px-6 rounded-xl font-medium transition ${canProceed
                     ? 'bg-[#F5A962] text-white hover:bg-[#e8994f]'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 Продолжить к заполнению формы
               </button>

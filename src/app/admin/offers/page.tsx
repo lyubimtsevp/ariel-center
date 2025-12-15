@@ -119,22 +119,20 @@ export default function OffersAdmin() {
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setActiveTab('intensive')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-            activeTab === 'intensive'
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${activeTab === 'intensive'
               ? 'bg-[#4A90A4] text-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
+            }`}
         >
           <Calendar className="w-4 h-4" />
           Оферта (Интенсив)
         </button>
         <button
           onClick={() => setActiveTab('matkapital')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-            activeTab === 'matkapital'
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${activeTab === 'matkapital'
               ? 'bg-[#F5A962] text-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
+            }`}
         >
           <FileText className="w-4 h-4" />
           Оферта (Маткапитал)
