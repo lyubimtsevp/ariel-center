@@ -8,6 +8,7 @@ import { Menu, X, Phone, Mail, Clock, MapPin, ShoppingCart, Eye } from 'lucide-r
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cart';
+import siteData from '@/data/site.json';
 
 const navigation = [
   { name: 'Главная', href: '/' },
@@ -29,6 +30,9 @@ export function Header() {
   const cartItems = useCartStore((state) => state.items);
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const primaryPhone = siteData.phones[0];
+  const primaryCity = siteData.addresses[0]?.city?.replace('г. ', '') || 'Новосибирск';
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -43,23 +47,25 @@ export function Header() {
       <div className="bg-primary text-white py-2 hidden lg:block">
         <div className="container mx-auto px-6 flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
-            <a href="tel:+73833195955" className="flex items-center gap-2 hover:opacity-80 transition">
-              <Phone className="w-4 h-4" />
-              +7 (383) 319-59-55
-            </a>
-            <a href="mailto:829892@gmail.com" className="flex items-center gap-2 hover:opacity-80 transition">
+            {primaryPhone && (
+              <a href={`tel:${primaryPhone.number.replace(/\D/g, '')}`} className="flex items-center gap-2 hover:opacity-80 transition">
+                <Phone className="w-4 h-4" />
+                {primaryPhone.number}
+              </a>
+            )}
+            <a href={`mailto:${siteData.email}`} className="flex items-center gap-2 hover:opacity-80 transition">
               <Mail className="w-4 h-4" />
-              829892@gmail.com
+              {siteData.email}
             </a>
           </div>
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              Пн-Пт: 9:00-17:00
+              {siteData.workHours}
             </span>
             <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              Новосибирск
+              {primaryCity}
             </span>
           </div>
         </div>
@@ -87,8 +93,8 @@ export function Header() {
                 />
               </div>
               <div className="hidden sm:block">
-                <div className="font-bold text-lg text-foreground leading-tight group-hover:text-primary transition-colors">Центр «Ариель»</div>
-                <div className="text-[11px] text-gray-500 uppercase tracking-wider font-medium">Коррекция речи и поведения</div>
+                <div className="font-bold text-lg text-foreground leading-tight group-hover:text-primary transition-colors">{siteData.name}</div>
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider font-medium">{siteData.tagline}</div>
               </div>
             </Link>
 
@@ -128,15 +134,17 @@ export function Header() {
                 )}
               </Link>
 
-              <Button
-                variant="primary"
-                size="sm"
-                className="hidden sm:flex"
-                onClick={() => window.location.href = 'tel:+73833195955'}
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Записаться
-              </Button>
+              {primaryPhone && (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="hidden sm:flex"
+                  onClick={() => window.location.href = `tel:${primaryPhone.number.replace(/\D/g, '')}`}
+                >
+                  <Phone className="w-4 h-4 mr-2" />
+                  Записаться
+                </Button>
+              )}
 
               {/* Mobile menu button */}
               <button
@@ -176,16 +184,18 @@ export function Header() {
                   </Link>
                 ))}
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <Button
-                  variant="primary"
-                  className="w-full"
-                  onClick={() => window.location.href = 'tel:+73833195955'}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  Записаться на приём
-                </Button>
-              </div>
+              {primaryPhone && (
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <Button
+                    variant="primary"
+                    className="w-full"
+                    onClick={() => window.location.href = `tel:${primaryPhone.number.replace(/\D/g, '')}`}
+                  >
+                    <Phone className="w-4 h-4 mr-2" />
+                    Записаться на приём
+                  </Button>
+                </div>
+              )}
             </nav>
           </motion.div>
         )}

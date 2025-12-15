@@ -1,11 +1,11 @@
 'use client';
 
 import AdminLayout from '../components/AdminLayout';
-import { 
-  HelpCircle, Save, Image, Plus, Trash2, Edit3, 
+import {
+  HelpCircle, Save, Image, Plus, Trash2, Edit3,
   ChevronRight, AlertTriangle, CheckCircle, Phone,
   FileText, Users, DollarSign, Building2, GraduationCap,
-  Layout, UserCog, CreditCard, Stethoscope, MapPin, MessageCircle, Truck
+  Layout, UserCog, CreditCard, Stethoscope, MapPin, MessageCircle, Truck, Settings
 } from 'lucide-react';
 
 export default function HelpPage() {
@@ -173,6 +173,20 @@ export default function HelpPage() {
         'Укажите информацию о проезде на транспорте',
         'Добавьте описание парковки',
         'Укажите ориентиры для посетителей',
+        'Нажмите "Сохранить изменения"'
+      ]
+    },
+    {
+      icon: Settings,
+      title: 'Настройки сайта (шапка и подвал)',
+      path: '/admin/site',
+      color: 'gray',
+      steps: [
+        'Перейдите в раздел "Настройки сайта"',
+        'Измените телефоны, email, адреса',
+        'Добавьте или удалите ссылки на соцсети',
+        'Обновите номера лицензий',
+        'Измените название организации и копирайт',
         'Нажмите "Сохранить изменения"'
       ]
     }

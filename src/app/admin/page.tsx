@@ -142,6 +142,7 @@ export default function AdminPage() {
     { href: '/admin/company', icon: Building2, label: 'О компании', description: 'Информация о центре', color: 'indigo' },
     { href: '/admin/logistics', icon: Truck, label: 'Логистика', description: 'Проживание и логистика', color: 'orange' },
     { href: '/admin/media', icon: Image, label: 'Медиафайлы', description: 'Фото и документы', color: 'cyan' },
+    { href: '/admin/site', icon: Settings, label: 'Настройки сайта', description: 'Шапка, подвал, соцсети, лицензии', color: 'gray' },
   ];
 
   return (

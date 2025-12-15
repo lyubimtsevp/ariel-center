@@ -26,7 +26,8 @@ const ALLOWED_FILES = [
   'hero.json',
   'management.json',
   'requisites.json',
-  'education.json'
+  'education.json',
+  'site.json'
 ];
 
 // GET - получить данные
@@ -119,7 +120,8 @@ function getFileLabel(filename: string): string {
     'hero.json': 'Главная страница',
     'management.json': 'Руководство',
     'requisites.json': 'Реквизиты',
-    'education.json': 'Образование'
+    'education.json': 'Образование',
+    'site.json': 'Настройки сайта'
   };
   return labels[filename] || filename;
 }
