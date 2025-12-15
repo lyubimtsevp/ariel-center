@@ -100,7 +100,52 @@ export default function BookingMatkapitalPage() {
     setError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Собираем данные для письма
+      const subject = encodeURIComponent(`Заявка на интенсив (маткапитал): ${formData.childName}`);
+      const body = encodeURIComponent(`ЗАЯВКА НА ИНТЕНСИВ (ОПЛАТА МАТЕРИНСКИМ КАПИТАЛОМ)
+
+=== ДАННЫЕ РЕБЁНКА ===
+ФИО ребёнка: ${formData.childName}
+Дата рождения: ${formData.childBirthDate}
+Свидетельство о рождении: серия ${formData.birthCertSeries}, номер ${formData.birthCertNumber}, дата выдачи ${formData.birthCertDate}
+
+=== ДАННЫЕ ВЛАДЕЛЬЦА СЕРТИФИКАТА МАТКАПИТАЛА ===
+ФИО: ${formData.parentName}
+Паспорт: серия ${formData.passportSeries}, номер ${formData.passportNumber}
+Выдан: ${formData.passportIssuedBy}, дата ${formData.passportIssuedDate}
+
+=== АДРЕСА ===
+Адрес прописки: ${formData.registrationAddress}
+Почтовый адрес: ${formData.postalAddress}
+
+=== КОНТАКТЫ ===
+Телефон: ${formData.phone}
+Email: ${formData.email}
+
+=== СЕРТИФИКАТ МАТЕРИНСКОГО КАПИТАЛА ===
+Серия: ${formData.matkapitalSeries}
+Номер: ${formData.matkapitalNumber}
+Дата оформления: ${formData.matkapitalDate}
+
+=== ИНФОРМАЦИЯ ОБ ИНТЕНСИВЕ ===
+Согласованные даты интенсива: ${formData.agreedDates}
+Приезжает впервые: ${formData.isFirstVisit ? 'Да' : 'Нет'}
+Был на диагностике: ${formData.hadDiagnostics ? 'Да' : 'Нет'}
+
+Комментарий: ${formData.comment || 'Нет'}
+
+---
+ВАЖНО: Клиент прикрепил платёжный документ (${paymentFile?.name || 'файл не выбран'}).
+Пожалуйста, попросите клиента прикрепить файл к этому письму вручную, если он не прикреплён.
+---
+
+Заявка отправлена с сайта ariel.lyubimtsev.com`);
+
+      // Открываем почтовый клиент
+      window.location.href = `mailto:829892@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Показываем сообщение об успехе
+      await new Promise(resolve => setTimeout(resolve, 500));
       setSubmitted(true);
     } catch (err) {
       setError('Ошибка отправки. Попробуйте позже или позвоните нам.');
@@ -196,7 +241,8 @@ export default function BookingMatkapitalPage() {
                 </div>
               </div>
               <div
-                className="p-6 prose prose-sm max-w-none max-h-[400px] overflow-y-auto"
+                className="p-6 prose prose-sm max-w-none max-h-[400px] overflow-y-scroll overscroll-contain"
+                style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
                 dangerouslySetInnerHTML={{ __html: offerData.content }}
               />
             </div>
@@ -396,11 +442,10 @@ export default function BookingMatkapitalPage() {
                 <button
                   onClick={() => agreePayment && paymentFile && setStep('form')}
                   disabled={!agreePayment || !paymentFile}
-                  className={`px-8 py-3 rounded-xl transition font-medium ${
-                    agreePayment && paymentFile
+                  className={`px-8 py-3 rounded-xl transition font-medium ${agreePayment && paymentFile
                       ? 'bg-green-500 text-white hover:bg-green-600'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  }`}
+                    }`}
                 >
                   Я оплатил — продолжить
                 </button>
