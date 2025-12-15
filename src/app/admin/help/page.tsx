@@ -5,7 +5,7 @@ import {
   HelpCircle, Save, Image, Plus, Trash2, Edit3, 
   ChevronRight, AlertTriangle, CheckCircle, Phone,
   FileText, Users, DollarSign, Building2, GraduationCap,
-  Layout, UserCog, CreditCard
+  Layout, UserCog, CreditCard, Stethoscope, MapPin, MessageCircle, Truck
 } from 'lucide-react';
 
 export default function HelpPage() {
@@ -110,6 +110,70 @@ export default function HelpPage() {
         'Выберите папку для загрузки (специалисты, услуги, документы)',
         'Перетащите файлы или нажмите для выбора',
         'После загрузки скопируйте URL файла для использования'
+      ]
+    },
+    {
+      icon: Building2,
+      title: 'О компании',
+      path: '/admin/company',
+      color: 'slate',
+      steps: [
+        'Перейдите в раздел "О компании"',
+        'Измените описание организации',
+        'Обновите миссию и ценности',
+        'Нажмите "Сохранить изменения"'
+      ]
+    },
+    {
+      icon: Stethoscope,
+      title: 'Услуги',
+      path: '/admin/services',
+      color: 'pink',
+      steps: [
+        'Перейдите в раздел "Услуги"',
+        'Нажмите "Добавить услугу" для новой карточки',
+        'Укажите название, описание и загрузите изображение',
+        'Для удаления нажмите красную кнопку корзины',
+        'Нажмите "Сохранить изменения"'
+      ]
+    },
+    {
+      icon: Phone,
+      title: 'Контакты',
+      path: '/admin/contacts',
+      color: 'emerald',
+      steps: [
+        'Перейдите в раздел "Контакты"',
+        'Обновите адрес, телефон и email',
+        'Укажите график работы',
+        'Добавьте ссылки на соцсети (при необходимости)',
+        'Нажмите "Сохранить изменения"'
+      ]
+    },
+    {
+      icon: MessageCircle,
+      title: 'FAQ (Вопросы и ответы)',
+      path: '/admin/faq',
+      color: 'amber',
+      steps: [
+        'Перейдите в раздел "FAQ"',
+        'Нажмите "Добавить вопрос" для новой записи',
+        'Введите вопрос и развёрнутый ответ',
+        'Используйте стрелки для изменения порядка',
+        'Нажмите "Сохранить изменения"'
+      ]
+    },
+    {
+      icon: Truck,
+      title: 'Как добраться',
+      path: '/admin/logistics',
+      color: 'orange',
+      steps: [
+        'Перейдите в раздел "Как добраться"',
+        'Укажите информацию о проезде на транспорте',
+        'Добавьте описание парковки',
+        'Укажите ориентиры для посетителей',
+        'Нажмите "Сохранить изменения"'
       ]
     }
   ];
@@ -228,6 +292,30 @@ export default function HelpPage() {
           <h4 className="font-medium text-gray-800 mb-1">Как изменить порядок руководителей?</h4>
           <p className="text-sm text-gray-600">
             В разделе "Руководство" используйте стрелки ↑↓ слева от карточки для перемещения вверх/вниз.
+          </p>
+        </div>
+        <div className="p-4">
+          <h4 className="font-medium text-gray-800 mb-1">Как добавить новую услугу?</h4>
+          <p className="text-sm text-gray-600">
+            Перейдите в раздел "Услуги", нажмите "Добавить услугу", заполните название и описание, загрузите фото.
+          </p>
+        </div>
+        <div className="p-4">
+          <h4 className="font-medium text-gray-800 mb-1">Как изменить контактную информацию?</h4>
+          <p className="text-sm text-gray-600">
+            Перейдите в раздел "Контакты", измените адрес, телефон, email или график работы и сохраните.
+          </p>
+        </div>
+        <div className="p-4">
+          <h4 className="font-medium text-gray-800 mb-1">Как добавить группу документов?</h4>
+          <p className="text-sm text-gray-600">
+            В разделе "Документы" нажмите "Добавить группу", укажите название (например, "Финансовые отчёты"), затем добавляйте документы внутрь группы.
+          </p>
+        </div>
+        <div className="p-4">
+          <h4 className="font-medium text-gray-800 mb-1">Какой формат фото лучше использовать?</h4>
+          <p className="text-sm text-gray-600">
+            Рекомендуется JPG или PNG. Для фото специалистов — квадратные 400×400px. Размер файла — до 5 МБ.
           </p>
         </div>
       </div>

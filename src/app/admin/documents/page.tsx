@@ -49,7 +49,7 @@ export default function DocumentsAdmin() {
   const handleSave = async () => {
     setIsSaving(true);
     setMessage(null);
-    
+
     try {
       const res = await fetch('/api/admin/data', {
         method: 'POST',
@@ -57,9 +57,9 @@ export default function DocumentsAdmin() {
         body: JSON.stringify({ file: 'documents.json', data }),
         credentials: 'include'
       });
-      
+
       const result = await res.json();
-      
+
       if (result.success) {
         setMessage({ type: 'success', text: 'Изменения сохранены!' });
       } else {
@@ -92,7 +92,7 @@ export default function DocumentsAdmin() {
 
   const updateGroup = (groupId: string, field: keyof DocumentGroup, value: any) => {
     setData(prev => ({
-      groups: prev.groups.map(g => 
+      groups: prev.groups.map(g =>
         g.id === groupId ? { ...g, [field]: value } : g
       )
     }));
@@ -104,7 +104,7 @@ export default function DocumentsAdmin() {
       file: '/docs/'
     };
     setData(prev => ({
-      groups: prev.groups.map(g => 
+      groups: prev.groups.map(g =>
         g.id === groupId ? { ...g, items: [...g.items, newDoc] } : g
       )
     }));
@@ -133,12 +133,12 @@ export default function DocumentsAdmin() {
   const handleFileUpload = async (groupId: string, docIndex: number, file: File) => {
     const uploadKey = `${groupId}-${docIndex}`;
     setUploadingDoc(uploadKey);
-    
+
     try {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('folder', 'docs');
-      
+
       const group = data.groups.find(g => g.id === groupId);
       const doc = group?.items[docIndex];
       if (doc) {
@@ -180,9 +180,8 @@ export default function DocumentsAdmin() {
   return (
     <AdminLayout title="Документы" description="Управление лицензиями и документами">
       {message && (
-        <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
-          message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-        }`}>
+        <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+          }`}>
           {message.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
           {message.text}
         </div>
@@ -223,7 +222,7 @@ export default function DocumentsAdmin() {
       <div className="space-y-4">
         {data.groups.map((group) => (
           <div key={group.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div 
+            <div
               className="flex items-center gap-3 px-4 py-3 bg-gray-50 cursor-pointer hover:bg-gray-100 transition"
               onClick={() => setExpandedGroup(expandedGroup === group.id ? null : group.id)}
             >
@@ -238,8 +237,8 @@ export default function DocumentsAdmin() {
               >
                 <Trash2 className="w-4 h-4" />
               </button>
-              {expandedGroup === group.id ? 
-                <ChevronUp className="w-5 h-5 text-gray-400" /> : 
+              {expandedGroup === group.id ?
+                <ChevronUp className="w-5 h-5 text-gray-400" /> :
                 <ChevronDown className="w-5 h-5 text-gray-400" />
               }
             </div>
@@ -293,7 +292,7 @@ export default function DocumentsAdmin() {
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
-                          
+
                           <input
                             type="text"
                             value={doc.title}
@@ -301,7 +300,7 @@ export default function DocumentsAdmin() {
                             placeholder="Название документа"
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                           />
-                          
+
                           <input
                             type="text"
                             value={doc.number || ''}
@@ -309,7 +308,7 @@ export default function DocumentsAdmin() {
                             placeholder="Номер документа (необязательно)"
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                           />
-                          
+
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <input
@@ -320,7 +319,7 @@ export default function DocumentsAdmin() {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono"
                               />
                             </div>
-                            
+
                             <input
                               type="file"
                               id={`doc-${uploadKey}`}
@@ -331,7 +330,7 @@ export default function DocumentsAdmin() {
                                 if (file) handleFileUpload(group.id, docIndex, file);
                               }}
                             />
-                            
+
                             <button
                               onClick={() => document.getElementById(`doc-${uploadKey}`)?.click()}
                               disabled={uploadingDoc === uploadKey}
@@ -340,7 +339,7 @@ export default function DocumentsAdmin() {
                               <Upload className="w-4 h-4" />
                               {uploadingDoc === uploadKey ? '...' : 'Загрузить'}
                             </button>
-                            
+
                             {doc.file && doc.file !== '/docs/' && (
                               <a
                                 href={doc.file}
