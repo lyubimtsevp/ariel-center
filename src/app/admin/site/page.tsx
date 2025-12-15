@@ -349,7 +349,7 @@ export default function SiteSettingsPage() {
                     type="text"
                     value={addr.label}
                     onChange={(e) => updateAddress(index, 'label', e.target.value)}
-                    placeholder="Название (Основной, Филиал)"
+                    placeholder="Название (Основной, Подразделение)"
                     className="px-3 py-2 border border-gray-300 rounded-lg"
                   />
                 </div>

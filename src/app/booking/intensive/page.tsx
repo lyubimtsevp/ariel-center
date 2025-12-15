@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FadeIn } from '@/components/ui/FadeIn';
-import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall } from 'lucide-react';
 import offerData from '@/data/offer-intensive.json';
 
+const ADMIN_PHONE = '+7 (383) 255-12-55';
+
 export default function BookingIntensivePage() {
-  const [step, setStep] = useState<'offer' | 'form'>('offer');
+  const [step, setStep] = useState<'offer' | 'call' | 'form'>('offer');
   const [agreePersonalData, setAgreePersonalData] = useState(false);
   const [agreeOffer, setAgreeOffer] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +22,9 @@ export default function BookingIntensivePage() {
     parentName: '',
     phone: '',
     email: '',
-    desiredDates: '',
+    agreedDates: '',
+    isFirstVisit: null as boolean | null,
+    hadDiagnostics: null as boolean | null,
     comment: ''
   });
 
@@ -34,8 +38,6 @@ export default function BookingIntensivePage() {
     setError('');
 
     try {
-      // Здесь будет отправка на сервер/email
-      // Пока имитируем успешную отправку
       await new Promise(resolve => setTimeout(resolve, 1500));
       setSubmitted(true);
     } catch (err) {
@@ -95,15 +97,20 @@ export default function BookingIntensivePage() {
 
         {/* Шаги */}
         <FadeIn delay={0.2}>
-          <div className="flex items-center gap-4 mb-8">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${step === 'offer' ? 'bg-[#4A90A4] text-white' : 'bg-gray-200 text-gray-600'}`}>
+          <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'offer' ? 'bg-[#4A90A4] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">1</span>
-              <span className="hidden sm:inline">Договор оферты</span>
+              <span className="hidden sm:inline text-sm">Договор оферты</span>
             </div>
-            <div className="h-px flex-1 bg-gray-300"></div>
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${step === 'form' ? 'bg-[#4A90A4] text-white' : 'bg-gray-200 text-gray-600'}`}>
+            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'call' ? 'bg-[#4A90A4] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">2</span>
-              <span className="hidden sm:inline">Заполнение формы</span>
+              <span className="hidden sm:inline text-sm">Согласование дат</span>
+            </div>
+            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'form' ? 'bg-[#4A90A4] text-white' : 'bg-gray-200 text-gray-600'}`}>
+              <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">3</span>
+              <span className="hidden sm:inline text-sm">Заполнение формы</span>
             </div>
           </div>
         </FadeIn>
@@ -162,14 +169,14 @@ export default function BookingIntensivePage() {
               </label>
 
               <button
-                onClick={() => canProceed && setStep('form')}
+                onClick={() => canProceed && setStep('call')}
                 disabled={!canProceed}
                 className={`w-full py-3 px-6 rounded-xl font-medium transition ${canProceed
-                    ? 'bg-[#4A90A4] text-white hover:bg-[#3b7d8f]'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  }`}
+                  ? 'bg-[#4A90A4] text-white hover:bg-[#3b7d8f]'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
               >
-                Продолжить к заполнению формы
+                Продолжить
               </button>
 
               {!canProceed && (
@@ -178,6 +185,49 @@ export default function BookingIntensivePage() {
                   Необходимо отметить оба пункта
                 </p>
               )}
+            </div>
+          </FadeIn>
+        )}
+
+        {step === 'call' && (
+          <FadeIn delay={0.3}>
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center">
+              <div className="w-20 h-20 bg-[#4A90A4]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <PhoneCall className="w-10 h-10 text-[#4A90A4]" />
+              </div>
+              
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Согласование дат интенсива</h2>
+              
+              <p className="text-gray-600 mb-6 max-w-lg mx-auto">
+                Для того, чтобы продолжить бронирование, вам необходимо согласовать даты интенсива с администратором. Пожалуйста, позвоните по указанному ниже телефону.
+              </p>
+
+              <a
+                href={`tel:${ADMIN_PHONE.replace(/\D/g, '')}`}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-green-500 hover:bg-green-600 text-white text-xl font-bold rounded-xl transition mb-6"
+              >
+                <Phone className="w-6 h-6" />
+                {ADMIN_PHONE}
+              </a>
+
+              <p className="text-sm text-gray-500 mb-6">
+                После звонка нажмите кнопку ниже, чтобы продолжить заполнение формы
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => setStep('offer')}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
+                >
+                  Назад
+                </button>
+                <button
+                  onClick={() => setStep('form')}
+                  className="px-8 py-3 bg-[#4A90A4] text-white rounded-xl hover:bg-[#3b7d8f] transition font-medium"
+                >
+                  Я позвонил — продолжить
+                </button>
+              </div>
             </div>
           </FadeIn>
         )}
@@ -265,15 +315,73 @@ export default function BookingIntensivePage() {
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Calendar className="w-4 h-4 inline mr-1" />
-                    Желаемые даты интенсива
+                    Согласованные даты интенсива *
                   </label>
                   <input
                     type="text"
-                    value={formData.desiredDates}
-                    onChange={(e) => setFormData({ ...formData, desiredDates: e.target.value })}
+                    required
+                    value={formData.agreedDates}
+                    onChange={(e) => setFormData({ ...formData, agreedDates: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4A90A4] focus:border-transparent"
-                    placeholder="Например: июнь 2025, любые даты"
+                    placeholder="Даты, согласованные с администратором"
                   />
+                </div>
+
+                {/* Вопросы да/нет */}
+                <div className="md:col-span-2 bg-gray-50 rounded-xl p-4 space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-3">Приезжаете ли вы к нам впервые на интенсив? *</p>
+                    <div className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="isFirstVisit"
+                          checked={formData.isFirstVisit === true}
+                          onChange={() => setFormData({ ...formData, isFirstVisit: true })}
+                          className="w-4 h-4 text-[#4A90A4]"
+                          required
+                        />
+                        <span className="text-gray-700">Да</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="isFirstVisit"
+                          checked={formData.isFirstVisit === false}
+                          onChange={() => setFormData({ ...formData, isFirstVisit: false })}
+                          className="w-4 h-4 text-[#4A90A4]"
+                        />
+                        <span className="text-gray-700">Нет</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-3">Были ли вы у нас на диагностике? *</p>
+                    <div className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="hadDiagnostics"
+                          checked={formData.hadDiagnostics === true}
+                          onChange={() => setFormData({ ...formData, hadDiagnostics: true })}
+                          className="w-4 h-4 text-[#4A90A4]"
+                          required
+                        />
+                        <span className="text-gray-700">Да</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="hadDiagnostics"
+                          checked={formData.hadDiagnostics === false}
+                          onChange={() => setFormData({ ...formData, hadDiagnostics: false })}
+                          className="w-4 h-4 text-[#4A90A4]"
+                        />
+                        <span className="text-gray-700">Нет</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="md:col-span-2">
@@ -300,7 +408,7 @@ export default function BookingIntensivePage() {
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <button
                   type="button"
-                  onClick={() => setStep('offer')}
+                  onClick={() => setStep('call')}
                   className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
                 >
                   Назад

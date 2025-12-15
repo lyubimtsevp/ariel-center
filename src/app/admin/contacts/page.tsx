@@ -186,7 +186,7 @@ export default function ContactsAdmin() {
                   <select value={addr.type} onChange={(e) => updateAddress(index, 'type', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
                     <option value="main">Главный</option>
-                    <option value="branch">Филиал</option>
+                    <option value="branch">Подразделение</option>
                     <option value="partner">Партнёр</option>
                   </select>
                 </div>

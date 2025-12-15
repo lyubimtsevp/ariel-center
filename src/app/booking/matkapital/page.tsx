@@ -1,13 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { FadeIn } from '@/components/ui/FadeIn';
-import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, CreditCard, MapPin, Baby } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, CreditCard, MapPin, Baby, PhoneCall } from 'lucide-react';
 import offerData from '@/data/offer-matkapital.json';
 
+const ADMIN_PHONE = '+7 (383) 255-12-55';
+
+// Компонент для поля даты с placeholder
+function DateInput({ value, onChange, placeholder, required, className }: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  required?: boolean;
+  className?: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  return (
+    <div className="relative">
+      <input
+        ref={inputRef}
+        type="date"
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent ${className || ''}`}
+      />
+      {!value && (
+        <span
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+          onClick={() => inputRef.current?.showPicker?.()}
+        >
+          {placeholder}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function BookingMatkapitalPage() {
-  const [step, setStep] = useState<'offer' | 'form'>('offer');
+  const [step, setStep] = useState<'offer' | 'call' | 'form'>('offer');
   const [agreePersonalData, setAgreePersonalData] = useState(false);
   const [agreeOffer, setAgreeOffer] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +72,9 @@ export default function BookingMatkapitalPage() {
     matkapitalNumber: '',
     matkapitalDate: '',
     // Интенсив
-    desiredDates: '',
+    agreedDates: '',
+    isFirstVisit: null as boolean | null,
+    hadDiagnostics: null as boolean | null,
     comment: ''
   });
 
@@ -111,15 +147,20 @@ export default function BookingMatkapitalPage() {
 
         {/* Шаги */}
         <FadeIn delay={0.2}>
-          <div className="flex items-center gap-4 mb-8">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${step === 'offer' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
+          <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'offer' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">1</span>
-              <span className="hidden sm:inline">Договор оферты</span>
+              <span className="hidden sm:inline text-sm">Договор оферты</span>
             </div>
-            <div className="h-px flex-1 bg-gray-300"></div>
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${step === 'form' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
+            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'call' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">2</span>
-              <span className="hidden sm:inline">Заполнение формы</span>
+              <span className="hidden sm:inline text-sm">Согласование дат</span>
+            </div>
+            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'form' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
+              <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">3</span>
+              <span className="hidden sm:inline text-sm">Заполнение формы</span>
             </div>
           </div>
         </FadeIn>
@@ -178,14 +219,14 @@ export default function BookingMatkapitalPage() {
               </label>
 
               <button
-                onClick={() => canProceed && setStep('form')}
+                onClick={() => canProceed && setStep('call')}
                 disabled={!canProceed}
                 className={`w-full py-3 px-6 rounded-xl font-medium transition ${canProceed
-                    ? 'bg-[#F5A962] text-white hover:bg-[#e8994f]'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  }`}
+                  ? 'bg-[#F5A962] text-white hover:bg-[#e8994f]'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
               >
-                Продолжить к заполнению формы
+                Продолжить
               </button>
 
               {!canProceed && (
@@ -194,6 +235,49 @@ export default function BookingMatkapitalPage() {
                   Необходимо отметить оба пункта
                 </p>
               )}
+            </div>
+          </FadeIn>
+        )}
+
+        {step === 'call' && (
+          <FadeIn delay={0.3}>
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center">
+              <div className="w-20 h-20 bg-[#F5A962]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <PhoneCall className="w-10 h-10 text-[#F5A962]" />
+              </div>
+              
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Согласование дат интенсива</h2>
+              
+              <p className="text-gray-600 mb-6 max-w-lg mx-auto">
+                Для того, чтобы продолжить бронирование, вам необходимо согласовать даты интенсива с администратором. Пожалуйста, позвоните по указанному ниже телефону.
+              </p>
+
+              <a
+                href={`tel:${ADMIN_PHONE.replace(/\D/g, '')}`}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-green-500 hover:bg-green-600 text-white text-xl font-bold rounded-xl transition mb-6"
+              >
+                <Phone className="w-6 h-6" />
+                {ADMIN_PHONE}
+              </a>
+
+              <p className="text-sm text-gray-500 mb-6">
+                После звонка нажмите кнопку ниже, чтобы продолжить заполнение формы
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => setStep('offer')}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
+                >
+                  Назад
+                </button>
+                <button
+                  onClick={() => setStep('form')}
+                  className="px-8 py-3 bg-[#F5A962] text-white rounded-xl hover:bg-[#e8994f] transition font-medium"
+                >
+                  Я позвонил — продолжить
+                </button>
+              </div>
             </div>
           </FadeIn>
         )}
@@ -223,18 +307,17 @@ export default function BookingMatkapitalPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Дата рождения *</label>
-                    <input
-                      type="date"
-                      required
+                    <DateInput
                       value={formData.childBirthDate}
-                      onChange={(e) => setFormData({ ...formData, childBirthDate: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
+                      onChange={(v) => setFormData({ ...formData, childBirthDate: v })}
+                      placeholder="Дата рождения"
+                      required
                     />
                   </div>
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Свидетельство о рождении *</label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <input
                         type="text"
                         required
@@ -251,13 +334,11 @@ export default function BookingMatkapitalPage() {
                         className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
                         placeholder="Номер"
                       />
-                      <input
-                        type="date"
-                        required
+                      <DateInput
                         value={formData.birthCertDate}
-                        onChange={(e) => setFormData({ ...formData, birthCertDate: e.target.value })}
-                        className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
+                        onChange={(v) => setFormData({ ...formData, birthCertDate: v })}
                         placeholder="Дата выдачи"
+                        required
                       />
                     </div>
                   </div>
@@ -312,14 +393,15 @@ export default function BookingMatkapitalPage() {
                         placeholder="Кем выдан"
                       />
                     </div>
-                    <input
-                      type="date"
-                      required
-                      value={formData.passportIssuedDate}
-                      onChange={(e) => setFormData({ ...formData, passportIssuedDate: e.target.value })}
-                      className="mt-3 w-full md:w-auto px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
-                      placeholder="Дата выдачи"
-                    />
+                    <div className="mt-3">
+                      <DateInput
+                        value={formData.passportIssuedDate}
+                        onChange={(v) => setFormData({ ...formData, passportIssuedDate: v })}
+                        placeholder="Дата выдачи паспорта"
+                        required
+                        className="w-full md:w-auto"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -423,13 +505,12 @@ export default function BookingMatkapitalPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Дата выдачи *</label>
-                    <input
-                      type="date"
-                      required
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Дата оформления *</label>
+                    <DateInput
                       value={formData.matkapitalDate}
-                      onChange={(e) => setFormData({ ...formData, matkapitalDate: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
+                      onChange={(v) => setFormData({ ...formData, matkapitalDate: v })}
+                      placeholder="Дата оформления"
+                      required
                     />
                   </div>
                 </div>
@@ -448,14 +529,72 @@ export default function BookingMatkapitalPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Желаемые даты интенсива</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Согласованные даты интенсива *</label>
                     <input
                       type="text"
-                      value={formData.desiredDates}
-                      onChange={(e) => setFormData({ ...formData, desiredDates: e.target.value })}
+                      required
+                      value={formData.agreedDates}
+                      onChange={(e) => setFormData({ ...formData, agreedDates: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
-                      placeholder="Например: июнь 2025, любые даты"
+                      placeholder="Даты, согласованные с администратором"
                     />
+                  </div>
+
+                  {/* Вопросы да/нет */}
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-3">Приезжаете ли вы к нам впервые на интенсив? *</p>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="isFirstVisit"
+                            checked={formData.isFirstVisit === true}
+                            onChange={() => setFormData({ ...formData, isFirstVisit: true })}
+                            className="w-4 h-4 text-[#F5A962]"
+                            required
+                          />
+                          <span className="text-gray-700">Да</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="isFirstVisit"
+                            checked={formData.isFirstVisit === false}
+                            onChange={() => setFormData({ ...formData, isFirstVisit: false })}
+                            className="w-4 h-4 text-[#F5A962]"
+                          />
+                          <span className="text-gray-700">Нет</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-3">Были ли вы у нас на диагностике? *</p>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="hadDiagnostics"
+                            checked={formData.hadDiagnostics === true}
+                            onChange={() => setFormData({ ...formData, hadDiagnostics: true })}
+                            className="w-4 h-4 text-[#F5A962]"
+                            required
+                          />
+                          <span className="text-gray-700">Да</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="hadDiagnostics"
+                            checked={formData.hadDiagnostics === false}
+                            onChange={() => setFormData({ ...formData, hadDiagnostics: false })}
+                            className="w-4 h-4 text-[#F5A962]"
+                          />
+                          <span className="text-gray-700">Нет</span>
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
@@ -481,7 +620,7 @@ export default function BookingMatkapitalPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   type="button"
-                  onClick={() => setStep('offer')}
+                  onClick={() => setStep('call')}
                   className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
                 >
                   Назад
