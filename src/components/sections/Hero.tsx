@@ -135,7 +135,7 @@ const Hero = () => {
                     <span className="text-white/70 ml-2">на 2ГИС</span>
                   </div>
                   <div className="text-white/60 text-sm border-l border-white/20 pl-4">
-                    150+ отзывов
+                    <span className="text-white font-semibold">270+</span> отзывов
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
