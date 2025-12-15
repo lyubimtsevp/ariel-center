@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, CreditCard, MapPin, Baby, PhoneCall } from 'lucide-react';
 import offerData from '@/data/offer-matkapital.json';
@@ -17,7 +18,7 @@ function DateInput({ value, onChange, placeholder, required, className }: {
   className?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   return (
     <div className="relative">
       <input
@@ -40,10 +41,13 @@ function DateInput({ value, onChange, placeholder, required, className }: {
   );
 }
 
+type Step = 'offer' | 'call' | 'payment' | 'form';
+
 export default function BookingMatkapitalPage() {
-  const [step, setStep] = useState<'offer' | 'call' | 'form'>('offer');
+  const [step, setStep] = useState<Step>('offer');
   const [agreePersonalData, setAgreePersonalData] = useState(false);
   const [agreeOffer, setAgreeOffer] = useState(false);
+  const [agreePayment, setAgreePayment] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -152,14 +156,19 @@ export default function BookingMatkapitalPage() {
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">1</span>
               <span className="hidden sm:inline text-sm">Договор оферты</span>
             </div>
-            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
+            <div className="h-px w-4 flex-1 bg-gray-300"></div>
             <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'call' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">2</span>
               <span className="hidden sm:inline text-sm">Согласование дат</span>
             </div>
-            <div className="h-px w-4 sm:flex-1 bg-gray-300"></div>
-            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'form' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
+            <div className="h-px w-4 flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'payment' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
               <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">3</span>
+              <span className="hidden sm:inline text-sm">Оплата брони</span>
+            </div>
+            <div className="h-px w-4 flex-1 bg-gray-300"></div>
+            <div className={`flex items-center gap-2 px-3 py-2 rounded-full whitespace-nowrap ${step === 'form' ? 'bg-[#F5A962] text-white' : 'bg-gray-200 text-gray-600'}`}>
+              <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">4</span>
               <span className="hidden sm:inline text-sm">Заполнение формы</span>
             </div>
           </div>
@@ -224,7 +233,7 @@ export default function BookingMatkapitalPage() {
                 className={`w-full py-3 px-6 rounded-xl font-medium transition ${canProceed
                   ? 'bg-[#F5A962] text-white hover:bg-[#e8994f]'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 Продолжить
               </button>
@@ -245,9 +254,9 @@ export default function BookingMatkapitalPage() {
               <div className="w-20 h-20 bg-[#F5A962]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <PhoneCall className="w-10 h-10 text-[#F5A962]" />
               </div>
-              
+
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Согласование дат интенсива</h2>
-              
+
               <p className="text-gray-600 mb-6 max-w-lg mx-auto">
                 Для того, чтобы продолжить бронирование, вам необходимо согласовать даты интенсива с администратором. Пожалуйста, позвоните по указанному ниже телефону.
               </p>
@@ -261,7 +270,7 @@ export default function BookingMatkapitalPage() {
               </a>
 
               <p className="text-sm text-gray-500 mb-6">
-                После звонка нажмите кнопку ниже, чтобы продолжить заполнение формы
+                После звонка нажмите кнопку ниже, чтобы продолжить
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -272,10 +281,87 @@ export default function BookingMatkapitalPage() {
                   Назад
                 </button>
                 <button
-                  onClick={() => setStep('form')}
+                  onClick={() => setStep('payment')}
                   className="px-8 py-3 bg-[#F5A962] text-white rounded-xl hover:bg-[#e8994f] transition font-medium"
                 >
                   Я позвонил — продолжить
+                </button>
+              </div>
+            </div>
+          </FadeIn>
+        )}
+
+        {step === 'payment' && (
+          <FadeIn delay={0.3}>
+            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CreditCard className="w-10 h-10 text-amber-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Оплата услуги бронирования</h2>
+              </div>
+
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                <p className="text-amber-800">
+                  Пожалуйста, оплатите услугу бронирования по этому QR-коду в размере <strong>10 000 рублей</strong>. Согласно договору публичной оферты. Данная услуга бронирования не подлежит возврату в случае отмены или неприезда на интенсив по любой причине, кроме инициативы исполнителя.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                <p className="text-blue-800 text-sm">
+                  <strong>В назначении платежа укажите:</strong><br />
+                  «Услуга бронирования программы "интенсив" (ФИО ребенка, дата интенсива)»
+                </p>
+              </div>
+
+              {/* Галочка */}
+              <label className="flex items-start gap-3 cursor-pointer group mb-6 p-4 bg-gray-50 rounded-xl">
+                <input
+                  type="checkbox"
+                  checked={agreePayment}
+                  onChange={(e) => setAgreePayment(e.target.checked)}
+                  className="w-5 h-5 mt-0.5 text-[#F5A962] rounded border-gray-300 focus:ring-[#F5A962]"
+                />
+                <span className="text-gray-800 group-hover:text-[#F5A962] transition font-medium">
+                  Я прочитал и понял условия оплаты брони
+                </span>
+              </label>
+
+              {/* QR-код появляется после галочки */}
+              {agreePayment && (
+                <FadeIn>
+                  <div className="text-center mb-6">
+                    <p className="text-gray-600 mb-4">Отсканируйте QR-код для оплаты:</p>
+                    <div className="inline-block p-4 bg-white border-2 border-gray-200 rounded-2xl shadow-lg">
+                      <Image
+                        src="/images/qr-payment.png"
+                        alt="QR-код для оплаты"
+                        width={250}
+                        height={250}
+                        className="mx-auto"
+                      />
+                    </div>
+                  </div>
+                </FadeIn>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => setStep('call')}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
+                >
+                  Назад
+                </button>
+                <button
+                  onClick={() => agreePayment && setStep('form')}
+                  disabled={!agreePayment}
+                  className={`px-8 py-3 rounded-xl transition font-medium ${
+                    agreePayment
+                      ? 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  Я оплатил — продолжить
                 </button>
               </div>
             </div>
@@ -620,7 +706,7 @@ export default function BookingMatkapitalPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   type="button"
-                  onClick={() => setStep('call')}
+                  onClick={() => setStep('payment')}
                   className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition"
                 >
                   Назад

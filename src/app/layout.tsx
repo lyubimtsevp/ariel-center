@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Chatbot } from '@/components/Chatbot';
+import { CookieConsent } from '@/components/CookieConsent';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 
 const manrope = Manrope({
@@ -76,6 +77,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <Chatbot />
+        <CookieConsent />
       </body>
     </html>
   );

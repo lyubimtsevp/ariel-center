@@ -1,25 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ShoppingCart, Phone, Info } from 'lucide-react';
+import { Phone, Info, CreditCard, Receipt } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { useCartStore } from '@/store/cart';
 import pricesData from '@/data/prices.json';
 import { formatPrice } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function PricesPage() {
-  const addItem = useCartStore((state) => state.addItem);
-
-  const handleAddToCart = (name: string, price: number) => {
-    addItem({
-      id: name.toLowerCase().replace(/\s+/g, '-'),
-      name,
-      price,
-      type: 'service',
-    });
-  };
-
   return (
     <div className="py-12">
       <div className="container mx-auto px-6">
@@ -32,10 +21,16 @@ export default function PricesPage() {
           <h1 className="text-4xl font-bold text-[var(--foreground)] mb-4">
             Цены на услуги
           </h1>
-          <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Стоимость наших услуг значительно ниже, чем во многих других центрах. 
-            Возможен налоговый вычет и оплата материнским капиталом.
-          </p>
+          <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full text-sm">
+              <Receipt className="w-4 h-4" />
+              Возможен налоговый вычет
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm">
+              <CreditCard className="w-4 h-4" />
+              Оплата материнским капиталом
+            </div>
+          </div>
         </motion.div>
 
         {/* Programs */}
@@ -73,14 +68,11 @@ export default function PricesPage() {
                         ))}
                       </div>
                     )}
-                    <Button
-                      variant="primary"
-                      className="w-full"
-                      leftIcon={<ShoppingCart className="w-4 h-4" />}
-                      onClick={() => handleAddToCart(item.name, item.price)}
-                    >
-                      Добавить в корзину
-                    </Button>
+                    <Link href="/booking/intensive">
+                      <Button variant="primary" className="w-full">
+                        Записаться
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -120,18 +112,9 @@ export default function PricesPage() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-bold text-[var(--primary)]">
-                        {formatPrice(item.price)}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleAddToCart(item.name, item.price)}
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <span className="font-bold text-[var(--primary)]">
+                      {formatPrice(item.price)}
+                    </span>
                   </motion.div>
                 ))}
               </div>
@@ -160,18 +143,9 @@ export default function PricesPage() {
                         <div className="text-xs text-[var(--text-muted)]">{item.code}</div>
                       )}
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-bold text-[var(--primary)]">
-                        {formatPrice(item.price)}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleAddToCart(item.name, item.price)}
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <span className="font-bold text-[var(--primary)]">
+                      {formatPrice(item.price)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -200,18 +174,9 @@ export default function PricesPage() {
                         <div className="text-xs text-[var(--text-muted)]">{item.code}</div>
                       )}
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-bold text-[var(--primary)]">
-                        {formatPrice(item.price)}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleAddToCart(item.name, item.price)}
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <span className="font-bold text-[var(--primary)]">
+                      {formatPrice(item.price)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -243,7 +208,7 @@ export default function PricesPage() {
           className="mt-12 text-center"
         >
           <p className="text-[var(--text-secondary)] mb-4">
-            Для записи на приём и уточнения информации звоните
+            Запись на консультацию
           </p>
           <Button
             variant="primary"
@@ -258,4 +223,3 @@ export default function PricesPage() {
     </div>
   );
 }
-

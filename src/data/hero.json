@@ -13,7 +13,7 @@
   "serviceCards": [
     {
       "title": "Медицинские услуги",
-      "subtitle": "Диагностика, лечение",
+      "subtitle": "Диагностика, лечение, онлайн консультация",
       "href": "/services?category=medical",
       "icon": "medical"
     },

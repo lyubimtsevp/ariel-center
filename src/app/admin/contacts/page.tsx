@@ -52,7 +52,7 @@ export default function ContactsAdmin() {
   const handleSave = async () => {
     setIsSaving(true);
     setMessage(null);
-    
+
     try {
       const res = await fetch('/api/admin/data', {
         method: 'POST',
@@ -60,9 +60,9 @@ export default function ContactsAdmin() {
         body: JSON.stringify({ file: 'contacts.json', data }),
         credentials: 'include'
       });
-      
+
       const result = await res.json();
-      
+
       if (result.success) {
         setMessage({ type: 'success', text: 'Изменения сохранены!' });
       } else {

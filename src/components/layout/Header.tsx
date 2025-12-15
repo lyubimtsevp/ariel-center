@@ -4,10 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, Mail, Clock, MapPin, ShoppingCart, Eye, ChevronDown } from 'lucide-react';
+import { Menu, X, Phone, Mail, Clock, MapPin, Eye, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { useCartStore } from '@/store/cart';
 import siteData from '@/data/site.json';
 
 // Подменю "Об учреждении"
@@ -17,6 +16,8 @@ const aboutSubmenu = [
   { name: 'Наука', href: '/science' },
   { name: 'Медиа', href: '/media' },
   { name: 'Фотогалерея', href: '/gallery' },
+  { name: 'Логистика и проживание', href: '/logistics' },
+  { name: 'Работа в «Ариель»', href: '/jobs' },
 ];
 
 const navigation = [
@@ -39,8 +40,6 @@ export function Header() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
-  const cartItems = useCartStore((state) => state.items);
-  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const primaryPhone = siteData.phones[0];
   const primaryCity = siteData.addresses[0]?.city?.replace('г. ', '') || 'Новосибирск';
@@ -140,7 +139,7 @@ export function Header() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50"
+                          className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50"
                         >
                           {aboutSubmenu.map((subItem) => (
                             <Link
@@ -178,18 +177,6 @@ export function Header() {
               >
                 <Eye className="w-6 h-6 text-gray-500 group-hover:text-primary" />
               </button>
-
-              <Link
-                href="/cart"
-                className="relative p-2 rounded-lg hover:bg-gray-50 transition group"
-              >
-                <ShoppingCart className="w-6 h-6 text-gray-500 group-hover:text-primary" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-white text-xs font-bold rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
 
               {primaryPhone && (
                 <Button
