@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AdminLayout } from '@/components/admin/AdminLayout';
+import AdminLayout from '../components/AdminLayout';
 import { Inbox, Calendar, User, Phone, Mail, CheckCircle, Clock, XCircle, Trash2, Eye, Baby, CreditCard, MessageSquare, RefreshCw } from 'lucide-react';
 
 interface Application {

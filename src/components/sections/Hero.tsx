@@ -126,7 +126,7 @@ const Hero = () => {
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1">
-                    {[1,2,3,4,5].map((i) => (
+                    {[1, 2, 3, 4, 5].map((i) => (
                       <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                     ))}
                   </div>
