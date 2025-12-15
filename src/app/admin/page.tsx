@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { 
   Lock, LogOut, FileText, Users, Stethoscope, Phone, 
   HelpCircle, DollarSign, Building2, FileCheck,
-  ChevronRight, Settings, Home, Truck, Image
+  ChevronRight, Settings, Home, Truck, Image,
+  Layout, UserCog, CreditCard, GraduationCap, BookOpen
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -128,14 +129,18 @@ export default function AdminPage() {
   }
 
   const menuItems = [
-    { href: '/admin/services', icon: Stethoscope, label: 'Услуги', description: 'Редактировать услуги центра', color: 'blue' },
+    { href: '/admin/hero', icon: Layout, label: 'Главная страница', description: 'Шапка и информационный блок', color: 'blue' },
+    { href: '/admin/management', icon: UserCog, label: 'Руководство', description: 'Директор и руководители', color: 'purple' },
     { href: '/admin/specialists', icon: Users, label: 'Специалисты', description: 'Управление командой', color: 'green' },
-    { href: '/admin/documents', icon: FileCheck, label: 'Документы', description: 'Лицензии и документы', color: 'purple' },
+    { href: '/admin/services', icon: Stethoscope, label: 'Услуги', description: 'Редактировать услуги центра', color: 'blue' },
     { href: '/admin/prices', icon: DollarSign, label: 'Цены', description: 'Прайс-лист', color: 'yellow' },
+    { href: '/admin/requisites', icon: CreditCard, label: 'Реквизиты', description: 'Юридические и банковские', color: 'indigo' },
+    { href: '/admin/education', icon: GraduationCap, label: 'Образование', description: 'Программы и лицензия', color: 'teal' },
+    { href: '/admin/documents', icon: FileCheck, label: 'Документы', description: 'Лицензии и документы', color: 'purple' },
     { href: '/admin/faq', icon: HelpCircle, label: 'FAQ', description: 'Вопросы и ответы', color: 'pink' },
-    { href: '/admin/logistics', icon: Truck, label: 'Логистика', description: 'Проживание и логистика', color: 'orange' },
     { href: '/admin/contacts', icon: Phone, label: 'Контакты', description: 'Контактная информация', color: 'teal' },
     { href: '/admin/company', icon: Building2, label: 'О компании', description: 'Информация о центре', color: 'indigo' },
+    { href: '/admin/logistics', icon: Truck, label: 'Логистика', description: 'Проживание и логистика', color: 'orange' },
     { href: '/admin/media', icon: Image, label: 'Медиафайлы', description: 'Фото и документы', color: 'cyan' },
   ];
 
@@ -155,6 +160,13 @@ export default function AdminPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Link 
+                href="/admin/help" 
+                className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+              >
+                <BookOpen className="w-5 h-5" />
+                <span className="hidden sm:inline">Инструкция</span>
+              </Link>
               <Link 
                 href="/" 
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"

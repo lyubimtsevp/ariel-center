@@ -22,7 +22,11 @@ const ALLOWED_FILES = [
   'company.json',
   'faq.json',
   'prices.json',
-  'logistics.json'
+  'logistics.json',
+  'hero.json',
+  'management.json',
+  'requisites.json',
+  'education.json'
 ];
 
 // GET - получить данные
@@ -111,7 +115,11 @@ function getFileLabel(filename: string): string {
     'company.json': 'О компании',
     'faq.json': 'Вопросы и ответы',
     'prices.json': 'Цены',
-    'logistics.json': 'Логистика'
+    'logistics.json': 'Логистика',
+    'hero.json': 'Главная страница',
+    'management.json': 'Руководство',
+    'requisites.json': 'Реквизиты',
+    'education.json': 'Образование'
   };
   return labels[filename] || filename;
 }
