@@ -143,7 +143,7 @@ Email: ${formData.email}
 
       // Открываем почтовый клиент
       window.location.href = `mailto:829892@gmail.com?subject=${subject}&body=${body}`;
-      
+
       // Показываем сообщение об успехе
       await new Promise(resolve => setTimeout(resolve, 500));
       setSubmitted(true);
@@ -443,8 +443,8 @@ Email: ${formData.email}
                   onClick={() => agreePayment && paymentFile && setStep('form')}
                   disabled={!agreePayment || !paymentFile}
                   className={`px-8 py-3 rounded-xl transition font-medium ${agreePayment && paymentFile
-                      ? 'bg-green-500 text-white hover:bg-green-600'
-                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    ? 'bg-green-500 text-white hover:bg-green-600'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     }`}
                 >
                   Я оплатил — продолжить

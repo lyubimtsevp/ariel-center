@@ -68,11 +68,19 @@ export default function PricesPage() {
                         ))}
                       </div>
                     )}
-                    <Link href="/booking/intensive">
-                      <Button variant="primary" className="w-full">
-                        Записаться
-                      </Button>
-                    </Link>
+                    {item.name.toLowerCase().includes('интенсив') ? (
+                      <Link href="/booking/intensive">
+                        <Button variant="primary" className="w-full">
+                          Записаться на интенсив
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link href="/contacts">
+                        <Button variant="primary" className="w-full">
+                          Записаться
+                        </Button>
+                      </Link>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
