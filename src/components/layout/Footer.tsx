@@ -96,7 +96,7 @@ export function Footer() {
             <div className="space-y-5">
               <div className="flex flex-col gap-2">
                 {primaryPhone && (
-                  <a href={`tel:${primaryPhone.number.replace(/\D/g, '')}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition group">
+                  <a href={`tel:+${primaryPhone.number.replace(/\D/g, '')}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition group">
                     <div className="w-8 h-8 rounded-full bg-[#4A90A4]/10 flex items-center justify-center group-hover:bg-[#4A90A4] transition-colors">
                       <Phone className="w-4 h-4 text-[#4A90A4] group-hover:text-white transition-colors" />
                     </div>
@@ -107,7 +107,7 @@ export function Footer() {
                   </a>
                 )}
                 {secondaryPhones.map((phone, index) => (
-                  <a key={index} href={`tel:${phone.number.replace(/\D/g, '')}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition group pl-11">
+                  <a key={index} href={`tel:+${phone.number.replace(/\D/g, '')}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition group pl-11">
                     <div className="font-medium group-hover:text-[#4A90A4] transition-colors">{phone.number}</div>
                   </a>
                 ))}

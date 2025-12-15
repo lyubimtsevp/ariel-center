@@ -70,7 +70,7 @@ export function Header() {
         <div className="container mx-auto px-6 flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
             {primaryPhone && (
-              <a href={`tel:${primaryPhone.number.replace(/\D/g, '')}`} className="flex items-center gap-2 hover:opacity-80 transition">
+              <a href={`tel:+${primaryPhone.number.replace(/\D/g, '')}`} className="flex items-center gap-2 hover:opacity-80 transition">
                 <Phone className="w-4 h-4" />
                 {primaryPhone.number}
               </a>
@@ -183,7 +183,7 @@ export function Header() {
                   variant="primary"
                   size="sm"
                   className="hidden sm:flex"
-                  onClick={() => window.location.href = `tel:${primaryPhone.number.replace(/\D/g, '')}`}
+                  onClick={() => window.location.href = `tel:+${primaryPhone.number.replace(/\D/g, '')}`}
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Записаться
@@ -270,7 +270,7 @@ export function Header() {
                   <Button
                     variant="primary"
                     className="w-full"
-                    onClick={() => window.location.href = `tel:${primaryPhone.number.replace(/\D/g, '')}`}
+                    onClick={() => window.location.href = `tel:+${primaryPhone.number.replace(/\D/g, '')}`}
                   >
                     <Phone className="w-4 h-4 mr-2" />
                     Записаться на приём

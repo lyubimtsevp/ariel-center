@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
-import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, CreditCard, MapPin, Baby, PhoneCall } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, CreditCard, MapPin, Baby, PhoneCall, Upload } from 'lucide-react';
 import offerData from '@/data/offer-matkapital.json';
 
 const ADMIN_PHONE = '+7 (383) 255-12-55';
@@ -51,6 +51,7 @@ export default function BookingMatkapitalPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [paymentFile, setPaymentFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
     // Данные ребёнка
@@ -83,6 +84,13 @@ export default function BookingMatkapitalPage() {
   });
 
   const canProceed = agreePersonalData && agreeOffer;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPaymentFile(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -262,7 +270,7 @@ export default function BookingMatkapitalPage() {
               </p>
 
               <a
-                href={`tel:${ADMIN_PHONE.replace(/\D/g, '')}`}
+                href={`tel:+${ADMIN_PHONE.replace(/\D/g, '')}`}
                 className="inline-flex items-center gap-3 px-8 py-4 bg-green-500 hover:bg-green-600 text-white text-xl font-bold rounded-xl transition mb-6"
               >
                 <Phone className="w-6 h-6" />
@@ -342,6 +350,39 @@ export default function BookingMatkapitalPage() {
                       />
                     </div>
                   </div>
+
+                  {/* Загрузка платёжки */}
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <Upload className="w-4 h-4 inline mr-1" />
+                      Прикрепить платёжный документ об оплате услуги бронирования *
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        id="payment-file"
+                        required
+                      />
+                      <label
+                        htmlFor="payment-file"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#F5A962] hover:bg-gray-50 transition"
+                      >
+                        <Upload className="w-5 h-5 text-gray-400" />
+                        <span className="text-gray-600">
+                          {paymentFile ? paymentFile.name : 'Выберите файл (изображение или PDF)'}
+                        </span>
+                      </label>
+                    </div>
+                    {paymentFile && (
+                      <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                        <CheckCircle className="w-4 h-4" />
+                        Файл выбран: {paymentFile.name}
+                      </p>
+                    )}
+                  </div>
                 </FadeIn>
               )}
 
@@ -353,10 +394,10 @@ export default function BookingMatkapitalPage() {
                   Назад
                 </button>
                 <button
-                  onClick={() => agreePayment && setStep('form')}
-                  disabled={!agreePayment}
+                  onClick={() => agreePayment && paymentFile && setStep('form')}
+                  disabled={!agreePayment || !paymentFile}
                   className={`px-8 py-3 rounded-xl transition font-medium ${
-                    agreePayment
+                    agreePayment && paymentFile
                       ? 'bg-green-500 text-white hover:bg-green-600'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
@@ -364,6 +405,12 @@ export default function BookingMatkapitalPage() {
                   Я оплатил — продолжить
                 </button>
               </div>
+              {agreePayment && !paymentFile && (
+                <p className="text-sm text-amber-600 text-center mt-4 flex items-center justify-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Необходимо прикрепить платёжный документ
+                </p>
+              )}
             </div>
           </FadeIn>
         )}
@@ -629,7 +676,7 @@ export default function BookingMatkapitalPage() {
                   {/* Вопросы да/нет */}
                   <div className="bg-gray-50 rounded-xl p-4 space-y-4">
                     <div>
-                      <p className="text-sm font-medium text-gray-700 mb-3">Приезжаете ли вы к нам впервые на интенсив? *</p>
+                      <p className="text-sm font-medium text-gray-700 mb-3">Приезжаете ли вы к нам на интенсив впервые? *</p>
                       <div className="flex gap-4">
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input

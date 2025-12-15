@@ -26,13 +26,13 @@
   ],
   "ctaButtons": [
     {
-      "text": "Записаться на интенсив",
+      "text": "Записаться на реабилитацию",
       "href": "/booking/intensive",
       "icon": "calendar",
       "primary": true
     },
     {
-      "text": "Записаться (Маткапитал)",
+      "text": "Записаться на реабилитацию (Маткапитал)",
       "href": "/booking/matkapital",
       "icon": "baby",
       "primary": false

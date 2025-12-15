@@ -29,7 +29,7 @@ const Hero = () => {
         <div className="max-w-4xl">
           <FadeIn>
             <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white text-sm font-semibold mb-6 border border-white/20 backdrop-blur-sm">
-              Лицензированный медицинский центр
+              Лицензированный медицинский, педагогический и экспертный центр
             </div>
           </FadeIn>
 
@@ -114,7 +114,7 @@ const Hero = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-[#76B3C4] flex-shrink-0" />
-                  <a href={`tel:${heroData.phone.replace(/\D/g, '')}`} className="text-white hover:text-[#76B3C4] transition-colors font-medium">{heroData.phone}</a>
+                  <a href={`tel:+${heroData.phone.replace(/\D/g, '')}`} className="text-white hover:text-[#76B3C4] transition-colors font-medium">{heroData.phone}</a>
                 </div>
               </div>
             </div>
