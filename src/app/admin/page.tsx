@@ -148,6 +148,7 @@ export default function AdminPage() {
     { href: '/admin/news', icon: Newspaper, label: 'Новости', description: 'Новости центра', color: 'blue' },
     { href: '/admin/science', icon: FlaskConical, label: 'Наука', description: 'Публикации и исследования', color: 'violet' },
     { href: '/admin/gallery', icon: Camera, label: 'Фотогалерея', description: 'Фотоальбомы', color: 'rose' },
+    { href: '/admin/media-articles', icon: FileText, label: 'Медиа (СМИ)', description: 'Статьи и репортажи', color: 'sky' },
   ];
 
   return (
