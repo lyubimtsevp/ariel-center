@@ -27,13 +27,13 @@
   "ctaButtons": [
     {
       "text": "Записаться на интенсив",
-      "href": "/contacts#intensive",
+      "href": "/booking/intensive",
       "icon": "calendar",
       "primary": true
     },
     {
       "text": "Записаться (Маткапитал)",
-      "href": "/contacts#matkapital",
+      "href": "/booking/matkapital",
       "icon": "baby",
       "primary": false
     },
@@ -47,8 +47,14 @@
   "stats": {
     "show": false,
     "items": [
-      { "value": "8+", "label": "лет успешной работы" },
-      { "value": "1000+", "label": "счастливых семей" }
+      {
+        "value": "8+",
+        "label": "лет успешной работы"
+      },
+      {
+        "value": "1000+",
+        "label": "счастливых семей"
+      }
     ]
   }
 }

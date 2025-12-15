@@ -1,0 +1,25 @@
+{
+  "albums": [
+    {
+      "id": "center",
+      "title": "Наш центр",
+      "description": "Фотографии помещений и оборудования центра",
+      "cover": "/images/gallery/center/cover.jpg",
+      "images": []
+    },
+    {
+      "id": "classes",
+      "title": "Занятия",
+      "description": "Фотографии с занятий и мероприятий",
+      "cover": "/images/gallery/classes/cover.jpg",
+      "images": []
+    },
+    {
+      "id": "events",
+      "title": "Мероприятия",
+      "description": "Праздники и специальные мероприятия",
+      "cover": "/images/gallery/events/cover.jpg",
+      "images": []
+    }
+  ]
+}

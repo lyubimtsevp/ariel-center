@@ -1,0 +1,24 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "Репортаж о центре «Ариель»",
+      "source": "НСК ТВ",
+      "date": "2024-01-05",
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=example",
+      "excerpt": "Телеканал НСК ТВ подготовил репортаж о работе нашего центра.",
+      "image": "/images/media/default.jpg",
+      "published": true
+    }
+  ],
+  "videos": [
+    {
+      "id": "1",
+      "title": "Как проходит интенсив",
+      "url": "https://www.youtube.com/watch?v=example",
+      "thumbnail": "/images/media/video-thumb.jpg",
+      "published": true
+    }
+  ]
+}

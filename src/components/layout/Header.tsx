@@ -1,18 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, Mail, Clock, MapPin, ShoppingCart, Eye } from 'lucide-react';
+import { Menu, X, Phone, Mail, Clock, MapPin, ShoppingCart, Eye, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cart';
 import siteData from '@/data/site.json';
 
+// Подменю "Об учреждении"
+const aboutSubmenu = [
+  { name: 'О центре', href: '/about' },
+  { name: 'Новости', href: '/news' },
+  { name: 'Наука', href: '/science' },
+  { name: 'Медиа', href: '/media' },
+  { name: 'Фотогалерея', href: '/gallery' },
+];
+
 const navigation = [
   { name: 'Главная', href: '/' },
-  { name: 'Об учреждении', href: '/about' },
+  { name: 'Об учреждении', href: '/about', hasSubmenu: true },
   { name: 'Услуги', href: '/services' },
   { name: 'Руководство', href: '/management' },
   { name: 'Специалисты', href: '/specialists' },
@@ -27,6 +36,9 @@ const navigation = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
+  const aboutRef = useRef<HTMLDivElement>(null);
   const cartItems = useCartStore((state) => state.items);
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -39,6 +51,17 @@ export function Header() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Закрытие подменю при клике вне
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (aboutRef.current && !aboutRef.current.contains(event.target as Node)) {
+        setIsAboutOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -101,13 +124,47 @@ export function Header() {
             {/* Desktop navigation */}
             <nav className="hidden xl:flex items-center gap-1">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="px-3 py-2 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50 text-sm"
-                >
-                  {item.name}
-                </Link>
+                item.hasSubmenu ? (
+                  <div key={item.name} ref={aboutRef} className="relative">
+                    <button
+                      onClick={() => setIsAboutOpen(!isAboutOpen)}
+                      className="flex items-center gap-1 px-3 py-2 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50 text-sm"
+                    >
+                      {item.name}
+                      <ChevronDown className={cn("w-4 h-4 transition-transform", isAboutOpen && "rotate-180")} />
+                    </button>
+
+                    <AnimatePresence>
+                      {isAboutOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50"
+                        >
+                          {aboutSubmenu.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              href={subItem.href}
+                              onClick={() => setIsAboutOpen(false)}
+                              className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="px-3 py-2 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50 text-sm"
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
             </nav>
 
@@ -169,19 +226,56 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-white border-b border-gray-200 fixed top-[72px] left-0 right-0 z-40 overflow-hidden shadow-lg"
+            className="xl:hidden bg-white border-b border-gray-200 fixed top-[72px] left-0 right-0 z-40 overflow-hidden shadow-lg max-h-[calc(100vh-72px)] overflow-y-auto"
           >
             <nav className="container mx-auto px-6 py-4">
               <div className="flex flex-col gap-1">
                 {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-4 py-3 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50"
-                  >
-                    {item.name}
-                  </Link>
+                  item.hasSubmenu ? (
+                    <div key={item.name}>
+                      <button
+                        onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                        className="w-full flex items-center justify-between px-4 py-3 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50"
+                      >
+                        {item.name}
+                        <ChevronDown className={cn("w-4 h-4 transition-transform", isMobileAboutOpen && "rotate-180")} />
+                      </button>
+
+                      <AnimatePresence>
+                        {isMobileAboutOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="pl-4 overflow-hidden"
+                          >
+                            {aboutSubmenu.map((subItem) => (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href}
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  setIsMobileAboutOpen(false);
+                                }}
+                                className="block px-4 py-2.5 text-sm text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-gray-50"
+                              >
+                                {subItem.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="px-4 py-3 text-foreground hover:text-primary font-medium transition-colors rounded-lg hover:bg-gray-50"
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 ))}
               </div>
               {primaryPhone && (

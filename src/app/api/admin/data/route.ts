@@ -27,7 +27,13 @@ const ALLOWED_FILES = [
   'management.json',
   'requisites.json',
   'education.json',
-  'site.json'
+  'site.json',
+  'offer-intensive.json',
+  'offer-matkapital.json',
+  'news.json',
+  'science.json',
+  'media-articles.json',
+  'gallery.json'
 ];
 
 // GET - получить данные
@@ -121,7 +127,13 @@ function getFileLabel(filename: string): string {
     'management.json': 'Руководство',
     'requisites.json': 'Реквизиты',
     'education.json': 'Образование',
-    'site.json': 'Настройки сайта'
+    'site.json': 'Настройки сайта',
+    'offer-intensive.json': 'Оферта (Интенсив)',
+    'offer-matkapital.json': 'Оферта (Маткапитал)',
+    'news.json': 'Новости',
+    'science.json': 'Наука',
+    'media-articles.json': 'Медиа',
+    'gallery.json': 'Фотогалерея'
   };
   return labels[filename] || filename;
 }

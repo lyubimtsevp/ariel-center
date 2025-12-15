@@ -7,7 +7,8 @@ import {
   Lock, LogOut, FileText, Users, Stethoscope, Phone,
   HelpCircle, DollarSign, Building2, FileCheck,
   ChevronRight, Settings, Home, Truck, Image,
-  Layout, UserCog, CreditCard, GraduationCap, BookOpen
+  Layout, UserCog, CreditCard, GraduationCap, BookOpen,
+  Newspaper, FlaskConical, Camera, FileSignature
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -143,6 +144,10 @@ export default function AdminPage() {
     { href: '/admin/logistics', icon: Truck, label: 'Логистика', description: 'Проживание и логистика', color: 'orange' },
     { href: '/admin/media', icon: Image, label: 'Медиафайлы', description: 'Фото и документы', color: 'cyan' },
     { href: '/admin/site', icon: Settings, label: 'Настройки сайта', description: 'Шапка, подвал, соцсети, лицензии', color: 'gray' },
+    { href: '/admin/offers', icon: FileSignature, label: 'Договоры оферты', description: 'Интенсив и маткапитал', color: 'amber' },
+    { href: '/admin/news', icon: Newspaper, label: 'Новости', description: 'Новости центра', color: 'blue' },
+    { href: '/admin/science', icon: FlaskConical, label: 'Наука', description: 'Публикации и исследования', color: 'violet' },
+    { href: '/admin/gallery', icon: Camera, label: 'Фотогалерея', description: 'Фотоальбомы', color: 'rose' },
   ];
 
   return (
