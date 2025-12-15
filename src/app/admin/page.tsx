@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  Lock, LogOut, FileText, Users, Stethoscope, Phone, 
+import {
+  Lock, LogOut, FileText, Users, Stethoscope, Phone,
   HelpCircle, DollarSign, Building2, FileCheck,
   ChevronRight, Settings, Home, Truck, Image,
   Layout, UserCog, CreditCard, GraduationCap, BookOpen
@@ -39,7 +39,7 @@ export default function AdminPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     try {
       const res = await fetch('/api/admin/auth', {
         method: 'POST',
@@ -47,9 +47,9 @@ export default function AdminPage() {
         body: JSON.stringify({ password }),
         credentials: 'include'
       });
-      
+
       const data = await res.json();
-      
+
       if (data.success) {
         setIsAuthenticated(true);
       } else {
@@ -61,7 +61,7 @@ export default function AdminPage() {
   };
 
   const handleLogout = async () => {
-    await fetch('/api/admin/auth', { 
+    await fetch('/api/admin/auth', {
       method: 'DELETE',
       credentials: 'include'
     });
@@ -88,7 +88,7 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold text-gray-800">Админ-панель</h1>
             <p className="text-gray-500 mt-2">Ариель Центр</p>
           </div>
-          
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -103,13 +103,13 @@ export default function AdminPage() {
                 autoFocus
               />
             </div>
-            
+
             {error && (
               <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
-            
+
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
@@ -117,7 +117,7 @@ export default function AdminPage() {
               Войти
             </button>
           </form>
-          
+
           <div className="mt-6 text-center">
             <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
               ← Вернуться на сайт
@@ -161,15 +161,15 @@ export default function AdminPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Link 
-                href="/admin/help" 
+              <Link
+                href="/admin/help"
                 className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
               >
                 <BookOpen className="w-5 h-5" />
                 <span className="hidden sm:inline">Инструкция</span>
               </Link>
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
               >
                 <Home className="w-5 h-5" />
@@ -229,8 +229,8 @@ export default function AdminPage() {
         <div className="mt-8 bg-blue-50 rounded-xl p-6 border border-blue-100">
           <h3 className="font-semibold text-blue-800 mb-2">💡 Подсказка</h3>
           <p className="text-blue-700 text-sm">
-            После внесения изменений нажмите кнопку "Сохранить". Изменения вступят в силу 
-            после перезагрузки страницы на сайте. Перед сохранением автоматически создаётся 
+            После внесения изменений нажмите кнопку "Сохранить". Изменения вступят в силу
+            после перезагрузки страницы на сайте. Перед сохранением автоматически создаётся
             резервная копия данных.
           </p>
         </div>

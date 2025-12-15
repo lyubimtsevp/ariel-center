@@ -114,7 +114,7 @@ export function Header() {
             {/* Actions */}
             <div className="flex items-center gap-2 sm:gap-3">
               {/* Accessibility Button */}
-              <button 
+              <button
                 className="p-2 rounded-lg hover:bg-gray-50 transition group hidden md:block"
                 title="Версия для слабовидящих"
                 onClick={() => { document.body.classList.toggle('accessibility-mode'); }}

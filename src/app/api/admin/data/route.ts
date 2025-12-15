@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     }
 
     const filePath = getDataPath(file);
-    
+
     // Создаём бэкап перед сохранением
     try {
       const existingContent = await readFile(filePath, 'utf-8');
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     // Сохраняем новые данные
     await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-    
+
     return NextResponse.json({ success: true, message: 'Данные сохранены' });
   } catch (error) {
     console.error('Error saving file:', error);
@@ -98,8 +98,8 @@ export async function OPTIONS(request: NextRequest) {
     return NextResponse.json({ error: 'Не авторизован' }, { status: 401 });
   }
 
-  return NextResponse.json({ 
-    success: true, 
+  return NextResponse.json({
+    success: true,
     files: ALLOWED_FILES.map(f => ({
       name: f,
       label: getFileLabel(f)
