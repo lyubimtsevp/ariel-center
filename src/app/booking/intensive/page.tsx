@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
-import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall, CreditCard, Upload } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall, CreditCard, Upload, MapPin } from 'lucide-react';
 import offerData from '@/data/offer-intensive.json';
 
 const ADMIN_PHONE = '+7 (383) 255-12-55';
@@ -27,6 +27,7 @@ export default function BookingIntensivePage() {
     parentName: '',
     phone: '',
     email: '',
+    region: '',
     agreedDates: '',
     isFirstVisit: null as boolean | null,
     hadDiagnostics: null as boolean | null,
@@ -459,6 +460,21 @@ export default function BookingIntensivePage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4A90A4] focus:border-transparent"
                     placeholder="example@mail.ru"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <MapPin className="w-4 h-4 inline mr-1" />
+                    Откуда вы (регион, город) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.region}
+                    onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4A90A4] focus:border-transparent"
+                    placeholder="Например: Москва, Московская область"
                   />
                 </div>
 

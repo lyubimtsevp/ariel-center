@@ -72,6 +72,7 @@ export default function BookingMatkapitalPage() {
     // Контакты
     phone: '',
     email: '',
+    region: '',
     // Маткапитал
     matkapitalSeries: '',
     matkapitalNumber: '',
@@ -617,6 +618,21 @@ export default function BookingMatkapitalPage() {
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
                       placeholder="example@mail.ru"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <MapPin className="w-4 h-4 inline mr-1" />
+                      Откуда вы (регион, город) *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.region}
+                      onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent"
+                      placeholder="Например: Москва, Московская область"
                     />
                   </div>
                 </div>

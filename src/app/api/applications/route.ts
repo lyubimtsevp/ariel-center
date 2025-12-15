@@ -21,6 +21,7 @@ function formatEmailContent(appData: ApplicationData): string {
     parentName: 'ФИО родителя',
     phone: 'Телефон',
     email: 'Email',
+    region: 'Откуда (регион, город)',
     agreedDates: 'Согласованные даты',
     isFirstVisit: 'Первый визит',
     hadDiagnostics: 'Была диагностика',
@@ -78,8 +79,8 @@ export async function POST(request: NextRequest) {
     console.log('====================');
 
     // Всегда возвращаем успех - заявка принята
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: 'Заявка принята',
       id: `app_${Date.now()}`
     });
