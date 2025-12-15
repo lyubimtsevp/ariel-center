@@ -328,24 +328,21 @@ export default function BookingIntensivePage() {
                       <Upload className="w-4 h-4 inline mr-1" />
                       Прикрепить платёжный документ об оплате услуги бронирования *
                     </label>
-                    <div className="relative">
+                    <div
+                      onClick={() => document.getElementById('payment-file')?.click()}
+                      className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition select-none"
+                    >
                       <input
                         type="file"
                         accept="image/*,.pdf"
                         onChange={handleFileChange}
-                        className="hidden"
+                        className="sr-only"
                         id="payment-file"
-                        required
                       />
-                      <label
-                        htmlFor="payment-file"
-                        className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition"
-                      >
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <span className="text-gray-600">
-                          {paymentFile ? paymentFile.name : 'Выберите файл (изображение или PDF)'}
-                        </span>
-                      </label>
+                      <Upload className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-600">
+                        {paymentFile ? paymentFile.name : 'Выберите файл (изображение или PDF)'}
+                      </span>
                     </div>
                     {paymentFile && (
                       <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
