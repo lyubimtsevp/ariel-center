@@ -1,0 +1,106 @@
+{
+  "addresses": [
+    {
+      "type": "main",
+      "name": "Головное учреждение",
+      "address": "630037, г. Новосибирск, ул. Первомайская 144/2",
+      "region": "Новосибирская область"
+    },
+    {
+      "type": "branch",
+      "name": "Филиал",
+      "address": "г. Новосибирск, пр. Карла Маркса 24а",
+      "region": "Новосибирская область"
+    }
+  ],
+  "phones": [
+    {
+      "number": "+7 (383) 255-12-55",
+      "formatted": "tel:+73832551255",
+      "type": "main"
+    },
+    {
+      "number": "+7 (383) 319-59-55",
+      "formatted": "tel:+73833195955",
+      "type": "reception"
+    },
+    {
+      "number": "+7 (913) 465-59-55",
+      "formatted": "tel:+79134655955",
+      "type": "emergency",
+      "note": "в экстренных случаях"
+    },
+    {
+      "number": "+7 (905) 957-13-40",
+      "formatted": "tel:+79059571340",
+      "type": "branch_whatsapp",
+      "note": "WhatsApp филиала"
+    },
+    {
+      "number": "+7 (903) 936-59-55",
+      "formatted": "tel:+79039365955",
+      "type": "booking_whatsapp",
+      "note": "WhatsApp для бронирования"
+    }
+  ],
+  "emails": [
+    {
+      "email": "829892@gmail.com",
+      "type": "main"
+    },
+    {
+      "email": "ariel.novosib@gmail.com",
+      "type": "branch"
+    }
+  ],
+  "websites": [
+    "www.autism54.ru",
+    "mdi-ariel.ru"
+  ],
+  "workingHours": {
+    "weekdays": "Понедельник - Пятница: 9:00 - 17:00",
+    "saturday": "Суббота: выходной",
+    "sunday": "Воскресенье: 10:00 - 13:00"
+  },
+  "socialMedia": [
+    {
+      "platform": "VK",
+      "url": "https://vk.com/childpsychiatry"
+    },
+    {
+      "platform": "Одноклассники",
+      "url": "https://ok.ru/autism54"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/isradoc",
+      "note": "META признана экстремистской на территории РФ"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/mdi_ariel/",
+      "note": "META признана экстремистской на территории РФ"
+    }
+  ],
+  "reviews": {
+    "flamp": "https://novosibirsk.flamp.ru/firm/ariel_centr_rannego_razvitiya_detejj_korrekcii_rechi_i_povedeniya-70000001026831317"
+  },
+  "supervisoryAuthorities": [
+    {
+      "name": "Министерство здравоохранения Новосибирской области",
+      "address": "Красный проспект, 18",
+      "phone": "+7 (383) 238-63-63"
+    },
+    {
+      "name": "Министерство образования Новосибирской области",
+      "address": "Красный проспект, 18",
+      "phone": "+7 (383) 238-61-03"
+    },
+    {
+      "name": "Управление Роспотребнадзора по Новосибирской области",
+      "address": "ул. Челюскинцев, 7а",
+      "phone": "+7 (383) 201-08-59"
+    }
+  ]
+}
+

@@ -1,0 +1,68 @@
+{
+  "groups": [
+    {
+      "id": "charter",
+      "title": "Учредительные документы",
+      "items": [
+        {
+          "title": "Устав организации",
+          "file": "/docs/charter.html"
+        },
+        {
+          "title": "Свидетельство о государственной регистрации",
+          "file": "/docs/registration.html"
+        }
+      ]
+    },
+    {
+      "id": "regulations",
+      "title": "Локальные нормативные акты",
+      "items": [
+        {
+          "title": "Правила внутреннего трудового распорядка",
+          "file": "/docs/internal-rules.html"
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "title": "Документы и оферты",
+      "items": [
+        {
+          "title": "Договор публичной оферты (Интенсив)",
+          "file": "/docs/offer-intensive.html"
+        },
+        {
+          "title": "Договор публичной оферты (Образовательные услуги)",
+          "file": "/docs/offer-education.html"
+        },
+        {
+          "title": "Политика конфиденциальности",
+          "file": "/docs/privacy-policy.html"
+        },
+        {
+          "title": "Положение об обработке персональных данных",
+          "file": "/docs/personal-data.html"
+        }
+      ]
+    },
+    {
+      "id": "paid-services",
+      "title": "Платные услуги",
+      "items": [
+        {
+          "title": "Положение об оказании платных образовательных услуг",
+          "file": "/docs/paid-services-regulation.html"
+        },
+        {
+          "title": "Образец договора об оказании платных образовательных услуг",
+          "file": "/docs/contract-sample.html"
+        },
+        {
+          "title": "Документ об утверждении стоимости обучения",
+          "file": "/docs/price-list-edu.html"
+        }
+      ]
+    }
+  ]
+}
