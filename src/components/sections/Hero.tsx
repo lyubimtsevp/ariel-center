@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
 import Image from "next/image";
 import Link from "next/link";
-import { Stethoscope, GraduationCap, Calendar, Baby, FileText, MapPin, Clock, Phone } from "lucide-react";
+import { Stethoscope, GraduationCap, Calendar, Baby, FileText, MapPin, Clock, Phone, Star, ExternalLink, MessageSquarePlus } from "lucide-react";
 import heroData from "@/data/hero.json";
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -115,6 +115,48 @@ const Hero = () => {
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-[#76B3C4] flex-shrink-0" />
                   <a href={`tel:+${heroData.phone.replace(/\D/g, '')}`} className="text-white hover:text-[#76B3C4] transition-colors font-medium">{heroData.phone}</a>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Блок отзывов 2GIS */}
+          <FadeIn delay={0.7} className="mt-6 hidden md:block">
+            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-md rounded-2xl p-5 border border-green-400/30 max-w-2xl">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1">
+                    {[1,2,3,4,5].map((i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    ))}
+                  </div>
+                  <div>
+                    <span className="text-2xl font-bold text-white">4.9</span>
+                    <span className="text-white/70 ml-2">на 2ГИС</span>
+                  </div>
+                  <div className="text-white/60 text-sm border-l border-white/20 pl-4">
+                    150+ отзывов
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://2gis.ru/novosibirsk/firm/70000001026831317"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-white text-sm font-medium transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Читать отзывы
+                  </a>
+                  <a
+                    href="https://2gis.ru/novosibirsk/firm/70000001026831317/tab/reviews"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/30 hover:bg-green-500/40 rounded-xl text-white text-sm font-medium transition-colors"
+                  >
+                    <MessageSquarePlus className="w-4 h-4" />
+                    Оставить отзыв
+                  </a>
                 </div>
               </div>
             </div>
