@@ -104,8 +104,8 @@ export default function ApplicationsPage() {
   }
 
   return (
-    <AdminLayout 
-      title={`Заявки ${newCount > 0 ? `(${newCount} новых)` : ''}`} 
+    <AdminLayout
+      title={`Заявки ${newCount > 0 ? `(${newCount} новых)` : ''}`}
       description="Все обращения с сайта"
     >
       <div className="space-y-6">
@@ -165,14 +165,13 @@ export default function ApplicationsPage() {
                 const typeInfo = typeLabels[app.type] || typeLabels.contact;
                 const statusInfo = statusLabels[app.status] || statusLabels.new;
                 const TypeIcon = typeInfo.icon;
-                
+
                 return (
                   <div
                     key={app.id}
                     onClick={() => setSelectedApp(app)}
-                    className={`p-4 bg-white rounded-xl border-2 cursor-pointer transition hover:shadow-md ${
-                      selectedApp?.id === app.id ? 'border-blue-500 shadow-md' : 'border-gray-100'
-                    } ${app.status === 'new' ? 'ring-2 ring-red-200' : ''}`}
+                    className={`p-4 bg-white rounded-xl border-2 cursor-pointer transition hover:shadow-md ${selectedApp?.id === app.id ? 'border-blue-500 shadow-md' : 'border-gray-100'
+                      } ${app.status === 'new' ? 'ring-2 ring-red-200' : ''}`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3">
@@ -224,11 +223,10 @@ export default function ApplicationsPage() {
                         <button
                           key={key}
                           onClick={() => updateStatus(selectedApp.id, key)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                            selectedApp.status === key
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ${selectedApp.status === key
                               ? info.color + ' ring-2 ring-offset-1 ring-gray-300'
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                          }`}
+                            }`}
                         >
                           <Icon className="w-4 h-4" />
                           {info.label}
@@ -246,7 +244,7 @@ export default function ApplicationsPage() {
 
                   {Object.entries(selectedApp.data).map(([key, value]) => {
                     if (!value || value === '') return null;
-                    
+
                     const labels: Record<string, string> = {
                       childName: 'ФИО ребёнка',
                       childBirthDate: 'Дата рождения',
