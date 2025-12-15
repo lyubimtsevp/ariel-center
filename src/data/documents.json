@@ -1,8 +1,8 @@
 {
   "groups": [
     {
-      "id": "charter",
-      "title": "Учредительные документы",
+      "id": "basic-info",
+      "title": "Основные сведения",
       "items": [
         {
           "title": "Устав организации",
@@ -11,8 +11,46 @@
         {
           "title": "Свидетельство о государственной регистрации",
           "file": "/docs/registration.html"
+        },
+        {
+          "title": "Лицензия на образовательную деятельность",
+          "file": "/docs/education-license.html"
+        },
+        {
+          "title": "Лицензия на медицинскую деятельность",
+          "file": "/docs/medical-license.html"
         }
       ]
+    },
+    {
+      "id": "structure",
+      "title": "Структура и органы управления",
+      "items": [
+        {
+          "title": "Структура организации",
+          "file": "/docs/structure.html"
+        }
+      ]
+    },
+    {
+      "id": "staff",
+      "title": "Руководство и педагогический состав",
+      "items": []
+    },
+    {
+      "id": "material-technical",
+      "title": "Материально-техническое обеспечение",
+      "items": []
+    },
+    {
+      "id": "financial",
+      "title": "Финансово-хозяйственная деятельность",
+      "items": []
+    },
+    {
+      "id": "vacancies",
+      "title": "Вакантные места для приёма",
+      "items": []
     },
     {
       "id": "regulations",
@@ -63,6 +101,16 @@
           "file": "/docs/price-list-edu.html"
         }
       ]
+    },
+    {
+      "id": "accessible-environment",
+      "title": "Доступная среда",
+      "items": []
+    },
+    {
+      "id": "international",
+      "title": "Международное сотрудничество",
+      "items": []
     }
   ]
 }
