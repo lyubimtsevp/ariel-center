@@ -52,35 +52,21 @@ export default function BookingIntensivePage() {
     setError('');
 
     try {
-      // Собираем данные для письма
-      const subject = encodeURIComponent(`Заявка на интенсив: ${formData.childName}`);
-      const body = encodeURIComponent(`ЗАЯВКА НА ИНТЕНСИВ
+      // Отправляем в API
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'intensive',
+          data: formData,
+          paymentFileName: paymentFile?.name
+        })
+      });
 
-ФИО ребёнка: ${formData.childName}
-Дата рождения: ${formData.childBirthDate}
-ФИО родителя/представителя: ${formData.parentName}
-Телефон: ${formData.phone}
-Email: ${formData.email}
-Согласованные даты интенсива: ${formData.agreedDates}
+      if (!response.ok) {
+        throw new Error('Failed to submit');
+      }
 
-Приезжает впервые: ${formData.isFirstVisit ? 'Да' : 'Нет'}
-Был на диагностике: ${formData.hadDiagnostics ? 'Да' : 'Нет'}
-Едет через фонд: ${formData.throughFund ? `Да (${formData.fundName})` : 'Нет'}
-
-Комментарий: ${formData.comment || 'Нет'}
-
----
-ВАЖНО: Клиент прикрепил платёжный документ (${paymentFile?.name || 'файл не выбран'}).
-Пожалуйста, попросите клиента прикрепить файл к этому письму вручную, если он не прикреплён.
----
-
-Заявка отправлена с сайта ariel.lyubimtsev.com`);
-
-      // Открываем почтовый клиент
-      window.location.href = `mailto:829892@gmail.com?subject=${subject}&body=${body}`;
-
-      // Показываем сообщение об успехе
-      await new Promise(resolve => setTimeout(resolve, 500));
       setSubmitted(true);
     } catch (err) {
       setError('Ошибка отправки. Попробуйте позже или позвоните нам.');

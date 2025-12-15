@@ -8,7 +8,7 @@ import {
   HelpCircle, DollarSign, Building2, FileCheck,
   ChevronRight, Settings, Home, Truck, Image,
   Layout, UserCog, CreditCard, GraduationCap, BookOpen,
-  Newspaper, FlaskConical, Camera, FileSignature
+  Newspaper, FlaskConical, Camera, FileSignature, Inbox
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -130,6 +130,7 @@ export default function AdminPage() {
   }
 
   const menuItems = [
+    { href: '/admin/applications', icon: Inbox, label: 'Заявки', description: 'Все обращения с сайта', color: 'red' },
     { href: '/admin/hero', icon: Layout, label: 'Главная страница', description: 'Шапка и информационный блок', color: 'blue' },
     { href: '/admin/management', icon: UserCog, label: 'Руководство', description: 'Директор и руководители', color: 'purple' },
     { href: '/admin/specialists', icon: Users, label: 'Специалисты', description: 'Управление командой', color: 'green' },

@@ -1,10 +1,44 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Calendar, MapPin, Clock } from 'lucide-react';
+import { Phone, Calendar, MapPin, Clock, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function CTA() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    service: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          data: formData
+        })
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', phone: '', service: '' });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-20 relative overflow-hidden bg-[#2D6A7C]">
       {/* Background */}
@@ -101,54 +135,97 @@ export function CTA() {
             viewport={{ once: true }}
             className="bg-white rounded-3xl p-8 shadow-2xl"
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Оставить заявку
-            </h3>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ваше имя *
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white"
-                  placeholder="Как к вам обращаться?"
-                />
+            {isSubmitted ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Заявка отправлена!
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Мы свяжемся с вами в ближайшее время.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsSubmitted(false)}
+                >
+                  Отправить ещё
+                </Button>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Телефон *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white"
-                  placeholder="+7 (___) ___-__-__"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Что вас интересует?
-                </label>
-                <select className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white">
-                  <option value="">Выберите услугу</option>
-                  <option value="diagnostic">Диагностика</option>
-                  <option value="intensive">Интенсив</option>
-                  <option value="consultation">Консультация</option>
-                  <option value="other">Другое</option>
-                </select>
-              </div>
-              <Button variant="primary" size="lg" className="w-full">
-                Отправить заявку
-              </Button>
-              <p className="text-xs text-gray-500 text-center">
-                Нажимая кнопку, вы соглашаетесь с{' '}
-                <a href="/documents/privacy" className="text-primary hover:underline">
-                  политикой конфиденциальности
-                </a>
-              </p>
-            </form>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Оставить заявку
+                </h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Ваше имя *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white"
+                      placeholder="Как к вам обращаться?"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Телефон *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white"
+                      placeholder="+7 (___) ___-__-__"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Что вас интересует?
+                    </label>
+                    <select
+                      value={formData.service}
+                      onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-gray-900 bg-white"
+                    >
+                      <option value="">Выберите услугу</option>
+                      <option value="Диагностика">Диагностика</option>
+                      <option value="Интенсив">Интенсив</option>
+                      <option value="Консультация">Консультация</option>
+                      <option value="Другое">Другое</option>
+                    </select>
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                        Отправка...
+                      </>
+                    ) : (
+                      'Отправить заявку'
+                    )}
+                  </Button>
+                  <p className="text-xs text-gray-500 text-center">
+                    Нажимая кнопку, вы соглашаетесь с{' '}
+                    <a href="/documents" className="text-primary hover:underline">
+                      политикой конфиденциальности
+                    </a>
+                  </p>
+                </form>
+              </>
+            )}
           </motion.div>
         </div>
       </div>

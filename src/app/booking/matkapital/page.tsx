@@ -100,52 +100,21 @@ export default function BookingMatkapitalPage() {
     setError('');
 
     try {
-      // Собираем данные для письма
-      const subject = encodeURIComponent(`Заявка на интенсив (маткапитал): ${formData.childName}`);
-      const body = encodeURIComponent(`ЗАЯВКА НА ИНТЕНСИВ (ОПЛАТА МАТЕРИНСКИМ КАПИТАЛОМ)
+      // Отправляем в API
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'matkapital',
+          data: formData,
+          paymentFileName: paymentFile?.name
+        })
+      });
 
-=== ДАННЫЕ РЕБЁНКА ===
-ФИО ребёнка: ${formData.childName}
-Дата рождения: ${formData.childBirthDate}
-Свидетельство о рождении: серия ${formData.birthCertSeries}, номер ${formData.birthCertNumber}, дата выдачи ${formData.birthCertDate}
+      if (!response.ok) {
+        throw new Error('Failed to submit');
+      }
 
-=== ДАННЫЕ ВЛАДЕЛЬЦА СЕРТИФИКАТА МАТКАПИТАЛА ===
-ФИО: ${formData.parentName}
-Паспорт: серия ${formData.passportSeries}, номер ${formData.passportNumber}
-Выдан: ${formData.passportIssuedBy}, дата ${formData.passportIssuedDate}
-
-=== АДРЕСА ===
-Адрес прописки: ${formData.registrationAddress}
-Почтовый адрес: ${formData.postalAddress}
-
-=== КОНТАКТЫ ===
-Телефон: ${formData.phone}
-Email: ${formData.email}
-
-=== СЕРТИФИКАТ МАТЕРИНСКОГО КАПИТАЛА ===
-Серия: ${formData.matkapitalSeries}
-Номер: ${formData.matkapitalNumber}
-Дата оформления: ${formData.matkapitalDate}
-
-=== ИНФОРМАЦИЯ ОБ ИНТЕНСИВЕ ===
-Согласованные даты интенсива: ${formData.agreedDates}
-Приезжает впервые: ${formData.isFirstVisit ? 'Да' : 'Нет'}
-Был на диагностике: ${formData.hadDiagnostics ? 'Да' : 'Нет'}
-
-Комментарий: ${formData.comment || 'Нет'}
-
----
-ВАЖНО: Клиент прикрепил платёжный документ (${paymentFile?.name || 'файл не выбран'}).
-Пожалуйста, попросите клиента прикрепить файл к этому письму вручную, если он не прикреплён.
----
-
-Заявка отправлена с сайта ariel.lyubimtsev.com`);
-
-      // Открываем почтовый клиент
-      window.location.href = `mailto:829892@gmail.com?subject=${subject}&body=${body}`;
-
-      // Показываем сообщение об успехе
-      await new Promise(resolve => setTimeout(resolve, 500));
       setSubmitted(true);
     } catch (err) {
       setError('Ошибка отправки. Попробуйте позже или позвоните нам.');
