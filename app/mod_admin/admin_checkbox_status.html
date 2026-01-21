@@ -1,0 +1,90 @@
+<?
+    if(url(4)!='add'){
+        d()->this = d()->Status(url(4));
+    }
+    d()->none='display: none;';
+    d()->checked = '';
+    if(d()->this->reward > 0){
+        d()->none='';
+        d()->checked = 'checked';
+    }
+
+    d()->f_name = 'reward';
+?>
+<div class="control-group" style="margin-bottom:0;padding:0;">
+    <div class="controls">
+        <label class="checkbox" style="margin-bottom:0;display: flex;align-items:center; float:left;height: 35px">
+            <input type="checkbox" id="ch_reward" class="mcheckbox" {checked} style="position:relative;top:-2px; margin-right:5px;" />
+            Ручное вознаграждение
+            <div id="{f_name}" class="inpts" style="margin-left:20px;{none}">
+                <input type="text" name="data[reward]" value="{.reward}" class="input-small">
+                руб.
+            </div>
+        </label>
+    </div>
+</div>
+<script>
+    $(function(){
+        var div_text = $('#{f_name}');
+        var wrap = div_text.closest('div.controls');
+        var ch = wrap.find('input[type=checkbox]');
+        var other_ch = $('#ch_reward_n');
+        var inpts = $('.inpts');
+
+        ch.on("change", function() {
+            inpts.hide();
+            div_text.show();
+            div_text.find('input').attr('value','');
+            $('input[name="data[reward_n]"]').attr('value','');
+            other_ch.prop('checked', false);
+        });
+    });
+</script>
+
+<?
+    d()->none2='display: none;';
+    d()->checked2 = '';
+    if(d()->this->reward_n){
+        d()->none2='';
+        d()->checked2 = 'checked';
+    }
+
+    d()->f_name2 = 'reward_n';
+?>
+<div class="control-group" style="margin-bottom:0;padding:0;">
+    <div class="controls">
+        <label class="checkbox" style="margin-bottom:0;display: flex;align-items:center; float:left;height: 35px">
+            <input type="checkbox" id="ch_reward_n" class="mcheckbox" {checked2} style="position:relative;top:-2px; margin-right:5px;" />
+            Автоматическое вознаграждение
+            <div id="{f_name2}" class="inpts" style="margin-left:20px;{none2}">
+                <select id="selst">
+                    <option <?if(d()->this->reward_n=='World Tour')print 'selected';?>>World Tour</option>
+                    <option <?if(d()->this->reward_n=='Dream Car')print 'selected';?>>Dream Car</option>
+                </select>
+                <input type="hidden" name="data[reward_n]" value="{.reward_n}">
+            </div>
+        </label>
+    </div>
+</div>
+<script>
+$(function(){
+    var div_t = $('#{f_name2}');
+    var wrp = div_t.closest('div.controls');
+    var chh = wrp.find('input[type=checkbox]');
+    var other_chh = $('#ch_reward');
+    var inptss = $('.inpts');
+
+    chh.on("change", function() {
+        inptss.hide();
+        div_t.show();
+        div_t.find('input').attr('value','');
+        $('input[name="data[reward]"]').attr('value','');
+        other_chh.prop('checked', false);
+        $('input[name="data[reward_n]"]').val($('#selst').val());
+    });
+
+    $('#selst').on("change", function() {
+        $('input[name="data[reward_n]"]').val($(this).val());
+    });
+});
+</script>

@@ -1,0 +1,72 @@
+<div class="container mt-30 mb-50">
+	<div class="row">
+		<div class="col-lg-3 col-md-4 store_dtl">
+			<div class="store store_detail">
+				<div class="img"><a href="{langlink}/stores/{.id}"><img src="{.image|preview 'auto', 200 }" alt="{.title}" /></a></div>
+				<span class="hr">
+					<img src="/images/elip1.png" class="elip1" />
+					<hr>
+					<img src="/images/elip2.png" class="elip2" />
+				</span>
+				<div style="text-align: center;">
+					<strong class="h">{.url}</strong>
+					<div class="flline">{"cb"|t}: <span class="cashback">{.cashback}%</span></div>
+					<p class="sred">{"sred"|t} <strong>{.sred} {"days"|t}</strong></p>
+				</div>
+
+				@if(d()->this->is_top):
+				<span class="sticker">{"top"|t}</span>
+				@endif;
+			</div>
+
+			<div class="partners_mode">
+				@if(d()->this->mode):
+				<h3>{"mode_h"|t}:</h3>
+				{.mode}
+				@endif;
+				@if(d()->this->address || d()->this->phone):
+				<p class="c-gray">
+					@if(d()->this->address):
+					{"adres"|t}: {.address}<br>
+					@endif;
+					@if(d()->this->phone):
+					{"phone"|t}: <a href="tel:{.phone}">{.phone}</a><br>
+					@endif;
+				</p>
+				@endif;
+				<div class="text-center">
+					@if(d()->this->youtube):
+					<a class="soc soc-youtube" href="{.youtube}" target="_blank">YouTube</a>
+					@endif;
+					@if(d()->this->fb):
+					<a class="soc soc-facebook" href="{.fb}" target="_blank">Facebook</a>
+					@endif;
+					@if(d()->this->vk):
+					<a class="soc soc-vk" href="{.vk}" target="_blank">VK</a>
+					@endif;
+					@if(d()->this->inst):
+					<a class="soc soc-inst" href="{.inst}" target="_blank">Instagram</a>
+					@endif;
+					@if(d()->this->ok):
+					<a class="soc soc-ok" href="{.ok}" target="_blank">Одноклассники</a>
+					@endif;
+				</div>
+				@if(d()->this->map):
+				<div class="partners_map">
+					{.map}
+				</div>
+				@endif;
+			</div>
+		</div>
+		<div class="col-lg-9 col-md-8 store_info">
+            @if(d()->this->image2):
+			<img src="{.image2|preview 847, 224}" alt="{.title}" />
+            @endif;
+			<h1>{.zag}{{edit}}{{delete}}</h1>
+			<h2 class="partners_h2">{"company_about"|t}:</h2>
+			<div id="info">
+				{.info}
+			</div>
+		</div>
+	</div>
+</div>

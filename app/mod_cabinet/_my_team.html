@@ -1,0 +1,64 @@
+<script src="/js/imtech_pager.js"></script>
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"myteam"|t}</h1>
+            <div class="col-lg-6 col-md-6 cab-iblock">
+                <span class="z">{"sponsor"|t}</span>
+                <div class="cab-iblock-info h130 sponsor-bg">
+                    @if(d()->sponsor->uid==1):
+                    {"not"|t}
+                    @else:
+                    ID {sponsor.uid} ({sponsor.name} {sponsor.surname})
+                    @endif;
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 cab-iblock">
+                <span class="z">{"date_register"|t}</span>
+                <div class="cab-iblock-info h130 register-bg">
+                    {user.reg_date}
+                </div>
+            </div>
+            <p class="mytm_cnt">{"mytm_cnt"|t}: {tm_count}</p>
+            @while(d()->line<=d()->package->a_lines):
+            @d()->tm_users = d()->tm_array[d()->line];
+            @d()->tm_users_count = count(d()->tm_users);
+            <div class="col-xs-12 cab-iblock tmevent tmhide">
+                <span class="z z-tm"><i class="arr-r"></i>{line} {"line"|t} <sup>{tm_users_count}</sup><i class="arr-l"></i></span>
+                <div class="tm-cont">
+                    <div id="tm-cont{line}">
+                    <foreach tm_users>
+                    <div class="tm-line">
+                        <div>{.title}</div>
+                        <div>ID {.uid}</div>
+                        <div><span class="yellow">{"package"|t}:</span> {.package}</div>
+                        <div><span class="yellow">{"status"|t}:</span> {.status}</div>
+                    </div>
+                    </foreach>
+                    </div>
+                    @if(!d()->tm_users_count):
+                    <p class="text-center">
+                        {"notm"|t}
+                    </p>
+                    @endif;
+                    <div class="text-center tm-loadimg loaddv"><img src="/images/loading.gif" alt=""></div>
+                    <div id="pagingControls{line}"></div>
+                </div>
+                <script type="text/javascript">
+                    var p{line} = new Imtech.Pager('{line}', 'tm-cont{line}');
+                    $(document).ready(function() {
+                        p{line}.paragraphsPerPage = 15;
+                        p{line}.pagingContainer = $('#tm-cont{line}');
+                        p{line}.pagingControlsContainer = $('#pagingControls{line}');
+                        p{line}.paragraphs = $('div.tm-line', p{line}.pagingContainer);
+                        p{line}.showPage(1);
+                    });
+                </script>
+            </div>
+            @d()->line++;
+            @endwhile;
+        </div>
+    </div>
+</div>

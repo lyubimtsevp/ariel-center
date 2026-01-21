@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/h2element.css?v=1">
+    <!-- Fancybox -->
+    <!-- <link rel="stylesheet" type="text/css" href="/vendors/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/vendors/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" /> -->
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="/vendors/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="/vendors/slick/slick-theme.css">
+
+    <link rel="stylesheet" href="/vendors/mdi/css/materialdesignicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/images/style.css?v={nocache}"/>
+    <link rel="stylesheet" type="text/css" href="/images/datastyle.css"/>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="/images/style_ie.css"/><![endif]-->
+
+    <title>{Seo.title}</title>
+    <meta name="description" content='{Seo.description}'/>
+    <meta name="keywords" content='{Seo.keywords}'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="verify-admitad" content="31800d0767" />
+    <meta name="yandex-verification" content="b3b2db442f11936d" />
+</head>
+<body data-lang="{lang}" class="main-site">
+{{admin_panel}}
+<div class="header header-for-fix">
+    <div class="fix-header" id="fix-header">
+        <div class="container">
+            <div class="head-line">
+                <a href="{langlink}/" class="logo"><img src="/images/logo.png?v=2" alt="" style="height: 32px; width: 141px; object-fit: contain; background: white; padding: 4px 8px; border-radius: 4px; box-sizing: content-box;"/></a>
+                <div class="menu">
+                    <ul>
+                        <li><a href="#about_us" class="go_to">{"about_us"|t}</a></li>
+                        <li><a href="#cooperation" class="go_to">{"cooperation"|t}</a></li>
+                        <li><a href="#contacts" class="go_to">{"contacts"|t}</a></li>
+                        <li><a href="#city_choose" data-toggle="modal">{city}</a></li>
+                        <li class="flx-li">
+                            <div class="wide-margin">
+                                @if(d()->lang=='en'):
+                                <a href="#"><span class="flg en"></span>Eng</a>
+                                <div class="lang-options">
+                                    <a href="/{thislnk}"><span class="flg ru"></span>Rus</a>
+                                </div>
+                                @else:
+                                <a href="#"><span class="flg ru"></span>Rus</a>
+                                <div class="lang-options">
+                                    <a href="/en/{thislnk}"><span class="flg en"></span>Eng</a>
+                                </div>
+                                @endif;
+                            </div>
+                            @if(d()->Auth->is_guest()):
+                            <a href="#login" data-toggle="modal" class="btn-albx">{"login"|t}</a>
+                            @else:
+                                @if(d()->user->type=='ur'):
+                                <a href="{langlink}/le_cabinet/payment" class="btn-albx">{user.title}</a>
+                                @else:
+                                <a href="{langlink}/cabinet/" class="btn-albx">{user.name} {user.surname}</a>
+                                @endif;
+                            @endif;
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="head-info">
+            <div class="head-text">
+                {cont.head_info}
+            </div>
+            <div class="head-slide">
+                <div class="btn-line">
+                    <a href="{langlink}/stores" class="btn-blue"><i class="icon basket-icon"></i><span>{"online_shops"|t}</span></a>
+                    <a href="{langlink}/partners" class="btn-blue"><i class="icon partners-icon"></i><span>{"we_partners"|t}</span></a>
+                </div>
+                <div id="sl" class="slider">
+                    <foreach head_slides>
+                        @if(d()->this->link):
+                        @if(d()->this->is_out):
+                        <a href="{.link}" target="_blank"><img src="{.image|preview}" alt=""/></a>
+                        @else:
+                        <a href="{langlink}{.link}"><img src="{.image|preview}" alt=""/></a>
+                        @endif;
+                        @else:
+                        <img src="{.image|preview}" alt=""/>
+                        @endif;
+                    </foreach>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="under-head">
+    <div class="lblue-line"></div>
+    <div class="container">
+        <div class="cont-flex">
+            <div class="lblue">
+                <div class="bg-cash">{cont.amount_pur}<span>{"amount_pur"|t}</span></div>
+                <div class="bg-cashback">{cont.cashback}<span>{"cashback"|t}</span></div>
+                <div class="bg-cnt">{cont.count_pur}<span>{"count_pur"|t}</span></div>
+            </div>
+            <div class="app-block">
+                @if(d()->o->google_play):
+                <a href="{o.google_play}" target="_blank" class="app-link android"></a>
+                @else:
+                <a href="#" class="app-link android-dev"></a>
+                @endif;
+                @if(d()->o->app_store):
+                <a href="{o.app_store}" target="_blank" class="app-link ios"></a>
+                @else:
+                <a href="#" class="app-link ios-dev"></a>
+                @endif;
+            </div>
+        </div>
+    </div>
+</div>

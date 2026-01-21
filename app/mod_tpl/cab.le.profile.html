@@ -1,0 +1,20 @@
+<div class="cab-le-profile {hidesmprofile}">
+    <div class="bl block1">
+    <label>
+    @if(!d()->user->image):
+        <img src='/images/{"noimg"|t}' alt="" />
+    @else:
+        <img src="{user.image|preview 145, 145}" alt="" />
+    @endif;
+        <input type="file" name="image"  id="cab-upload-img" />
+    </label>
+    <p class="load-p" id="cab-upload-load" ><img src="/images/loading2.gif" alt="" class="" /></p>
+    @if(d()->user->title):
+    <p class="cab-le-title">{user.title}</p>
+     @endif;
+    </div>
+    <div class="bl block2">
+        {"cashbackw"|t}:
+        <span>{user.cashback_f}%</span>
+    </div>
+</div>

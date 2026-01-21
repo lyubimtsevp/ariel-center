@@ -1,0 +1,72 @@
+<div class="container cab-cont">
+    {{cab_le_profile_tpl}}
+    <div class="le-cab-cont-block">
+        <h1>{"payment"|t}</h1>
+        <span class="steps step{step}"></span>
+        @if(!$_GET['step']):
+        @if($_GET['action']=='user_error'):
+        <div class="alert alert-warning p_user_error">{"incorrect_uid"|t}</div>
+        @endif;
+        <form method="GET">
+        <div class="step-wrap">
+            <span>{"step1_h"|t}</span>
+            <div class="step-cont">
+                <div class="inp">
+                    <input type="text" name="id" value="{id}" class="onchange" />
+                    <a href="{langlink}/le_cabinet/qr"><img src="/images/qr-icon.png" alt="" class="" /></a>
+                    <small>{"idformat"|t}</small>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="step" value="2" />
+        <div class="text-center mt-25"><button type="submit" class="btn btn-lblue" {dis}>{"continue"|t}</button></div>
+        </form>
+        @endif;
+        @if($_GET['step']==2):
+        <form method="POST" id="step2form" class="submitdisabled">
+        <div class="step-wrap step2-wrap">
+            <span>{"step2_h"|t}</span>
+            <div class="step2-form">
+                <label>
+                    {"summa"|t}
+                    <div class="inp"><input type="text" name="amount" class="required" required id="amount" /></div>
+                </label>
+                <label class="mt-15">
+                    <ul class="cb-list">
+                    @d()->active='';
+                    @foreach(d()->cbs as $key => d()->val):
+                        @if(count(d()->cbs)==$key+1) d()->active='active';
+                        <li class="{active}" data-value="{val}">{val}%</li>
+                    @endforeach;
+                    </ul>
+                </label>
+                <label>
+                    {"cb_rub"|t}
+                    <div class="inp"><input type="text" name="amount_cashback" id="amount_cashback" readonly /></div>
+                </label>
+            </div>
+        </div>
+        
+        <input type="hidden" name="step" value="3" />
+        <input type="hidden" name="id" value="<?=$_GET['id']?>" />
+        <input type="hidden" name="cashback" value="{user.cashback_f}" id="cashback" />
+        
+        <div class="text-center mt-25">
+            <button type="submit" class="btn btn-lblue">{"make_payment"|t}</button>
+            <a href="{langlink}/le_cabinet/payment?id=<?=$_GET['id']?>" class="btn btn-silver ml-30">{"back"|t}</a>
+        </div>
+        </form>
+        @endif;
+        @if($_GET['step']==3):
+        <div class="step-wrap step3-wrap">
+            <span>{"step3_h"|t}</span>
+            <div class="step3-form">
+                <img src="/images/oke.png" alt="" class="" /><br>
+                {"success_operation"|t}<br>
+                <strong><?=$_GET['amount']?> {"rub"|t}</strong>
+            </div>
+        </div>
+        <div class="text-center"><a href="{langlink}/le_cabinet/payment" class="btn btn-lblue">{"continue"|t}</a></div>
+        @endif;
+    </div>
+</div>

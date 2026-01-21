@@ -1,0 +1,231 @@
+{show_modal}
+@if(url(1)!='ajax'):
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz" xmlns="http://www.w3.org/1999/html">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"mysavings"|t}</h1>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-30">
+                <div class="mf-flexline filtrmo">
+                    <div class="mf-bloo fltr" data-key="cashback">
+                        {"bonus_cashback"|t}
+                        <span>{bc} <small>{"rub"|t}</small></span>
+                    </div>
+                    <div class="mf-bloo fltr" data-key="leader_bonus" data-desc="1">
+                        {"za_lich_prod"|t}
+                        <span>{lp} <small>{"rub"|t}</small></span>
+                    </div>
+                    <div class="mf-bloo fltr" data-key="leader_bonus" data-desc="none1">
+                        {"leadership_bonus"|t}
+                        <span>{lb} <small>{"rub"|t}</small></span>
+                    </div>
+                    <div class="mf-bloo fltr" data-key="new_status" data-desc="money">
+                        {"status_bonus"|t}
+                        <span>{sb} <small>{"rub"|t}</small></span>
+                    </div>
+                    <div class="mf-bloo fltr" data-key="new_status" data-desc="worldtour">
+                        {"world_tour_bonus"|t}
+                        <span>{wt} <small>{"rub"|t}</small></span>
+                    </div>
+                    <div class="mf-bloo fltr" data-key="new_status" data-desc="dreamcar">
+                        {"dreamcar_bonus"|t}
+                        <span>{dc} <small>{"rub"|t}</small></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                <div class="text-center none" id="fees-loading"><img src="/images/loading.gif" alt=""></div>
+                <div class="cab-iblock" id="tableinfo">
+                    <div class="{tableinfo}">
+                    <span class="z">{table_ttl}</span>
+                    <div class="iblock-cont-np ht-tbl">
+                        <div class="ht-head">
+                            <span class="fl1">{"week"|t}</span>
+                            <span class="fl2">{"date"|t}</span>
+                            <span class="fl1">{"sum"|t} ({"rub"|t})</span>
+                        </div>
+                        <div class="ht-body">
+                            <foreach weeks>
+                            <div class="ht-wrap">
+                                @d()->o_list = d()->olist[d()->num];
+                                @~ttlsum = 0;
+                                <foreach o_list>
+                                    @~ttlsum += d()->sum;
+                                </foreach>
+                                <div class="ht-line">
+                                    <span class="fl1">{.num}</span>
+                                    <span class="fl2 lnk" onclick="fees(this);">{.date}</span>
+                                    <span class="fl1">{ttlsum}</span>
+                                </div>
+                                <div class="ht-tbl">
+                                    <div class="ht-head">
+                                        <span class="fl1">{"vid"|t}</span>
+                                        <span class="fl1">{"primech"|t}</span>
+                                        <span class="fl1">{"date"|t}</span>
+                                        <span class="fl1">{"sum"|t} ({"rub"|t})</span>
+                                    </div>
+                                    <foreach o_list>
+                                    <div class="ht-line" data-type="{.type}" data-text="{.text}">
+                                        <span class="fl1"><small>{"vid"|t}:</small> {.usr_title}</span>
+                                        <span class="fl1"><small>{"primech"|t}:</small> {.usr_desc}</span>
+                                        <span class="fl1"><small>{"date"|t}:</small> {.date_f}</span>
+                                        <span class="fl1"><small>{"sum"|t} ({"rub"|t}):</small> {.sum}</span>
+                                    </div>
+                                    </foreach>
+                                </div>
+                            </div>
+                            </foreach>
+                            @if(!count(d()->weeks)):
+                            <p style="padding: 0 20px 15px 20px">{"bonus_none"|t}<p>
+                            @endif;
+                        </div>
+                    </div>
+                    </div>
+                    <div class="{tablewind}">
+                        <span class="z">{"withdrawal_his"|t}</span>
+                        <div class="iblock-cont-np ht-tbl">
+                            <div class="ht-head">
+                                <span class="fl1">№</span>
+                                <span class="fl2">{"date"|t}</span>
+                                <span class="fl2">{"sum"|t} ({"rub"|t})</span>
+                                <span class="fl2">{"comission"|t}</span>
+                                <span class="fl2">{"status"|t}</span>
+                            </div>
+                            <div class="ht-body">
+                                @~nu = 1;
+                                <foreach w_list>
+                                    <div class="ht-wrap">
+                                        <div class="ht-line">
+                                            <span class="fl1">{nu}</span>
+                                            <span class="fl2">{.date_dmy}</span>
+                                            <span class="fl2">{.value}</span>
+                                            <span class="fl2">{.value_p}%</span>
+                                            <span class="fl2">{.status_word}</span>
+                                        </div>
+                                    </div>
+                                    @~nu++;
+                                </foreach>
+                                @if(!count(d()->w_list)):
+                                <p style="padding: 0 20px 15px 20px">{"wind_none"|t}<p>
+                                @endif;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                <div class="cab-iblock cab-iblock-hor h90">
+                    <span class="z">{"tek_balance"|t}</span>
+                    <div class="tek-balance-bg">
+                        {user.balance} <small>{"rub"|t}</small>
+                    </div>
+                </div>
+                <div class="cab-iblock">
+                    <span class="z multiline">{"summapogodam"|t}</span>
+                    <div class="iblock-cont">
+                        <foreach years>
+                            <div class="year-line">
+                                <span>{.year}</span>
+                                <div class="poloska"><i style="width:{.percent}%;"></i></div>
+                                <span class="white">{.amount}</span>
+                            </div>
+                        </foreach>
+                    </div>
+                </div>
+                @if(d()->lang=='en'):
+                <style>
+                    .fees-btns{
+                        display: block;
+                    }
+                    .fees-btns button.btn{
+                        margin: 5px 0;
+                        width:100%;
+                    }
+                </style>
+                @endif;
+                <div class="fees-btns">
+                    <button class="btn btn-pink-b" data-toggle="modal" data-target="#withdrawal">{"withdrawal"|t}</button>
+                    <button class="btn btn-silver fltr" data-type="withdrawal">{"withdrawal_his"|t}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@else:
+<div class="{tableinfo}">
+    <span class="z">{table_ttl}</span>
+    <div class="iblock-cont-np ht-tbl">
+        <div class="ht-head">
+            <span class="fl1">{"week"|t}</span>
+            <span class="fl2">{"date"|t}</span>
+            <span class="fl1">{"sum"|t} ({"rub"|t})</span>
+        </div>
+        <div class="ht-body">
+            <foreach weeks>
+                <div class="ht-wrap">
+                    @d()->o_list = d()->olist[d()->num];
+                    @~ttlsum = 0;
+                    <foreach o_list>
+                        @~ttlsum += d()->sum;
+                    </foreach>
+                    <div class="ht-line">
+                        <span class="fl1">{.num}</span>
+                        <span class="fl2 lnk" onclick="fees(this);">{.date}</span>
+                        <span class="fl1">{ttlsum}</span>
+                    </div>
+                    <div class="ht-tbl">
+                        <div class="ht-head">
+                            <span class="fl1">{"vid"|t}</span>
+                            <span class="fl1">{"primech"|t}</span>
+                            <span class="fl1">{"date"|t}</span>
+                            <span class="fl1">{"sum"|t} ({"rub"|t})</span>
+                        </div>
+                        <foreach o_list>
+                            <div class="ht-line" data-type="{.type}" data-text="{.text}">
+                                <span class="fl1"><small>{"vid"|t}:</small> {.usr_title}</span>
+                                <span class="fl1"><small>{"primech"|t}:</small> {.usr_desc}</span>
+                                <span class="fl1"><small>{"date"|t}:</small> {.date_f}</span>
+                                <span class="fl1"><small>{"sum"|t} ({"rub"|t}):</small> {.sum}</span>
+                            </div>
+                        </foreach>
+                    </div>
+                </div>
+            </foreach>
+            @if(!count(d()->weeks)):
+            <p style="padding: 0 20px 15px 20px">{"bonus_none"|t}<p>
+            @endif;
+        </div>
+    </div>
+</div>
+<div class="{tablewind}">
+    <span class="z">{"withdrawal_his"|t}</span>
+    <div class="iblock-cont-np ht-tbl">
+        <div class="ht-head">
+            <span class="fl1">№</span>
+            <span class="fl2">{"date"|t}</span>
+            <span class="fl2">{"sum"|t} ({"rub"|t})</span>
+            <span class="fl2">{"comission"|t}</span>
+            <span class="fl2">{"status"|t}</span>
+        </div>
+        <div class="ht-body">
+            @~nu = 1;
+            <foreach w_list>
+                <div class="ht-wrap">
+                    <div class="ht-line">
+                        <span class="fl1">{nu}</span>
+                        <span class="fl2">{.date_dmy}</span>
+                        <span class="fl2">{.value}</span>
+                        <span class="fl2">{.value_p}%</span>
+                        <span class="fl2">{.status_word}</span>
+                    </div>
+                </div>
+                @~nu++;
+            </foreach>
+            @if(!count(d()->w_list)):
+            <p style="padding: 0 20px 15px 20px">{"wind_none"|t}<p>
+            @endif;
+        </div>
+    </div>
+</div>
+@endif;

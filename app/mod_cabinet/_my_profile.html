@@ -1,0 +1,110 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz" xmlns="http://www.w3.org/1999/html">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"myprofile"|t}</h1>
+            <div class="col-md-6 cab-iblock">
+                <span class="z">{"ld"|t}</span>
+                <div class="iblock-cont mh260">
+                    <div class="ld-ctrl">
+                        <p>{"name"|t}*</p>
+                        <input type="text" class="ro_input" value="{user.name}" readonly />
+                        <input type="text" class="profile_edit" id="e_name" value="{user.name}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"surname"|t}*</p>
+                        <input type="text" class="ro_input" value="{user.surname}" readonly />
+                        <input type="text" class="profile_edit" id="e_surname" value="{user.surname}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"otchestvo"|t}</p>
+                        <input type="text" class="ro_input" value="{user.otchestvo}" readonly />
+                        <input type="text" class="profile_edit" id="e_otchestvo" value="{user.otchestvo}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"data_r"|t}</p>
+                        <input type="text" class="ro_input" value="{user.birthdate}" readonly />
+                        <input type="text" class="profile_edit date-ic" id="birthdate" value="{user.birthdate}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"gender"|t}</p>
+                        <input type="text" class="ro_input" value="{user.gender}" readonly />
+                        <div class="profile_edit">
+                            <div class="radio_style flex_style">
+                                <div>
+                                    <input id="male" type="radio" name="gender" value="male" {user.malecheked}>
+                                    <label for="male">{"male"|t}</label>
+                                </div>
+                                <div>
+                                    <input id="female" type="radio" name="gender" value="female" {user.femalecheked}>
+                                    <label for="female">{"female"|t}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cab-iblock">
+                <span class="z">{"cont_info"|t}</span>
+                <div class="iblock-cont mh260">
+                    <div class="ld-ctrl">
+                        <p>{"country"|t}*</p>
+                        <input type="text" class="ro_input" value="{user.country_f}" readonly />
+                        <select name="country" class="profile_edit" id="e_country">
+                            <foreach country_list>
+                                <option value="{.id}" {.selected}>{.title}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"city"|t}*</p>
+                        <input type="text" class="ro_input" value="{user.city}" readonly />
+                        <input type="text" class="profile_edit" id="e_city" value="{user.city}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"phone"|t}</p>
+                        <input type="text" class="ro_input" value="{user.phone}" readonly />
+                        <input type="text" class="profile_edit" id="e_phone" value="{user.phone}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"email"|t}*</p>
+                        <input type="text" class="ro_input" value="{user.email}" readonly />
+                        <input type="text" class="profile_edit" id="e_email" value="{user.email}" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 cab-iblock">
+                <span class="z">{"persoal_info"|t}</span>
+                <div class="iblock-cont flex-editpi">
+                    <div class="ld-ctrl">
+                        <p>{"el_wallet_number"|t}</p>
+                        <input type="text" class="ro_input" value="{user.wallet}" readonly />
+                        <input type="text" class="profile_edit" id="e_wallet" value="{user.wallet}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"card_nubmer"|t}</p>
+                        <input type="text" class="ro_input" value="{user.card}" readonly />
+                        <input type="text" class="profile_edit" id="e_card" value="{user.card}" />
+                    </div>
+                    <div class="ld-ctrl">
+                        <p>{"password"|t}</p>
+                        <input type="text" class="ro_input" value="*********" readonly />
+                        <div class="icon pass-icon showhide">
+                            <input type="password" name="password" class="profile_edit" id="e_password">
+                            <i class="showhide-icon" onclick="ShowHidePassword('e_password')"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center"><img src="/images/loading.gif" alt="" class="loading pedit-loading" /></div>
+            <div class="text-center succes_msg" id="succes_msg">{"pedit_succes_msg"|t}</div>
+            <div class="text-center error_msg" id="error_msg"></div>
+            <div class="text-center mt-25 w410fix">
+                <button class="btn btn-spink uppercase" id="profile_edit">{"edit"|t}</button>
+                <button class="btn btn-spink uppercase none" id="profile_save">{"save"|t}</button>
+                <button class="btn btn-silver ml-25 none" id="profile_edit_cancel">{"cancel"|t}</button>
+        </div>
+        </div>
+    </div>
+</div>

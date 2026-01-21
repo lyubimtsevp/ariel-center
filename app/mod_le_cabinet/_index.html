@@ -1,0 +1,18 @@
+<div class="container cab-cont">
+    {{cab_le_profile_tpl}}
+    <div class="le-cab-cont-block">
+        <h1>{"my_profile"|t}</h1>
+        @if($_GET['action']=='profile_edit'):
+        <div class="alert alert-success">{"alert_pedit"|t}</div>
+        @endif;
+        <ul class="le-cab-profile-ul">
+            <li><span>{"company"|t}</span><p class="c">{user.title}</p></li>
+            <li><span>{"city"|t}</span><p class="cy">{user.city}</p></li>
+            <li><span>{"email"|t}</span><p class="e">{user.email}</p></li>
+            <li><span>{"country"|t}</span><p class="co">{user.country_f}</p></li>
+            <li><span>{"phone"|t}</span><p class="p">{user.phone}</p></li>
+            <li><span>{"password"|t}</span><p class="pa">******</p></li>
+        </ul>
+        <div class="text-center mt-25"><a href="{langlink}/le_cabinet/profile_edit" class="btn btn-lblue">{"edit"|t}</a></div>
+    </div>
+</div>

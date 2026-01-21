@@ -1,0 +1,213 @@
+/* H2 ELEMENT Design System */
+:root {
+  --h2-gradient-start: #0a4d68;
+  --h2-gradient-end: #0891b2;
+  --h2-accent: #22d3ee;
+  --h2-dark-blue: #082a55;
+  --h2-input-bg: rgba(6, 78, 103, 0.6);
+  --h2-input-border: rgba(34, 211, 238, 0.3);
+  --h2-text: #ffffff;
+  --h2-text-muted: rgba(255, 255, 255, 0.7);
+}
+
+.h2-auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--h2-gradient-start) 0%, var(--h2-gradient-end) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.h2-auth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
+
+.h2-auth-header .logo img {
+  height: 32px;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.h2-auth-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.h2-auth-box {
+  width: 100%;
+  max-width: 500px;
+}
+
+.h2-auth-title {
+  color: var(--h2-text);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--h2-input-border);
+}
+
+.h2-form-group { margin-bottom: 20px; }
+
+.h2-form-label {
+  display: block;
+  color: var(--h2-text);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.h2-form-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--h2-input-bg);
+  border: 1px solid var(--h2-input-border);
+  border-radius: 4px;
+  color: var(--h2-text);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.h2-form-input::placeholder { color: var(--h2-text-muted); }
+.h2-form-input:focus {
+  outline: none;
+  border-color: var(--h2-accent);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.h2-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--h2-text);
+  font-size: 13px;
+}
+
+.h2-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--h2-accent);
+}
+
+.h2-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.h2-btn-primary {
+  background: var(--h2-accent);
+  color: var(--h2-dark-blue);
+  border: none;
+}
+
+.h2-btn-primary:hover {
+  background: #06b6d4;
+}
+
+.h2-btn-outline {
+  background: transparent;
+  color: var(--h2-accent);
+  border: 2px solid var(--h2-accent);
+}
+
+.h2-form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.h2-form-link {
+  color: var(--h2-accent);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.h2-divider-text {
+  text-align: center;
+  color: var(--h2-text-muted);
+  font-size: 13px;
+  margin: 25px 0;
+}
+
+.h2-auth-footer {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.h2-auth-footer .copyright {
+  color: var(--h2-text-muted);
+  font-size: 13px;
+}
+
+.h2-auth-footer .social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.h2-auth-footer .social-links a {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--h2-text);
+}
+
+.h2-form-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .h2-form-cols { grid-template-columns: 1fr; }
+  .h2-auth-header { padding: 15px 20px; }
+  .h2-auth-footer { flex-direction: column; gap: 15px; }
+}
+
+/* Modal H2 style */
+.modal.h2-modal .modal-content {
+  background: linear-gradient(135deg, var(--h2-gradient-start) 0%, var(--h2-gradient-end) 100%);
+  border: none;
+  border-radius: 8px;
+}
+
+.modal.h2-modal .modal-header {
+  border-bottom: 1px solid var(--h2-input-border);
+  padding: 20px 30px;
+}
+
+.modal.h2-modal .modal-title {
+  color: var(--h2-text);
+  font-size: 16px;
+}
+
+.modal.h2-modal .modal-body {
+  padding: 30px;
+}
+
+.modal.h2-modal .close {
+  color: white;
+  opacity: 1;
+  text-shadow: none;
+}

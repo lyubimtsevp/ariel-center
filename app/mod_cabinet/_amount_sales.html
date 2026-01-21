@@ -1,0 +1,43 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"amount_of_sales"|t}</h1>
+            <div class="col-lg-6 col-md-6">
+                <div class="cab-iblock">
+                    <span class="z">{"total_sales"|t}</span>
+                    <div class="cab-iblock-info h130 totalsales-bg">
+                        {user.sale_volume} <small>руб.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="cab-iblock">
+                    <span class="z">{"leftnexts"|t}</span>
+                    <div class="cab-iblock-info h130 times-bg">
+                        {ns_volume} <small>руб.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="cab-iblock">
+                    <span class="z flex-z"><span class="flex1">{"lines"|t}</span><span class="flex1">{"sales_volume"|t}</span></span>
+                    <div class="iblock-cont p-0">
+                    <div class="iblock-cont-flex">
+                        <div class="flex1 capitalize">{"line"|t} 1</div>
+                        <div class="flex1">{user.priv_sale_volume}</div>
+                    </div>
+                    @while(d()->line<=d()->package->a_lines):
+                    <div class="iblock-cont-flex">
+                        <div class="flex1 capitalize">{"line"|t} {line}</div>
+                        <div class="flex1"><?=floatval(d()->volumes[d()->line-1]);?></div>
+                    </div>
+                    @d()->line++;
+                    @endwhile;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

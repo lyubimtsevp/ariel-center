@@ -1,0 +1,595 @@
+<div id="city_choose" class="modal fade">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">{"city_choose"|t}</h4>
+      </div>
+      <div class="modal-body">
+		  	<div class="text-center change_city_all"><a href="?change_city=all">{"all_city"|t}</a></div>
+			<div class="city-line">
+			@if(d()->lang=='ru'):
+				<?foreach(d()->ru_alf as $key=>$val):?>
+					<div class="city_block">
+					<strong class="b"><?print $val;?></strong>
+					<?foreach(d()->cities_list as $k=>$v):?>
+						<?if($val==$v['code'])print '<a href="?change_city='.$v['id'].'">'.$v['title'].'</a><br>';?>
+					<?endforeach;?>
+					</div>
+				<?endforeach;?>
+			@else:
+				<?foreach(d()->en_alf as $key=>$val):?>
+					<div class="city_block">
+					<strong class="b"><?print $val;?></strong>
+					<?foreach(d()->cities_list as $k=>$v):?>
+						<?if($val==$v['en_code'])print '<a href="?change_city='.$v['id'].'">'.$v['en_title'].'</a><br>';?>
+					<?endforeach;?>
+					</div>
+				<?endforeach;?>
+			@endif;
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="login" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"chooseh"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="step-wide">
+				<span class="fiz" data-id="fiz" data-target="#login-form" data-toggle="modal" data-dismiss="modal">
+					<img src="/images/fiz.png" alt="" />
+					<p>{"fiz_lico"|t}</p>
+					<img src="/images/fiz-arrow.png" alt="" class="arrow" />
+				</span>
+				<span class="ur" data-id="ur" data-target="#login-form" data-toggle="modal" data-dismiss="modal">
+					<img src="/images/ur.png" alt="" />
+					<p>{"ur_lico"|t}</p>
+					<img src="/images/ur-arrow.png" alt="" class="arrow" />
+				</span>
+			</div>	
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="login-form" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"auth_h"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-form">
+			<form class="albixe-form" method="POST" id="auth-form">
+				<img src="/images/loading.gif" alt="" class="loading reg-loading" />
+				<div class="error"></div>
+				<div class="success_register" id="success_register">{"suc_reg"|t}</div>
+				<input type="hidden" name="type" class="type" value="fiz" id="auth-type" />
+				<div class="icon email-icon">
+					<input type="text" name="email" placeholder="E-mail">
+				</div>
+				<div class="icon pass-icon showhide">
+					<input type="password" name="password" placeholder='{"password"|t}' id="login-password" >
+					<i class="showhide-icon" onclick="ShowHidePassword('login-password')"></i>
+				</div>
+				<div class="login-details-line">
+					<label>
+						<input type="checkbox" name="remember" value="yes"><span class="ch"></span>
+						<div>{"remember_me"|t}</div>
+					</label>
+					<a href="#forgot_password" data-toggle="modal" data-dismiss="modal">{"forgot_password"|t}</a>
+				</div>
+				<div class="auth-line">
+					<button type="submit" class="btn-pink">{"login"|t}</button>
+					<p class="mt-30 mb-30">{"not_account"|t}</p>
+					<a href="#registration" data-toggle="modal" data-dismiss="modal" class="btn-albx reg reg-fiz">{"registration"|t}</a>
+					<a href="#registration_ur" data-toggle="modal" data-dismiss="modal" class="btn-albx reg reg-ur">{"registration"|t}</a>
+				</div>
+			</form>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="registration" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"registration"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="reg-form">
+				<form class="albixe-form" method="POST" id="registration-form">
+					<img src="/images/loading.gif" alt="" class="loading reg-loading" />
+					<div class="error"></div>
+					<div class="inputs2">
+						<div class="icon ref-icon"><input type="text" name="referer" placeholder='{"ref_place"|t}' value="{sponsor}" ></div>
+						<div class="icon user-icon"><input type="text" name="surname" placeholder='{"surname"|t}' required></div>
+					</div>
+					<div class="inputs2">
+						<div class="icon user-icon"><input type="text" name="name" placeholder='{"name"|t}' required></div>
+						<div class="icon geo-icon select">
+							<select name="country" required>
+								<option value="" disabled selected style="display:none;">{"country"|t}</option>
+								<foreach countries_list>
+								<option value="{.id}">{.title}</option>
+								</foreach>
+							</select>
+						</div>
+					</div>
+					<div class="inputs2">
+						<div class="icon geo-icon"><input type="text" name="city" placeholder='{"city"|t}' required></div>
+						<div class="icon email-icon"><input type="text" name="email" placeholder='{"email"|t}' required></div>
+					</div>
+					<div class="inputs2">
+						<div class="icon pass-icon showhide">
+							<input type="password" name="password" placeholder='{"password"|t}' id="password" required >
+							<i class="showhide-icon" onclick="ShowHidePassword('password')"></i>
+						</div>
+						<div class="icon pass-icon showhide">
+							<input type="password" name="password_repeat" placeholder='{"password_repeat"|t}' id="password-repeat" required >
+							<i class="showhide-icon" onclick="ShowHidePassword('password-repeat')"></i>
+						</div>
+					</div>
+					<p class="mt-30 mb-30">{"reg_rules_info"|t}</p>
+					<div class="sub-wrap">
+						<div class="reg-details-line">
+							<div>
+								<label>
+									<input type="checkbox" name="agreement" value="1"><span class="ch"></span>
+									<div>{cont.agreement_but}</div>
+								</label>
+								<label>
+									<input type="checkbox" name="cashback_rules" value="1"><span class="ch"></span>
+									<div>{cont.cashback_rules_but}</div>
+								</label>
+							</div>
+							<button type="submit" class="btn-pink" disabled>{"registration"|t}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="registration_ur" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"registration"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-form">
+			<form class="albixe-form" method="POST" id="registration-ur-form">
+				<img src="/images/loading.gif" alt="" class="loading reg-loading" />
+				<div class="error"></div>
+				<div class="icon email-icon">
+					<input type="text" name="email" placeholder='{"email_login"|t}' required>
+				</div>
+				<div class="icon phone-icon">
+					<input type="text" name="phone" placeholder='{"phone"|t}' required>
+				</div>
+				<div class="icon pass-icon showhide">
+					<input type="password" name="password" placeholder='{"password"|t}' id="password-ur" required >
+					<i class="showhide-icon" onclick="ShowHidePassword('password-ur')"></i>
+				</div>
+				<div class="icon pass-icon showhide">
+					<input type="password" name="password_repeat" placeholder='{"password_repeat"|t}' id="password-ur-repeat" required >
+					<i class="showhide-icon" onclick="ShowHidePassword('password-ur-repeat')"></i>
+				</div>
+				<div class="icon ref-icon">
+					<input type="text" name="referer" placeholder='{"ref_place_one"|t}' value="{sponsor}" >
+				</div>
+				<div class="sub-wrap">
+					<div class="reg-details-line mb-30">
+						<div>
+							<label>
+								<input type="checkbox" name="agreement" value="1"><span class="ch"></span>
+								<div>{cont.agreement_but_ur}</div>
+							</label>
+							<label>
+								<input type="checkbox" name="cashback_rules" value="1"><span class="ch"></span>
+								<div>{cont.cashback_rules_but_ur}</div>
+							</label>
+						</div>
+					</div>
+					<button type="submit" class="btn-pink" disabled>{"registration"|t}</button>
+				</div>
+			</form>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="forgot_password" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"forgot_password"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-form">
+				<form class="albixe-form" method="POST" id="forgot-form">
+					<img src="/images/loading.gif" alt="" class="loading reg-loading" />
+					<div class="error"></div>
+					<div class="success_register" id="success_forgot">{"success_forgot"|t}</div>
+					<div class="icon email-icon">
+						<input type="text" name="email" placeholder="E-mail">
+					</div>
+					<p class="mt-30 mb-30">{"forgot_info"|t}</p>
+					<div class="login-details-line">
+						<a href="#login-form" data-toggle="modal" data-dismiss="modal" onclick="backstep2();">{"back"|t}</a>
+						<button type="submit" class="btn-pink">{"submit"|t}</button>
+					</div>
+					<div class="auth-line">
+						<p class="mt-30 mb-30">{"not_account"|t}</p>
+						<a href="#registration" data-toggle="modal" data-dismiss="modal" class="btn-albx">{"registration"|t}</a>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="forgot-success" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"forgot_succ"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">
+				<div class="text-center">
+				<p>{"forgot_s1"|t} <strong>{new_pass}</strong></p>
+				{"forgot_s2"|t}
+				</div>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="forgot-error" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"error"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont"><center>{"forgot_error"|t}</center></div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="agreement" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.agreement}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="cashback_rules" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.cashback_rules}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="agreement-ur" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.agreement_ur}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="cashback_rules-ur" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.cashback_rules_ur}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="privacy_policy" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.privacy_policy}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="user_agreement" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		</div>
+		<div class="modal-body">
+			<div class="modal-cont">{cont.user_agreement}</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="request" class="modal fade" tabindex='-1' data-backdrop="static">
+  <div class="modal-dialog modal-big">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">{"leave_request"|t}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-form">
+			<form class="albixe-form" method="POST" id="request-form">
+				<img src="/images/loading.gif" alt="" class="loading reg-loading" />
+				<div class="error"></div>
+				<div class="success_register" id="success_request">{"success_request"|t}</div>
+				<p class="mt-0 mb-30">{"request_i"|t}</p>
+				<div class="icon user-icon">
+					<input type="text" name="name" placeholder='{"name"|t}' required>
+				</div>
+				<div class="icon phone-icon">
+					<input type="text" name="phone" placeholder='{"phone"|t}' required>
+				</div>
+				<div class="icon email-icon">
+					<input type="text" name="email" placeholder="E-mail" required>
+				</div>
+				<div class="icon message-icon">
+					<textarea name="text" placeholder='{"message"|t}' required></textarea>
+				</div>
+				<div class="sub-wrap">
+					<div class="reg-details-line mb-30">
+						<label>
+							<input type="checkbox" name="privacy_policy" value="1"><span class="ch"></span>
+							<div>{"privacy_policy"|t}</div>
+						</label>
+					</div>
+					<center><button type="submit" class="btn-pink" disabled>{"submit"|t}</button></center>
+				</div>
+			</form>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<div id="not-auth" class="modal fade" tabindex='-1' data-backdrop="static">
+	<div class="modal-dialog modal-big">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">{"auth_reg"|t}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="gts-line">
+					<p class="mt-0 mb-30">{"gt_stores"|t}</p>
+					<a href="#login" data-toggle="modal" data-dismiss="modal" class="btn-albx">{"registration"|t}</a>
+					<a href="#login" data-toggle="modal" data-dismiss="modal" class="btn-pink">{"login"|t}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="qr-modal" class="modal fade" tabindex='-1'>
+	<div class="modal-dialog modal-xs">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">{"qrscan"|t}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="text-center">
+					<img src="/getqr/{user.uid}" alt="" class="mw100" />
+					<p class="qr_id">ID {user.uid}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="buy-package" class="modal fade" tabindex='-1'>
+	<div class="modal-dialog {mxs}">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">{"choose_package"|t}:</h4>
+			</div>
+			<div class="modal-body">
+				<ul class="select_package" id="select_bpackage">
+					<foreach packages_list>
+					<li class="{pactive}" data-id="{.id}">
+						<span><small>{package_word}</small> «{.title}»</span>
+						<span>{.price_f} <small class="bl">{"rub"|t}</small></span>
+					</li>
+					@~pactive = '';
+					</foreach>
+				</ul>
+				<div class="bt-line fwrap">
+					<label class="bt-line-left pink-checkbox">
+						<input type="checkbox" name="rules" class="none" value="1">
+						<span class="ch"></span>
+						<div>{"rules1_non_lnk"|t}</div>
+					</label>
+					<label class="bt-line-left pink-checkbox">
+						<input type="checkbox" name="rules2" class="none" value="1">
+						<span class="ch"></span>
+						<div>{"rules2_non_lnk"|t}</div>
+					</label>
+				</div>
+				<form action="{langlink}/ajax/buy_system" class="text-center">
+					<input type="hidden" name="package" value="{pid}">
+					<input type="hidden" name="type" value="buy_package">
+					<button type="submit" class="btn btn-pink-b" disabled>{"buy"|t}</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@if(d()->package->licensies):
+<div id="buy-license" class="modal fade" tabindex='-1'>
+	<div class="modal-dialog modal-xs">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">{"buy_license"|t}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="bt-line">
+					<span class="bt-s1">{"license_price"|t}</span>
+					<span class="bt-s2">{o.license_price} <small>{"rub"|t}</small></span>
+				</div>
+				<div class="bt-line">
+					<span class="bt-s1">{"count"|t}</span>
+					<div class="bt-count-block">
+						<i class="mdi mdi-minus" onclick="change_cnt('-', this);"></i>
+						<span class="bt-count" data-price="{o.license_price}">1</span>
+						<i class="mdi mdi-plus"onclick="change_cnt('+', this);"></i>
+					</div>
+				</div>
+				<div class="bt-line mt-40 mb-30">
+					<span class="bt-s2">{"koplate"|t}:</span>
+					<span class="bt-s2"><span class="sum">{o.license_price}</span> <small>{"rub"|t}</small></span>
+				</div>
+				<div class="bt-line">
+					<label class="bt-line-left pink-checkbox">
+						<input type="checkbox" name="rules" class="none" value="1">
+						<span class="ch"></span>
+						<div>{"rules1_non_lnk"|t}</div>
+					</label>
+				</div>
+				<form action="{langlink}/ajax/buy_system" class="text-center">
+					<input type="hidden" name="count" value="1">
+					<input type="hidden" name="type" value="buy_license">
+					<button type="submit" class="btn btn-pink-b" disabled>{"buy"|t}</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@endif;
+
+<div id="withdrawal" class="modal fade" tabindex='-1'>
+	<div class="modal-dialog modal-xs">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">{"withdrawal"|t}</h4>
+			</div>
+			<div class="modal-body">
+				<form method="POST" id="withdrawal-form" class="withdrawal-form">
+					<label>
+						<span>{"select_way"|t}:</span>
+						<div class="inp">
+							<select name="type">
+								<foreach ways_list>
+								<option value="{.id}">{.title}</option>
+								</foreach>
+							</select>
+							<small>{"wind_com"|t} {option.wind_comission}%</small>
+						</div>
+					</label>
+					<label>
+						<span>{"amount_wind"|t}:</span>
+						<div class="inp">
+							<input type="text" name="amount" class="required" required>
+							<small>{"min_wind"|t} {option.min_wind} {"rub"|t}</small>
+						</div>
+					</label>
+					<input type="hidden" name="withdrawal" value="1" />
+					<div class="withdrawal-btns">
+						<button type="submit" class="btn btn-pink-b">{"wind_fu"|t}</button>
+						<button type="button" class="btn btn-silver" data-dismiss="modal">{"cancel"|t}</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="withdrawal-error" class="modal fade" tabindex='-1'>
+	<div class="modal-dialog modal-xs">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body werror">
+				<div><img src="/images/vosk.png" alt="" /><br>{error_message}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="cab_agreement" class="modal fade" tabindex='-1' data-backdrop="static">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-cont">{cont.agreement}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cab_cashback_rules" class="modal fade" tabindex='-1' data-backdrop="static">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-cont">{cont.cashback_rules}</div>
+            </div>
+        </div>
+    </div>
+</div>

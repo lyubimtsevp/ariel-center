@@ -1,0 +1,87 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"shop"|t}</h1>
+            <div class="shop-flex">
+                <foreach shop_list>
+                <div class="col-md-6 col-sm-12 col-xs-12 shop-elem">
+                    <img src="{.image|preview}" alt="">
+                    <div class="shop-info">
+                        <span>{.title}</span>
+                        <strong>{.price} {"rub"|t}</strong>
+                    </div>
+                   <div class="shop-btn"><button class="btn btn-pink-b" data-toggle="modal" data-target="#shop-view-{.id}">{"buy"|t}</button></div>
+                </div>
+                </foreach>
+            </div>
+            <div class="paginator">{paginator}</div>
+        </div>
+    </div>
+</div>
+
+<foreach shop_list>
+<div id="shop-view-{.id}" class="modal fade" tabindex='-1'>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header mh-45">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body mb-shop">
+                <img src="{.image|preview}" class="m-shop-img" alt="">
+                <div class="m-shop-info">
+                    <h4>{.title}</h4>
+                    {.text}
+                    <form action="{langlink}/ajax/buy_system">
+                    <div class="m-shop-options">
+                        @if(d()->this->color):
+                        <div>
+                            {"color"|t}:<br>
+                            <select name="color" class="w200">
+                                @$c = array_filter(explode('|',d()->this->color));
+                                @foreach($c as $key => d()->val):
+                                <option value="{val}">{val}</option>
+                                @endforeach;
+                            </select>
+                        </div>
+                        @endif;
+                        @if(d()->this->msize):
+                        <div>
+                            {"size"|t}:<br>
+                            <select name="msize">
+                                @$s = array_filter(explode('|',d()->this->msize));
+                                @foreach($s as $key => d()->val):
+                                <option value="{val}">{val}</option>
+                                @endforeach;
+                            </select>
+                        </div>
+                        @endif;
+                        <div>
+                            {"count"|t}:<br>
+                            <p class="bt-count-block m-shop-count-block">
+                                <i class="mdi mdi-minus" onclick="change_cnt('-', this);"></i>
+                                <span class="bt-count" data-price="{.price}">1</span>
+                                <i class="mdi mdi-plus"onclick="change_cnt('+', this);"></i>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="m-shop-result">
+                        <div>
+                            <span class="m-shop-itogo">{"itogo"|t}:</span>
+                            <span class="m-shop-itogo-sum"><span class="sum">{.price}</span> {"rub"|t}</span>               <br>*{"bez_ucheta"|t}
+                        </div>
+                        <div class="frm">
+                            <input type="hidden" name="count" value="1">
+                            <input type="hidden" name="id" value="{.id}">
+                            <input type="hidden" name="type" value="buy_shop">
+                            <button type="submit" class="btn btn-pink-b">{"buy"|t}</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</foreach>

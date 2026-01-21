@@ -1,0 +1,34 @@
+<?
+    d()->none='display: none;';
+    d()->checked = '';
+    if(d()->value){
+        d()->none='';
+        d()->checked = 'checked';
+    }
+
+    d()->f_name = str_replace(']', '', str_replace('data[', '', d()->name));
+?>
+<div class="control-group" style="margin-bottom:0;padding:0;display: none">
+    <div class="controls">
+        <label class="checkbox" style="margin-bottom:0;display: flex;align-items:center; float:left;height: 35px">
+            <input type="checkbox" class="mcheckbox" {checked} style="position:relative;top:-2px; margin-right:5px;" />
+            {title}
+            <div id="{f_name}" style="margin-left:20px;{none}">
+                <input type="text" name="{name}" value="{value|h}">
+                <span class="help-inline"><?php print d()->field_params[3]; ?></span>
+            </div>
+        </label>
+    </div>
+</div>
+<script>
+$(function(){
+    var div_text = $('#{f_name}');
+    var wrap = div_text.closest('div.controls');
+    var ch = wrap.find('input[type=checkbox]');
+
+    ch.on("change", function() {
+        div_text.toggle();
+        div_text.find('input').val('');
+    });
+});
+</script>

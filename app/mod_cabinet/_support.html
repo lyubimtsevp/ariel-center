@@ -1,0 +1,35 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"techsupport"|t}</h1>
+            <form method="POST" class="support-form" id="support-form">
+                <div class="wrap">
+                    {action_send}
+                    <label>
+                        <span>{"s_subject"|t}</span>
+                        <div class="inp">
+                            <input type="text" name="subject" class="required" required />
+                        </div>
+                    </label>
+                    <label>
+                        <span>{"s_email"|t}</span>
+                        <div class="inp">
+                            <input type="text" name="email" class="required" required />
+                        </div>
+                    </label>
+                    <label>
+                        <span>{"s_text"|t}</span>
+                        <div class="inp">
+                            <textarea name="text" class="required" required></textarea>
+                        </div>
+                    </label>
+                    <div class="text-center mt-25">
+                        <button type="submit" class="btn btn-pink-b">{"send_message"|t}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

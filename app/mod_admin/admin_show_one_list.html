@@ -1,0 +1,658 @@
+<style>
+	.mfrm input[type=text]{
+		width:150px;
+	}
+	.mfrm select{
+		width:180px;
+		position: relative;
+		top: 5px;
+		border: 1px solid #ccc;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	}
+	.mfrm label{
+		display: inline-block;
+		margin-right: 16px;
+		font-weight: normal;
+		margin-bottom: 10px;
+	}
+	.mfrm label input[type=checkbox]{
+		position: relative;
+		top:-1px;
+		margin-right: 1px;
+	}
+</style>
+
+<?
+$query = '';
+if(url(3)=='operations'){
+    // выбираем операции для админов
+
+	if(!$_GET){
+		d()->ob_cnt = '('.d()->Operation->count.')';
+	}else{
+		$c = 0;
+		foreach($_GET as $k=>$v){
+			if($k=='page') continue;
+			if($c) $query .= 'AND ';
+			$query .= '`'.$k.'` = "'.$v.'"';
+			$c++;
+		}
+		if($c){
+			d()->ob_cnt = '('.d()->Operation->where($query)->count.')';
+		}else{
+			d()->ob_cnt = '('.d()->Operation->count.')';
+		}
+	}
+
+    // выбираем операции для админов
+    $mainadmin = 1;
+    if($_SESSION['admin']!='developer' && $_SESSION['admin']!='admin') {
+        $mainadmin = 0;
+
+        d()->adm = d()->Admin_user->where('login=?', $_SESSION['admin'])->to_array();
+
+        $qw = '';
+        if(!$_GET['type']){
+            if($query)$query = 'AND '.$query;
+            if(d()->adm[0]['is_o_cb'])$qw .= '`type`="cashback" '.$query.' OR ';
+            if(d()->adm[0]['is_o_cb_adm'])$qw .= '`type`="adm_cashback" '.$query.' OR ';
+            if(d()->adm[0]['is_o_offcheck'])$qw .= '`type`="ur_payment" '.$query.' OR ';
+            if(d()->adm[0]['is_o_pack'])$qw .= '`type`="buy_package" '.$query.' OR `type`="upgrade_package" '.$query.' OR ';
+            if(d()->adm[0]['is_o_lead'])$qw .= '`type`="leader_bonus" '.$query.' OR ';
+            if(d()->adm[0]['is_o_lic'])$qw .= '`type`="buy_license" '.$query.' OR ';
+            if(d()->adm[0]['is_o_status'])$qw .= '`type`="new_status" '.$query.' OR ';
+            if(d()->adm[0]['is_o_shop'])$qw .= '`type`="buy_shop" '.$query.' OR ';
+            if(d()->adm[0]['is_o_event'])$qw .= '`type`="buy_event" '.$query.' OR ';
+            $qw = substr($qw,0,-4);
+        }else{
+            $qw = $query;
+        }
+
+        //print $qw;
+        //exit();
+
+        d()->objectrow = d()->Operation->where($qw)->paginate(100);
+        d()->ob_cnt = '('.d()->objectrow->count.')';
+        // костыль
+        d()->paginator = d()->Paginator->bootstrap3->generate(d()->objectrow);
+    }
+}
+if(url(3)=='users'){
+	if(!$_GET){
+		d()->ob_cnt = '('.d()->User->count.')';
+	}else{
+		$c = 0;
+		foreach($_GET as $k=>$v){
+			if($k=='page') continue;
+			if($c) $query .= 'AND ';
+			$query .= '`'.$k.'` = "'.$v.'"';
+			$c++;
+		}
+		if($c){
+			d()->ob_cnt = '('.d()->User->where($query)->count.')';
+		}else{
+			d()->ob_cnt = '('.d()->User->count.')';
+		}
+	}
+}
+
+if(url(3)=='stores'){
+	if(!$_GET){
+		d()->ob_cnt = '('.d()->Store->count.')';
+	}else{
+
+		$c = 0;
+		foreach($_GET as $k=>$v){
+			if($k=='page') continue;
+			if($c) $query .= 'AND ';
+
+			if($k=='title'){
+                $query .= '`'.$k.'` LIKE "%'.$v.'%"';
+			}else{
+                $query .= '`'.$k.'` = "'.$v.'"';
+			}
+
+			$c++;
+		}
+        if($c){
+            d()->objectrow = d()->Store->where($query);
+            d()->ob_cnt = '('.d()->objectrow->count.')';
+            // костыль
+            if(d()->ob_cnt<100) d()->paginator = '';
+		}else{
+			d()->ob_cnt = '('.d()->Store->count.')';
+		}
+
+
+		if($_GET['category_id']){
+			$c = 0;
+			$query = '';
+			foreach($_GET as $k=>$v){
+				if($k=='category_id')continue;
+				if($c) $query .= ' AND ';
+
+                if($k=='title'){
+                    $query .= '`'.$k.'` LIKE "%'.$v.'%"';
+                }else{
+                    $query .= '`'.$k.'` = "'.$v.'"';
+                }
+
+				$c++;
+			}
+			$checkboxes = array_filter(explode(',', $_GET['category_id']));
+			$fs = 'SELECT * FROM `stores` WHERE ';
+			$c = 0;
+			foreach($checkboxes as $v){
+				$v = ','.$v.',';
+				if($c) $fs .= ' OR ';
+				if($query){
+					$fs .= $query.' AND `category_id` LIKE "%'.$v.'%"';
+				}else{
+					$fs .= '`category_id` LIKE "%'.$v.'%"';
+				}
+				$c++;
+			}
+			//print $fs;
+			d()->objectrow = d()->Store->sql($fs);
+			d()->ob_cnt = '('.count(d()->objectrow).')';
+            // костыль
+            if(d()->ob_cnt<100) d()->paginator = '';
+		}
+	}
+}
+
+if(url(3)=='partners'){
+	if(!$_GET){
+		d()->ob_cnt = '('.d()->Partner->count.')';
+	}else{
+		$c = 0;
+		foreach($_GET as $k=>$v){
+			if($k=='page') continue;
+			if($c) $query .= 'AND ';
+
+            if($k=='title'){
+                $query .= '`'.$k.'` LIKE "%'.$v.'%"';
+            }else{
+                $query .= '`'.$k.'` = "'.$v.'"';
+            }
+
+			$c++;
+		}
+		if($c){
+            d()->objectrow = d()->Partner->where($query);
+            d()->ob_cnt = '('.d()->objectrow->count.')';
+            // костыль
+            if(d()->ob_cnt<100) d()->paginator = '';
+		}else{
+			d()->ob_cnt = '('.d()->Partner->count.')';
+		}
+		if($_GET['category_id']){
+			$c = 0;
+			$query = '';
+			foreach($_GET as $k=>$v){
+				if($k=='category_id')continue;
+				if($c) $query .= ' AND ';
+
+                if($k=='title'){
+                    $query .= '`'.$k.'` LIKE "%'.$v.'%"';
+                }else{
+                    $query .= '`'.$k.'` = "'.$v.'"';
+                }
+
+				$c++;
+			}
+			$checkboxes = array_filter(explode(',', $_GET['category_id']));
+			$fs = 'SELECT * FROM `partners` WHERE ';
+			$c = 0;
+			foreach($checkboxes as $v){
+				$v = ','.$v.',';
+				if($c) $fs .= ' OR ';
+				if($query){
+					$fs .= $query.' AND `category_id` LIKE "%'.$v.'%"';
+				}else{
+					$fs .= '`category_id` LIKE "%'.$v.'%"';
+				}
+				$c++;
+			}
+			//print $fs;
+			d()->objectrow = d()->Partner->sql($fs);
+			d()->ob_cnt = '('.count(d()->objectrow).')';
+            // костыль
+            if(d()->ob_cnt<100) d()->paginator = '';
+		}
+	}
+}
+
+?>
+<h1>{curr_title} {ob_cnt}</h1>
+{curr_content}
+
+<?if(url(3)=='withdrawals'):?>
+    <?
+    $t_s = d()->User->where('balance>0');
+    $total_s = 0;
+    foreach($t_s as $v){
+        $total_s += $t_s->balance;
+    }
+    ?>
+
+    <?
+    $t_w = d()->Withdrawal->where('status=1');
+    $total_w = 0;
+    foreach($t_w as $v2){
+        $total_w += $t_w->total_amount;
+    }
+    ?>
+    <form method="GET" style="margin-top:15px;" >
+
+        <input type="text" class="form-control" value="Всего на счету у клиентов: <?=$total_s;?> руб." style="margin-bottom:0;width:280px;" readonly />
+        <input type="text" class="form-control" value="Всего выведено: <?=$total_w;?> руб." style="margin-bottom:0;width:230px;" readonly />
+
+    </form>
+    <hr style="margin:15px 0;">
+<?endif;?>
+
+<?if(url(3)=='operations'):?>
+<form method="GET" style="margin-top:15px;" class="mfrm">
+
+	<select id="type">
+		<option value="">Все типы</option>
+
+        <?if(d()->adm[0]['is_o_cb'] && count(d()->adm) || $mainadmin):?>
+		<option value="cashback" <?if($_GET['type']=="cashback")print 'selected';?>>Бонус Cashback</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_cb_adm'] && count(d()->adm) || $mainadmin):?>
+		<option value="adm_cashback" <?if($_GET['type']=="adm_cashback")print 'selected';?>>Бонус CashBack (Admitad)</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_offcheck'] && count(d()->adm) || $mainadmin):?>
+		<option value="ur_payment" <?if($_GET['type']=="ur_payment")print 'selected';?>>Оффлайн чек</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_pack'] && count(d()->adm) || $mainadmin):?>
+		<option value="buy_package" <?if($_GET['type']=="buy_package")print 'selected';?>>Покупка пакета</option>
+		<option value="upgrade_package" <?if($_GET['type']=="upgrade_package")print 'selected';?>>Апгрейд пакета</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_lead'] && count(d()->adm) || $mainadmin):?>
+		<option value="leader_bonus" <?if($_GET['type']=="leader_bonus")print 'selected';?>>Лидерский бонус</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_lic'] && count(d()->adm) || $mainadmin):?>
+		<option value="buy_license" <?if($_GET['type']=="buy_license")print 'selected';?>>Покупка лицензии</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_status'] && count(d()->adm) || $mainadmin):?>
+		<option value="new_status" <?if($_GET['type']=="new_status")print 'selected';?>>Достижение статуса</option>
+        <?endif;?>
+
+<!--		<option value="withdrawal" --><?//if($_GET['type']=="withdrawal")print 'selected';?><!-->Вывод средств</option>-->
+
+        <?if(d()->adm[0]['is_o_shop'] && count(d()->adm) || $mainadmin):?>
+		<option value="buy_shop" <?if($_GET['type']=="buy_shop")print 'selected';?>>Покупка в SHOP</option>
+        <?endif;?>
+
+        <?if(d()->adm[0]['is_o_event'] && count(d()->adm) || $mainadmin):?>
+		<option value="buy_event" <?if($_GET['type']=="buy_event")print 'selected';?>>Покупка мероприятия</option>
+        <?endif;?>
+
+	</select>
+	<input type="hidden" name="type" value="<?print $_GET['type']?>" />
+
+	<select id="status">
+		<option value="">Все статусы</option>
+		<option value="0" <?if(isset($_GET['status']) && $_GET['status']=="0")print 'selected';?>>Новый</option>
+		<option value="1" <?if($_GET['status']=="1")print 'selected';?>>Выполнен</option>
+		<option value="2" <?if($_GET['status']=="2")print 'selected';?>>Отклонен</option>
+	</select>
+	<input type="hidden" name="status" value="<?print $_GET['status']?>" />
+
+	<input type="text" id="id" placeholder="ID операции" class="form-control" value="<?print $_GET['id']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="id" value="<?print $_GET['id']?>" />
+
+	<input type="text" id="uid" placeholder="ID пользователя" class="form-control" value="<?print $_GET['uid']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="uid" value="<?print $_GET['uid']?>" />
+
+	<button class="btn btn-primary">Найти</button>
+	<a href="/admin/list/operations" class="btn btn-default">Сбросить</a>
+</form>
+<hr style="margin:15px 0;">
+<?endif;?>
+
+<?if(url(3)=='users'):?>
+@d()->packages = d()->Package;
+@d()->packs = d()->Package;
+@d()->statuses = d()->Status;
+@d()->sts = d()->Status;
+<form method="GET" style="margin-top:15px;" class="mfrm">
+	<input type="text" id="uid" placeholder="ID пользователя" class="form-control" value="<?print $_GET['uid']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="uid" value="<?print $_GET['uid']?>" />
+
+	<input type="text" id="email" placeholder="E-mail" class="form-control" value="<?print $_GET['email']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="email" value="<?print $_GET['email']?>" />
+
+	<input type="text" id="phone" placeholder="Телефон" class="form-control" value="<?print $_GET['phone']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="phone" value="<?print $_GET['phone']?>" />
+
+	<select id="package">
+		<option value="">Все пакеты</option>
+	<foreach packs>
+		<option value="{.id}" <?if($_GET['package']==d()->this->id)print 'selected';?>>{.title}</option>
+	</foreach>
+	</select>
+	<input type="hidden" name="package" value="<?print $_GET['package']?>" />
+
+	<select id="max_status">
+		<option value="">Все статусы</option>
+		<foreach sts>
+			<option value="{.id}" <?if($_GET['max_status']==d()->this->id)print 'selected';?>>{.title}</option>
+		</foreach>
+	</select>
+	<input type="hidden" name="max_status" value="<?print $_GET['max_status']?>" />
+
+	<select id="type">
+		<option value="">Все типы</option>
+		<option value="fiz" <?if($_GET['type']=="fiz")print 'selected';?>>Физ. лица</option>
+		<option value="ur" <?if($_GET['type']=="ur")print 'selected';?>>Юр. лица</option>
+	</select>
+	<input type="hidden" name="type" value="<?print $_GET['type']?>" />
+
+	<select id="is_active">
+		<option value="">Любая активность</option>
+		<option value="1" <?if($_GET['is_active']=="1")print 'selected';?>>Активен</option>
+		<option value="0" <?if(isset($_GET['is_active']) && $_GET['is_active']==0)print 'selected';?>>Не активен</option>
+	</select>
+	<input type="hidden" name="is_active" value="<?print $_GET['is_active']?>" />
+
+	<button class="btn btn-primary">Найти</button>
+	<a href="/admin/list/users" class="btn btn-default">Сбросить</a>
+</form>
+<hr style="margin:15px 0;">
+<?endif;?>
+
+<?if(url(3)=='stores'):?>
+@d()->categories = d()->Category;
+<form method="GET" style="margin-top:15px;" class="mfrm">
+	<input type="text" id="id" placeholder="ID" class="form-control" value="<?print $_GET['id']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="id" value="<?print $_GET['id']?>" />
+
+	<input type="text" id="title" placeholder="Название" class="form-control" value="<?print $_GET['title']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="title" value="<?print $_GET['title']?>" />
+
+	<input type="text" id="url" placeholder="Сайт" class="form-control" value="<?print $_GET['url']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="url" value="<?print $_GET['url']?>" />
+
+	<select id="is_top">
+		<option value="">Топ: все магазины</option>
+		<option value="1" <?if($_GET['is_top']=="1")print 'selected';?>>ТОП</option>
+		<option value="0" <?if(isset($_GET['is_top']) && $_GET['is_top']==0)print 'selected';?>>НЕ ТОП</option>
+	</select>
+	<input type="hidden" name="is_top" value="<?print $_GET['is_top']?>" />
+
+	<button class="btn btn-primary">Найти</button>
+	<a href="/admin/list/stores" class="btn btn-default">Сбросить</a>
+
+	<hr style="margin:15px 0;">
+
+	<script>
+	$(function(){
+		$('input[name="category_id"]').each(function(){
+			var ar=$(this).val().split(',')
+			for( key in ar){
+				$(this).parent().find('.checkboxes_onecheckbox[data-id='+ar[key]+']').attr('checked', true);
+			}
+		})
+		$('.checkboxes_onecheckbox').on('click',function(){
+			var ids=[]
+			$(this).parent().parent().find('.checkboxes_onecheckbox:checked').each(function(){
+				ids.push($(this).data('id'))
+			})
+			$(this).parent().parent().find('input[name="category_id"]').val(','+ids.join(',')+',');
+			if($(this).parent().parent().find('input[name="category_id"]').val()==',,'){
+				$(this).parent().parent().find('input[name="category_id"]').val('');
+			}
+		})
+	})
+	</script>
+
+	<div class="checkboxes">
+	<foreach categories>
+		<label class="checkbox"> <input type="checkbox" class="checkboxes_onecheckbox" data-id="{.id}">{.title}</label>
+	</foreach>
+	<input type="hidden" name="category_id" value="<?print $_GET['category_id']?>" />
+	</div>
+</form>
+<?endif;?>
+
+<?if(url(3)=='partners'):?>
+@d()->pcategories = d()->Pcategory;
+<form method="GET" style="margin-top:15px;" class="mfrm">
+	<input type="text" id="id" placeholder="ID" class="form-control" value="<?print $_GET['id']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="id" value="<?print $_GET['id']?>" />
+
+	<input type="text" id="title" placeholder="Название" class="form-control" value="<?print $_GET['title']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="title" value="<?print $_GET['title']?>" />
+
+	<input type="text" id="url" placeholder="Сайт" class="form-control" value="<?print $_GET['url']?>" style="margin-bottom:0;" />
+	<input type="hidden" name="url" value="<?print $_GET['url']?>" />
+
+	<select id="is_top">
+		<option value="">Топ: все партнеры</option>
+		<option value="1" <?if($_GET['is_top']=="1")print 'selected';?>>ТОП</option>
+		<option value="0" <?if(isset($_GET['is_top']) && $_GET['is_top']==0)print 'selected';?>>НЕ ТОП</option>
+	</select>
+	<input type="hidden" name="is_top" value="<?print $_GET['is_top']?>" />
+
+	<button class="btn btn-primary">Найти</button>
+	<a href="/admin/list/partners" class="btn btn-default">Сбросить</a>
+
+	<hr style="margin:15px 0;">
+
+	<script>
+		$(function(){
+			$('input[name="category_id"]').each(function(){
+				var ar = $(this).val().split(',')
+				for( key in ar){
+					$(this).parent().find('.checkboxes_onecheckbox[data-id='+ar[key]+']').attr('checked', true);
+				}
+			})
+			$('.checkboxes_onecheckbox').on('click',function(){
+				var ids=[]
+				$(this).parent().parent().find('.checkboxes_onecheckbox:checked').each(function(){
+					ids.push($(this).data('id'))
+				})
+				$(this).parent().parent().find('input[name="category_id"]').val(','+ids.join(',')+',');
+				if($(this).parent().parent().find('input[name="category_id"]').val()==',,'){
+					$(this).parent().parent().find('input[name="category_id"]').val('');
+				}
+			})
+		})
+	</script>
+
+	<div class="checkboxes">
+		<foreach pcategories>
+			<label class="checkbox"> <input type="checkbox" class="checkboxes_onecheckbox" data-id="{.id}">{.title}</label>
+		</foreach>
+		<input type="hidden" name="category_id" value="<?print $_GET['category_id']?>" />
+	</div>
+</form>
+<?endif;?>
+
+<table class="table table-striped table-bordered table-condensed"  width="100%">
+<thead>
+	<tr>
+        <?if(url(3)!='users'):?>
+		<th width=50><a href="?sort_field=id<?php
+			if(!isset($_GET['sort_direction']) || $_GET['sort_direction']=='asc'){
+				print '&sort_direction=desc';
+			}
+		?>">ID </a><?php
+
+			if(isset($_GET['sort_field']) && $_GET['sort_field'] == 'id'){
+				if (!isset($_GET['sort_direction']) || $_GET['sort_direction']=='asc'){
+					print ' ▲';
+				}else{
+					print ' ▼';
+				}
+
+			}
+		?></th>
+        <?else:?>
+        <th width=50>ID</th>
+        <?endif;?>
+		<?if(url(3)=='statuses'):?>
+		<th width=40>ICON</th>
+		<?endif;?>
+		<?if(url(3)=='stores'):?>
+		<th width="120" style="text-align:center;">LOGO</th>
+		<?endif;?>
+		<?php foreach(d()->datapool['admin']['columns'] as $col_name => $col_title){
+
+			print '<th>';
+			
+			$as_substr= strpos($col_name,'_as_');
+			if($as_substr!==false) {
+				$col_name = substr($col_name,0,$as_substr);
+				
+			}
+			if(in_array($col_name,d()->available_columns)){
+				print  '<a href="?sort_field=' . h($col_name);
+				if(!isset($_GET['sort_direction']) || $_GET['sort_direction']=='asc'){
+					print '&sort_direction=desc';
+				}else{
+					print '&sort_direction=asc';
+				}
+				print '">';
+
+			 	print $col_title;
+				
+				print '</a>';
+
+				if(isset($_GET['sort_field']) && $_GET['sort_field'] == $col_name){
+					if (!isset($_GET['sort_direction']) || $_GET['sort_direction']=='asc'){
+						print ' ▲';
+					}else{
+						print ' ▼';
+					}
+
+				}
+			}else{
+				print $col_title;
+			}
+			print  '</th>';
+		} ?>
+		
+		
+		 
+		<th>Действие</th>
+	</tr>
+</thead>
+	<foreach objectrow>
+	<tr>
+        <?if(url(3)!='users'):?>
+		<td style="vertical-align: middle">{.id}</td>
+		<?else:?>
+        <td style="vertical-align: middle">{.uid}</td>
+        <?endif;?>
+		<?if(url(3)=='statuses'):?>
+		<td style="vertical-align: middle"><img src="{.image}" width="40px"/></td>
+		<?endif;?>
+		<?if(url(3)=='stores'):?>
+		<td style="vertical-align: middle;text-align:center;"><img src="{.image}" width="100px"/></td>
+		<?endif;?>
+		<?php foreach(d()->datapool['admin']['columns'] as $col_name => $col_title){
+			print '<td style="vertical-align: middle">';
+			if(d()->_list_safe_data){
+				print h(d()->this[$col_name]);
+			}else{
+				if(url(3)=='users' && $col_name=='cash_usd'):
+					print d()->this['cash_usd_btc'];
+				else:
+					print d()->this[$col_name];
+				endif;
+			}
+			print '</td>';
+		} ?>
+		<td style="vertical-align: middle">
+
+        <?if(url(3)!='withdrawals'):?>
+		    <a href="/admin/edit/{curr_table}/{.id}" class="btn btn-mini">Править</a>
+        <?endif;?>
+        {.addbuttons}
+
+		<?if(url(3)=='users'):?>
+		    <a href="/admin/debug?auth={.id}" target="_blank" class="btn btn-mini">ЛК</a>
+		<?endif;?>
+
+		<?if(url(3)!='withdrawals' && url(3)!='statuses'):?>
+            <?if(url(3)!='operations' || url(3)=='operations' && d()->this->type=='ur_payment'):?>
+            <?if(url(3)!='users' || url(3)=='users' && d()->this->uid!='1' && d()->this->uid!='26659989' && d()->this->uid!='96593951'):?>
+            <a href="/admin/delete/{curr_table}/{.id}" target="_blank"   class="btn btn-danger btn-mini"   ><i class="icon-remove icon-white"></i></a>
+		    <?endif;?>
+		    <?endif;?>
+		<?endif;?>
+
+        <?if(url(3)=='withdrawals'):?>
+            <?$key = hash('md5','ti%^rex'.d()->Option->admin_key.'p@anz0#er');?>
+            <a href="/change_withdrawals?id={.id}&status=1&key=<?=$key?>" class="btn btn-mini btn-success">Выполнить</a>
+            <a href="/change_withdrawals?id={.id}&status=2&key=<?=$key?>" class="btn btn-mini btn-danger">Отклонить</a>
+        <?endif;?>
+		</td>
+	</tr>
+	</foreach>
+
+	 
+			
+		 	
+</table>
+
+<?php if(d()->paginator){ ?>
+{paginator}
+<?php } ?>
+
+<?if(url(3)!='messages' && url(3)!='operations' && url(3)!='full_cash_histories' && url(3)!='users' && url(3)!='supports' && url(3)!='withdrawals' && url(3)!='wt_and_dc'):?>
+<div class="form-actions">
+{list_addbutton}
+<?php if(!isset(d()->admin['use_model']['source'])){ ?>
+			<a href="?sort=yes<?php if(isset($_GET['page'])){ print '&page='.h($_GET['page']); } ?>" class="btn"><i class=" icon-random"></i> Сортировать порядок</a>
+
+<?php } ?>
+          </div>
+<?endif;?>
+		  
+<script>
+	$('form').submit(function(event){
+		var inputs = $(this).find('input');
+		$(inputs).each(function(index){
+			var id = $(this).attr('id');
+			var val = $(this).val();
+			if(id){
+				var inp = $('input[name="'+id+'"]');
+				if(val){
+					inp.val(val);
+				}else{
+					inp.prop('disabled', true);
+				}
+			}
+		});
+
+		var selects = $(this).find('select');
+		$(selects).each(function(index){
+			var id = $(this).attr('id');
+			var val = $(this).val();
+			if(id){
+				var inp = $('input[name="'+id+'"]');
+				if(val){
+					inp.val(val);
+				}else{
+					inp.prop('disabled', true);
+				}
+			}
+		});
+
+		if(!$('input[name="category_id"]').val()){
+			$('input[name="category_id"]').prop('disabled', true);
+		}
+	});
+</script>

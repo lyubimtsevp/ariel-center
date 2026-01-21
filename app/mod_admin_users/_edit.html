@@ -1,0 +1,236 @@
+{{form 'admin_users#save', 'user', 'global'=>true, 'ajax'=>true, 'run_before'=>'content', 'class'=>"form-horizontal admin_edit_form"}}
+<fieldset class="input_elements">
+
+    <input type="hidden" name="_enable_multiple" value="0">
+    <input type="hidden" name="element_id" value="<?php print htmlspecialchars(url(4)); ?>">
+
+    <legend>Управление пользователями</legend>
+    <div class="notice_container"></div>
+
+        <div class="control-group">
+            <label class="control-label"  >Логин*</label>
+            <div class="controls">
+                {{input 'login', 'class'=>'input-xlarge'}}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label"  >Пароль*</label>
+            <div class="controls">
+                {{input 'password', 'type'=>'password', 'value'=>'', 'class'=>'input-xlarge'}}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label"  >Подтверждение пароля*</label>
+            <div class="controls">
+                {{input 'password_confirmation', 'type'=>'password', 'value'=>'', 'class'=>'input-xlarge'}}
+            </div>
+        </div>
+
+        <div class="control-group" style="display: none">
+            <label class="control-label"  >Таблицы, к которым разрешён доступ</label>
+            <div class="controls">
+                {{input 'whitelist', 'class'=>'input-xlarge'}}
+            </div>
+        </div>
+
+        <legend>Доступ</legend>
+        <!--история операций-->
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_cb)print 'checked';?> > История операций: Бонус CashBack</label>
+                <input type="hidden"  name="user[is_o_cb]" value="{user.is_o_cb}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_cb_adm)print 'checked';?> > История операций: Бонус CashBack (Admitad)</label>
+                <input type="hidden"  name="user[is_o_cb_adm]" value="{user.is_o_cb_adm}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_offcheck)print 'checked';?> > История операций: Оффлайн чек</label>
+                <input type="hidden"  name="user[is_o_offcheck]" value="{user.is_o_offcheck}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_pack)print 'checked';?> > История операций: Покупка и апгрейд пакета</label>
+                <input type="hidden"  name="user[is_o_pack]" value="{user.is_o_pack}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_lead)print 'checked';?> > История операций: Лидерский бонус</label>
+                <input type="hidden"  name="user[is_o_lead]" value="{user.is_o_lead}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_lic)print 'checked';?> > История операций: Покупка лицензии</label>
+                <input type="hidden"  name="user[is_o_lic]" value="{user.is_o_lic}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_status)print 'checked';?> > История операций: Достижение статуса</label>
+                <input type="hidden"  name="user[is_o_status]" value="{user.is_o_status}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_shop)print 'checked';?> > История операций: Покупка в SHOP</label>
+                <input type="hidden"  name="user[is_o_shop]" value="{user.is_o_shop}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_o_event)print 'checked';?> > История операций: Покупка мероприятия</label>
+                <input type="hidden"  name="user[is_o_event]" value="{user.is_o_event}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--вывод средств-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_withdrawals)print 'checked';?> > Вывод средств</label>
+                <input type="hidden"  name="user[is_withdrawals]" value="{user.is_withdrawals}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--управление cashback-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_ex_cashbacks)print 'checked';?> > Управление CashBack</label>
+                <input type="hidden"  name="user[is_ex_cashbacks]" value="{user.is_ex_cashbacks}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--пользователи-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_users)print 'checked';?> > Пользователи</label>
+                <input type="hidden"  name="user[is_users]" value="{user.is_users}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--пакеты-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_packages)print 'checked';?> > Пакеты</label>
+                <input type="hidden"  name="user[is_packages]" value="{user.is_packages}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--статусы-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_statuses)print 'checked';?> > Статусы</label>
+                <input type="hidden"  name="user[is_statuses]" value="{user.is_statuses}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <!--мероприятия-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_events)print 'checked';?> > Мероприятия</label>
+                <input type="hidden"  name="user[is_events]" value="{user.is_events}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--новости-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_news)print 'checked';?> > Новости</label>
+                <input type="hidden"  name="user[is_news]" value="{user.is_news}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--shop-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_shops)print 'checked';?> > SHOP</label>
+                <input type="hidden"  name="user[is_shops]" value="{user.is_shops}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--полезная информация-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_informations)print 'checked';?> > Полезная информация</label>
+                <input type="hidden"  name="user[is_informations]" value="{user.is_informations}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--техподдержка-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_supports)print 'checked';?> > Техподдержка</label>
+                <input type="hidden"  name="user[is_supports]" value="{user.is_supports}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--контент на главной-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_index_conts)print 'checked';?> > Контент на главной</label>
+                <input type="hidden"  name="user[is_index_conts]" value="{user.is_index_conts}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--Магазины -->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_stores)print 'checked';?> > Магазины   </label>
+                <input type="hidden"  name="user[is_stores]" value="{user.is_stores}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--Партнеры -->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_partners)print 'checked';?> > Партнеры   </label>
+                <input type="hidden"  name="user[is_partners]" value="{user.is_partners}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--Шаблоны писем-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_letters)print 'checked';?> > Шаблоны писем   </label>
+                <input type="hidden"  name="user[is_letters]" value="{user.is_letters}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--Настройки сайта-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_options)print 'checked';?> > Настройки сайта   </label>
+                <input type="hidden"  name="user[is_options]" value="{user.is_options}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+        <!--Модуль SEO-->
+        <br>
+        <div class="control-group" style="margin-bottom:0;padding:0;">
+            <div class="controls">
+                <label class="checkbox" style="margin-bottom:0; "> <input type="checkbox" class="automatic_checkbox" <?if(d()->user->is_seoparams)print 'checked';?> > Модуль SEO   </label>
+                <input type="hidden"  name="user[is_seoparams]" value="{user.is_seoparams}" class="input-small automatic_checkbox_input"  >
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <input type="submit"   value="Сохранить" class="btn btn-primary" >
+            <a href="/admin/list/admin_users"  class="btn">Отмена</a>
+        </div>
+</fieldset>
+{{/form}}
+		  
+		  

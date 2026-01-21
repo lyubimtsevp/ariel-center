@@ -1,0 +1,52 @@
+<div class="container cab-cont">
+    {{cab_le_profile_tpl}}
+    <div class="le-cab-cont-block">
+        <h1>{"profile_edit"|t}</h1>
+        @if($_GET['action']=='error'):
+        <div class="alert alert-warning pwidth">{"alert_perror"|t}</div>
+        @endif;
+        <form method="POST" class="profile-form" id="profile-form">
+            <div class="wrap">
+                <label>
+                    <span><i class="icon icon-c"></i>{"company"|t}</span>
+                    <div class="inp"><input type="text" name="title" class="required" value="{user.title}" required /></div>
+                </label>
+                <label>
+                    <span><i class="icon icon-e"></i>{"email"|t}</span>
+                    <div class="inp"><input type="text" name="email" value="{user.email}" readonly /></div>
+                </label>
+                <label>
+                    <span><i class="icon icon-p"></i>{"phone"|t}</span>
+                    <div class="inp"><input type="text" name="phone" class="required" value="{user.phone}" required /></div>
+                </label>
+                <label>
+                    <span><i class="icon icon-cy"></i>{"city"|t}</span>
+                    <div class="inp"><input type="text" name="city" class="required" value="{user.city}" required /></div>
+                </label>
+                <label>
+                    <span><i class="icon icon-cy"></i>{"country"|t}</span>
+                    <div class="inp">
+                    <select name="country">
+                        <foreach countries_list>
+                            <option value="{.id}" {.selected}>{.title}</option>
+                        </foreach>
+                    </select>
+                    </div>
+                </label>
+                <label class="show-icon">
+                    <span><i class="icon icon-pa"></i>{"password"|t}</span>
+                    <div class="inp">
+                    <input type="password" name="password" id="password" value="" placeholder="******" />
+                    <i class="showhide-icon" onclick="ShowHidePassword('password')"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="text-center mt-25">
+                <button type="submit" class="btn btn-lblue">{"save"|t}</button>
+                @if(d()->user->access):
+                <a href="{langlink}/le_cabinet/" class="btn btn-silver ml-25">{"cancel"|t}</a>
+                @endif;
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container mt-30 mb-50">
+	<div class="row">
+		<div class="col-lg-3 col-md-4 store_dtl">
+			<div class="store store_detail">
+				<div class="img"><a href="{langlink}/stores/{.id}"><img src="{.image|preview 'auto', 200 }" alt="{.title}" /></a></div>
+				<span class="hr">
+					<img src="/images/elip1.png" class="elip1" />
+					<hr>
+					<img src="/images/elip2.png" class="elip2" />
+				</span>
+				<center>
+					<strong class="h">{.url}</strong>
+					<div class="flline">{"cb"|t}: <span class="cashback">{.cashback}%</span></div>
+					<p class="sred">{"sred"|t} <strong>{.sred} {"days"|t}</strong></p>
+				</center>
+				
+				@if(d()->this->is_top):
+				<span class="sticker">{"top"|t}</span>
+				@endif;
+			</div>
+            @if(d()->this->link):
+			<a href="{.adm_link}" target="_blank" class="btn btn-pink">{"gts"|t}</a><br>
+            @endif;
+			@if(d()->o->extension):
+			<a href="{o.extension}" target="_blank" class="app-link rash brw"></a><br>
+			@else:
+			<a href="#" class="app-link rash-dev brw"></a><br>
+			@endif;
+			@if(d()->o->google_play):
+			<a href="{o.google_play}" target="_blank" class="app-link android"></a><br>
+			@else:
+			<a href="#" class="app-link android-dev"></a><br>
+			@endif;
+			@if(d()->o->app_store):
+			<a href="{o.app_store}" target="_blank" class="app-link ios"></a>
+			@else:
+			<a href="#" class="app-link ios-dev"></a>
+			@endif;
+		</div>
+		<div class="col-lg-9 col-md-8 store_info">
+            @if(d()->this->image2):
+			<img src="{.image2|preview 847, 224}" alt="{.title}" />
+            @endif;
+			<h1>{.zag} {{edit}}{{delete}}</h1>
+			<div class="b-line">
+				<span class="btn-lblue active" onclick="stdr(this, 'info')">Информация</span>
+				<span class="btn-lblue" onclick="stdr(this, 'rec')">Рекомендация</span>
+			</div>
+			<div id="info">
+				{.info}
+			</div>
+			<div id="rec" class="none">
+				{.rec}
+			</div>
+		</div>
+	</div>
+</div>

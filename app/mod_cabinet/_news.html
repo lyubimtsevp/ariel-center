@@ -1,0 +1,47 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"news"|t}</h1>
+            <div class="events-flex">
+                <foreach news_list>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 mb-30">
+                        <div class="cab-iblock cab-event-bg">
+                            <span class="z"><i class="mdi mdi-calendar"></i> {.date}</span>
+                            <img src="{.image|preview '535', '225'}" class="brad-0" alt="">
+                            <div class="iblock-cont">
+                                <h3>{.title}</h3>
+                                <p class="event-prev">{.short_text}</p>
+                                <div class="event-subinfo">
+                                    <div class="buttons buttons-right">
+                                        <a href="#news-view-{.id}" data-toggle="modal" class="btn btn-silver ml-25">{"detail"|t}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </foreach>
+            </div>
+            <div class="paginator">{paginator}</div>
+        </div>
+    </div>
+</div>
+
+<foreach news_list>
+    <div id="news-view-{.id}" class="modal fade" tabindex='-1'>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><i class="mdi mdi-calendar"></i> {.date}</h4>
+                </div>
+                <img src="{.image|preview '1000', '400'}" class="brad-0 eve-d-img" alt="">
+                <div class="modal-body mb-event">
+                    <h4>{.title}</h4>
+                    {.text}
+                </div>
+            </div>
+        </div>
+    </div>
+</foreach>

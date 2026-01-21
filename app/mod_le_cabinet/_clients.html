@@ -1,0 +1,61 @@
+<div class="container cab-cont">
+    {{cab_le_profile_tpl}}
+    <div class="le-cab-cont-block">
+        <h1>{"clients"|t}</h1>
+        {filtr}
+        <div class="datepicker-wrap" id="datepicker-locale" data-locale="{lang}">
+            <form method="GET">
+            <i class="mdi mdi-close" onclick="$('#datepicker-locale').hide();"></i>
+            <div class="col-xs-12"><h4>{"selected_period"|t}:</h4></div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <div class="input-group date" >
+                        <input type="text" name="startdate" value="<?=$_GET['startdate']?>" class="form-control" id="startdate"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <div class="input-group date" >
+                        <input type="text" name="enddate" value="<?=$_GET['enddate']?>"  class="form-control" id="enddate"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 mt-10">
+                <button class="btn btn-yellow">{"save"|t}</button>
+            </div>
+            </form>
+        </div>
+        <div class="clients_wrap">
+            <div class="clients_head">
+                <span class="flex0">№</span>
+                <span class="flex15">{"client_fio"|t}</span>
+                <span class="flex1">ID</span>
+                <span class="clicka">{"date"|t}</span>
+                <span class="c">{"summa_cheta"|t}</span>
+                <span class="c">CashBack</span>
+            </div>
+            <foreach operations_list>
+            @if(d()->num)d()->num++;    
+            @if(!d()->num)d()->num = 1;
+            <div class="clients_line">
+                <span class="flex0"><strong>№:</strong>{num}</span>
+                <span class="flex15"><strong>{"client_fio"|t}:</strong>{.name}</span>
+                <span class="flex1"><strong>ID:</strong>{.uid}</span>
+                <span><strong>{"date"|t}:</strong>{.date_f}</span>
+                <span class="c"><strong>{"summa_cheta"|t}:</strong>{.amount} RUB</span>
+                <span class="c"><strong>CashBack:</strong>{.value_p}% / {.value} RUB</span>
+            </div>
+            </foreach>
+        </div>
+        {noresults}
+        @if(d()->flg):
+        <div class="text-center mt-40 load_operations">
+            <img src="/images/loading.gif" alt="" class="" />
+            <button onclick="load_operations(this);" data-limit="{o.operation_limit}" class="btn btn-lblue">{"show_more"|t}</button>
+        </div>
+        @endif;
+    </div>
+</div>

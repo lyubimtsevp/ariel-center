@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - H₂ Element</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="antialiased">
+<div class="min-h-screen flex flex-col bg-gradient-to-r from-[#3a8fb7] to-[#4ebfb5]">
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-[#2C5F7F] flex items-center justify-center text-white font-bold text-lg rounded">H<sub class="text-[10px]">2</sub></div>
+                    <span class="text-[#2C5F7F] font-semibold text-lg tracking-wide">ELEMENT</span>
+                </a>
+                <a href="https://albixe.com" class="hidden sm:block text-sm text-blue-600 hover:underline">albixe.com</a>
+            </div>
+        </div>
+    </header>
+    <main class="flex-1 flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-2xl">
+            <div class="bg-[#3a7a9e]/90 backdrop-blur-sm rounded-lg shadow-xl p-8 sm:p-10">
+                <h1 class="text-white text-xl font-medium mb-8 text-center border-b border-white/20 pb-4">Регистрация</h1>
+                <form class="space-y-6" method="POST" id="registration-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">ID спонсора</label>
+                            <input type="text" name="referer" placeholder="ID спонсора" class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Фамилия</label>
+                            <input type="text" name="surname" placeholder="Фамилия" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Имя</label>
+                            <input type="text" name="name" placeholder="Имя" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Страна</label>
+                            <input type="text" name="country" placeholder="Страна" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Город</label>
+                            <input type="text" name="city" placeholder="Город" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">E-mail</label>
+                            <input type="email" name="email" placeholder="E-mail" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Пароль</label>
+                            <input type="password" name="password" placeholder="Пароль" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-white text-sm">Повторить пароль</label>
+                            <input type="password" name="password_repeat" placeholder="Повторить пароль" required class="w-full px-4 py-3 bg-[#2d6a8a]/50 border border-white/10 rounded text-white placeholder-white/50" />
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" name="agreement" value="1" required class="w-4 h-4 mt-0.5" />
+                            <span class="text-white/90 text-sm">Я согласен с условиями Пользовательского соглашения</span>
+                        </label>
+                        <label class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" name="cashback_rules" value="1" required class="w-4 h-4 mt-0.5" />
+                            <span class="text-white/90 text-sm">Я согласен с Политикой конфиденциальности</span>
+                        </label>
+                    </div>
+                    <div class="error text-red-300 text-sm hidden"></div>
+                    <div class="success text-green-300 text-sm hidden">Регистрация успешна! Проверьте email.</div>
+                    <button type="submit" class="w-full bg-[#4ebfb5] hover:bg-[#4ebfb5]/90 text-white font-medium py-3 rounded uppercase shadow-md">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-[#2C5F7F]/80 py-4">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-white text-xs sm:text-sm">2019 © ООО «АлБиКС». Все права защищены.</p>
+        </div>
+    </footer>
+</div>
+<script src="/vendors/jquery/jquery.min.js"></script>
+<script>
+\$('#registration-form').on('submit', function(e) {
+    e.preventDefault();
+    var form = \$(this);
+    form.find('.error, .success').hide();
+    var data = {
+        sponsor: form.find('[name="referer"]').val(),
+        surname: form.find('[name="surname"]').val(),
+        name: form.find('[name="name"]').val(),
+        country: form.find('[name="country"]').val(),
+        city: form.find('[name="city"]').val(),
+        email: form.find('[name="email"]').val(),
+        password: form.find('[name="password"]').val(),
+        password_repeat: form.find('[name="password_repeat"]').val(),
+        type: 'fiz'
+    };
+    \$.ajax({
+        url: '/ajax/registration',
+        type: 'POST',
+        data: {info: JSON.stringify(data)},
+        success: function(response) {
+            if (response == 'success') {
+                form.find('.success').removeClass('hidden').show();
+                setTimeout(function() { window.location.href = '/login'; }, 2000);
+            } else {
+                form.find('.error').text(response).removeClass('hidden').show();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

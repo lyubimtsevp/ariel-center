@@ -1,0 +1,69 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            @if($_GET['action']=='buy_package'):
+            <div class="col-lg-12">
+                <div class="alert alert-success">
+                    {"s_buyp"|t}
+                </div>
+            </div>
+            @endif;
+            @if($_GET['action']=='buy_license'):
+            <div class="col-lg-12">
+                <div class="alert alert-success">
+                    {"s_buyl"|t}
+                </div>
+            </div>
+            @endif;
+            @if($_GET['error']):
+            <div class="col-lg-12">
+                <div class="alert alert-danger">
+                    @if($_GET['error']=='none_package'):
+                    {"server_error"|t}
+                    @endif;
+                    @if($_GET['error']=='payment_error'):
+                    {"payment_error"|t}
+                    @endif;
+                </div>
+            </div>
+            @endif;
+            <div class="col-lg-6 col-md-6 cab-iblock">
+                <a href="#qr-modal" data-toggle="modal">
+                <span class="z arrowbg">QR code</span>
+                <img src="/images/qrbg.png" alt="" class="" />
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-6 cab-iblock">
+                <div class="invite-action" id="copy-ref">
+                <span class="z arrowbg">{"invite"|t}</span>
+                <img src="/images/invitebg.png" alt="" class="" />
+                </div>
+                <div id="reflnk" class="none">{reflnk}</div>
+            </div>
+            <div class="col-lg-4 col-md-6 cab-iblock">
+                <span class="z">{"tek_balance"|t}</span>
+                <div class="flx-c h100 bgrub"><span class="fs30">{user.balance} <small>{"rub"|t}</small></span></div>
+            </div>
+            <div class="col-lg-4 col-md-6 cab-iblock">
+                <span class="z">{"tek_cahback"|t}</span>
+                <div class="flx-c h100 bgrub"><span class="fs30">{user.total_cb_balance} <small>{"rub"|t}</small></span></div>
+            </div>
+            <div class="col-lg-4 col-md-6 cab-iblock">
+                <span class="z">{"o_cahback"|t}</span>
+                <div class="flx-c h100 bgrub"><span class="fs30">{user.total_opencb_balance} <small>{"rub"|t}</small></span></div>
+            </div>
+            <div class="text-center mt-25 w410fix">
+                @if(d()->last_package):
+                <a href="#buy-package" class="btn btn-spink" data-toggle="modal">{"buy_pack"|t}</a>
+                @endif;
+                @if(d()->package->licensies):
+                <a href="#buy-license" class="btn btn-silver ml-25" data-toggle="modal">{"buy_lic"|t}</a>
+                @endif;
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="copy_ref_info" id="copy-message">{"scopirovano"|t}</div>

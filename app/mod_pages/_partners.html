@@ -1,0 +1,80 @@
+<input type="hidden" id="table" value="<?=url(1);?>" xmlns=""/>
+<div class="container mt-30 mb-30">
+	<div class="row">
+		<div class="col-lg-3 col-md-4">
+			<span class="category-h">{"category_h"|t}</span>
+			<ul class="categories">
+				<li class="{active}"><span><a href="?category=0" data-category="0"><i class="icon" style="background-image:url('/images/c_icon1.png');"></i>{"all_partners"|t}</a></span></li>
+				<foreach categories_list>
+				<li class="{.active}"><span><a href="?category={.id}" data-category="{.id}"><i class="icon" style="background-image:url('{.image}');"></i>{.title} ({.cnt})</a></span></li>
+				</foreach>
+			</ul>
+		</div>
+		<div class="col-lg-9 col-md-8">
+			<div id="sl3" class="slider slider_cat">
+				<foreach slides>
+					@if(d()->this->link):
+					@if(d()->this->is_out):
+					<a href="{.link}" target="_blank"><img src="{.image|preview 847, 220}" alt=""/></a>
+					@else:
+					<a href="{langlink}{.link}"><img src="{.image|preview 847, 220}" alt=""/></a>
+					@endif;
+					@else:
+					<img src="{.image|preview 847, 220}" alt=""/>
+					@endif;
+				</foreach>
+			</div>
+			<div class="c_sad">
+				<h1>{title}</h1>
+				<div class="buttons">
+					<a href="?category={cat}&sort=date&search={search}" data-sort="date" class="btn-flblue {date_a}">{"date_f"|t}</a>
+					<a href="?category={cat}&sort=cashback&search={search}" data-sort="cashback" class="btn-flblue {cashback_a}">{"cash_f"|t}</a>
+					<a href="?category={cat}&sort=popular&search={search}" data-sort="popular" class="btn-flblue {popular_a}"><span>{"popular_f"|t}</span></a>
+				</div>
+			</div>
+			<form method="GET" class="searchform" id="searchform">
+				<label for="ssearch">{"findpop"|t}</label>
+				<input type="text" name="search" id="ssearch" value="{search}" class="form-control">
+				<button type="submit" class="btn btn-lblue">{"search"|t}</button>
+
+				<input type="hidden" name="sort" value="<?=$_GET['sort']?>" />
+				<input type="hidden" name="category" value="<?=$_GET['category']?>" />
+			</form>
+			<div class="stores" data-category="{cat}" data-sort="{sort}" data-amount="{cnt}" data-elementspage="{cnt}" data-search="{search}">
+				<foreach stores>
+					<div class="store">
+						<div class="img"><a href="{langlink}/partners/{.id}"><img src="{.image|preview 'auto', 129 }" alt="{.title}" /></a></div>
+						<span class="hr">
+							<img src="/images/elip1.png" class="elip1" />
+							<hr>
+							<img src="/images/elip2.png" class="elip2" />
+						</span>
+						<center>
+							{"cb"|t}
+							<span class="cashback">{.cashback}%</span>
+							<p class="url">{.url}</p>
+						</center>
+						
+						@if(d()->this->is_top):
+						<span class="sticker">{"top"|t}</span>
+						@endif;
+					</div>
+				</foreach>
+			</div>
+			@if(count(d()->stores) && d()->check_more):
+			<div class="add-more">
+			@else:
+			<div class="add-more none">
+			@endif;
+				<button class="btn btn-add-more" onclick="addmore(this);">{"view_more"|t}</button>
+				<img src="/images/loading.gif" alt="" />
+			</div>
+			
+			@if(!count(d()->stores)):
+			<p id="not_stores">{"not_partners"|t}</p>
+			@else:
+			<p id="not_stores" class="none">{"not_partners"|t}</p>
+			@endif;
+		</div>
+	</div>
+</div>

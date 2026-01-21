@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap-datetimepicker.min.css" />
+    <!-- Fancybox -->
+    <!-- <link rel="stylesheet" type="text/css" href="/vendors/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/vendors/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" /> -->
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="/vendors/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="/vendors/slick/slick-theme.css">
+
+    <link rel="stylesheet" href="/vendors/mdi/css/materialdesignicons.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/images/style.css?v={nocache}"/>
+    <link rel="stylesheet" type="text/css" href="/images/datastyle.css"/>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="/images/style_ie.css"/><![endif]-->
+
+    <script type="text/javascript" src="/js/jquery-2.2.4.js"></script>
+
+    <title>{Seo.title}</title>
+    <meta name="description" content='{Seo.description}'/>
+    <meta name="keywords" content='{Seo.keywords}'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body data-lang="{lang}" class="cab-body {body_le}">
+{{admin_panel}}
+<div class="cab-header">
+    <div class="container{fluid} cab-header-line">
+        <div class="cab-logo">
+            <a href="{langlink}/cabinet/"><img src="/images/cab-logo.png" alt="" class="" /></a>
+        </div>
+        @if(d()->user->type=='ur'):
+        <div class="cab-hcont">
+            <ul class="cab-hmenu">
+                <li class="{profile_a}"><a href="{langlink}/<?=url(1)?>/">{"my_profile"|t}</a></li>
+                <li class="{payment_a}"><a href="{langlink}/<?=url(1)?>/payment">{"payment"|t}</a></li>
+                <li class="{clients_a}"><a href="{langlink}/<?=url(1)?>/clients">{"clients"|t}</a></li>
+            </ul>
+        </div>
+        @else:
+        <div class="cab-hcont cab-hcont-fiz">
+            <div class="text-center"><a href="{langlink}/" class="cab-fiz-lnk"><?=$_SERVER['HTTP_HOST']?></a></div>
+        </div>
+        @endif;
+        <div class="cab-hbtns">
+            <div class="cab-lang-div">
+                @if(d()->lang=='en'):
+                <a href="#"><span class="flg en"></span>Eng</a>
+                <div class="lang-options">
+                    <a href="/{thislnk}"><span class="flg ru"></span>Rus</a>
+                </div>
+                @else:
+                <a href="#"><span class="flg ru"></span>Rus</a>
+                <div class="lang-options">
+                    <a href="/en/{thislnk}"><span class="flg en"></span>Eng</a>
+                </div>
+                @endif;
+            </div>
+            <a href="?action=logout" title='{"logout"|t}'><img src="/images/cab-logout.png" alt='{"logout"|t}' class="" /></a>
+        </div>
+    </div>
+</div>

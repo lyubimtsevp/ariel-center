@@ -1,0 +1,19 @@
+{{cab_menu_tpl}}
+<div class="container-fluid cab-cont cab-cont-fiz">
+    {{cab_profile_tpl}}
+    <div class="le-cab-cont-block cab-cont-block">
+        <div class="row">
+            <h1 class="otherh1">{"useful_information"|t}</h1>
+            <div class="pdf-flex">
+                <foreach files>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-20">
+                    <a class="pdf-block" href="{.file}" target="_blank">
+                        <p>{.title}</p>
+                        <small>{.extension} ({.size} kb)</small>
+                    </a>
+                </div>
+                </foreach>
+            </div>
+        </div>
+    </div>
+</div>

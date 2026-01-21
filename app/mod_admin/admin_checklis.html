@@ -1,0 +1,12 @@
+<?
+$user = d()->User(url(4));
+$sponsor = d()->User->where('uid=?', $user->user_id);
+if(!$sponsor->licensies && !$user->is_active && !$user->check_active && $user->type=='ur'):
+?>
+<div class="control-group">
+    <label class="control-label"  ></label>
+    <div class="controls">
+        <strong style="color:darkred;">Внимание. У спонсора отсутствуют лицензии.</strong>
+    </div>
+</div>
+<?endif;?>

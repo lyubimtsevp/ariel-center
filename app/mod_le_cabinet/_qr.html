@@ -1,0 +1,23 @@
+<script>document.docReady=function(f) { if(document.readyState === 'complete') f(); else document.addEventListener('DOMContentLoaded', f); }</script>
+<script src="/vendors/qrsc/all-59b65c8594.min.js" defer></script>
+<script type="text/javascript" src="/vendors/qrsc/instascan.min.js"></script>
+<script type="text/javascript" src="/vendors/qrsc/qr.js"></script>
+
+<style>
+    .qrcodescan{
+        width:100%;
+    }
+    .qrcodescan video{
+        width:100%;
+    }
+</style>
+
+
+<div class="container cab-cont">
+    <div class="qrcodescan">
+        <div class="preview-wrap loading">
+            <video playsinline></video>
+        </div>
+        <script class="result-template" type="x-tmpl-mustache"></script>
+    </div>
+</div>
