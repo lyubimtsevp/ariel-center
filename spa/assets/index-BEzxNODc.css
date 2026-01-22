@@ -72,6 +72,27 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   transform: translateX(-50%) !important;
 }
 
+
+/* Основной контейнер на всю высоту */
+.relative.w-\[1440px\].h-\[800px\] {
+  height: 100vh !important;
+}
+
+/* Контейнер с фоном на всю высоту */
+.absolute.bottom-\[1px\].right-0.w-\[1386px\].h-\[739px\] {
+  height: 100vh !important;
+}
+
+/* Блок с bg_main на всю высоту */
+.absolute.bottom-0.right-0.w-\[1371px\].h-\[739px\] {
+  height: 100vh !important;
+}
+
+/* Дочерний контейнер на всю высоту */
+.absolute.h-\[800px\].left-0.right-0.top-0 {
+  height: 100vh !important;
+}
+
 /* Центрируем блок с рукопожатием */
 .absolute.bottom-\[433px\].right-\[477px\].w-\[488px\].h-\[252px\] {
   left: 50% !important;
