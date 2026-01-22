@@ -140,3 +140,9 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   bottom: auto !important;
   top: 150px !important;
 }
+
+/* Блок со статусом справа - под блоком профиля на том же расстоянии */
+.absolute.bottom-\[329px\].right-\[1px\].w-\[186px\].h-\[92px\] {
+  bottom: auto !important;
+  top: 448px !important;
+}
