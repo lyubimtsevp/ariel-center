@@ -168,3 +168,53 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   transform: none !important;
   text-align: center !important;
 }
+
+/* Блок с балансом - ширина 477 */
+.absolute.bottom-\[275px\].right-\[5px\].w-\[482px\].h-\[105px\] {
+  width: 475px !important;
+}
+
+/* Внутренние элементы блока баланса по ширине родителя */
+.absolute.bottom-\[275px\].right-\[5px\].w-\[482px\].h-\[105px\] > div:first-child {
+  width: 475px !important;
+}
+
+/* Иконка рубля - сдвинуть влево чтобы не вылезала */
+.absolute.bottom-\[4px\].right-\[1px\].w-\[118px\].h-\[101px\] {
+  right: 0px !important;
+}
+
+/* Фон баланса строго 477px */
+.absolute.bottom-0.right-0.w-\[482px\].h-\[105px\] {
+  width: 475px !important;
+}
+
+/* Блок баланса смещен влево на 2px */
+.absolute.bottom-\[275px\].right-\[5px\].w-\[482px\].h-\[105px\] {
+  right: 7px !important;
+}
+
+/* Исправить О00 на ООО в копирайте */
+.absolute.bottom-\[8px\].left-\[90px\] {
+  font-size: 0 !important;
+}
+.absolute.bottom-\[8px\].left-\[90px\]::before {
+  content: '2019 © ООО Албикс. Все права защищены.' !important;
+  font-size: 16px !important;
+  color: #95b5de !important;
+}
+
+/* Кнопка Заказать оптом капсом */
+.absolute.bottom-\[30px\].right-\[166px\] {
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+/* Увеличить ширину чтобы текст влез в одну строку */
+.absolute.bottom-\[30px\].right-\[166px\].translate-x-\[100\%\].translate-y-\[50\%\].w-\[113px\] {
+  width: 180px !important;
+  text-align: center !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translate(-50%, 50%) !important;
+}
