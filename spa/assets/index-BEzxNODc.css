@@ -146,3 +146,25 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   bottom: auto !important;
   top: 448px !important;
 }
+
+/* Текст ID внутри синего фона */
+.absolute.bottom-\[63px\].right-\[12px\].w-\[153px\].h-\[38px\] > div:nth-child(2) {
+  bottom: 3px !important;
+  right: 3px !important;
+  width: 145px !important;
+  height: 30px !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Текст ФИО под блоком ID */
+.absolute.bottom-\[54px\].right-\[137px\].translate-x-\[100\%\].translate-y-\[50\%\].w-\[100px\] {
+  bottom: 23px !important;
+  right: 5px !important;
+  left: 5px !important;
+  width: auto !important;
+  transform: none !important;
+  text-align: center !important;
+}
