@@ -109,10 +109,28 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
 
 /* Блок с балансом и кнопками */
 .absolute.bottom-0.right-\[476px\].w-\[495px\].h-\[424px\] {
-  position: fixed !important;
+  position: absolute !important;
+  z-index: 100 !important;
   bottom: auto !important;
   right: auto !important;
   top: 432px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
+}
+
+/* Родительский контейнер должен прокручиваться */
+.relative.w-\[1440px\].h-\[800px\] {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Футер - убрать позиционирование чтобы дочерние элементы выходили наружу */
+.absolute.bottom-0.right-0.w-\[1440px\].h-\[424px\] {
+  position: static !important;
+}
+
+/* Убрать иконки сохранения при наведении на фон */
+.absolute.top-\[60px\].left-\[69px\].w-\[1371px\].h-\[739px\] img {
+  pointer-events: none !important;
+  user-select: none !important;
 }
