@@ -43,3 +43,13 @@ html, body {
 .relative.w-\[1440px\].h-\[800px\].mx-auto .w-\[1392px\] {
   width: 100% !important;
 }
+
+/* Sidebar слева с fixed позиционированием */
+.absolute.bottom-0.right-\[1371px\].w-\[69px\].h-\[740px\] {
+  position: fixed !important;
+  left: 0 !important;
+  top: 60px !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 10 !important;
+}
