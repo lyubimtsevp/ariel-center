@@ -53,3 +53,28 @@ html, body {
   bottom: auto !important;
   z-index: 10 !important;
 }
+
+/* Sidebar фон на всю высоту на главной странице */
+.absolute.bottom-0.right-0.w-\[69px\].h-\[740px\].bg-\[\#1e5885\] {
+  height: calc(100vh - 60px) !important;
+  bottom: auto !important;
+}
+
+/* Sidebar на всю высоту на других страницах */
+aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
+  height: calc(100vh - 60px) !important;
+}
+
+/* Центрируем блок с кнопками и балансом */
+.absolute.bottom-0.right-\[476px\].w-\[495px\].h-\[424px\] {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Центрируем блок с рукопожатием */
+.absolute.bottom-\[433px\].right-\[477px\].w-\[488px\].h-\[252px\] {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
