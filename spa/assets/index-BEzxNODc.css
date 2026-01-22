@@ -69,7 +69,7 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
 .absolute.bottom-0.right-\[476px\].w-\[495px\].h-\[424px\] {
   left: 50% !important;
   right: auto !important;
-  transform: translateX(-50%) !important;
+  transform: translate(-50%, 50%) !important;
 }
 
 
@@ -98,9 +98,21 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
+  bottom: auto !important;
+  top: 150px !important;
 }
 
 /* Блок с bg_main от header на всю высоту */
 .absolute.top-\[60px\].left-\[69px\].w-\[1371px\].h-\[739px\] {
   height: calc(100vh - 60px) !important;
+}
+
+/* Блок с балансом и кнопками */
+.absolute.bottom-0.right-\[476px\].w-\[495px\].h-\[424px\] {
+  position: fixed !important;
+  bottom: auto !important;
+  right: auto !important;
+  top: 432px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
 }
