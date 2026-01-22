@@ -99,3 +99,8 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   right: auto !important;
   transform: translateX(-50%) !important;
 }
+
+/* Блок с bg_main от header на всю высоту */
+.absolute.top-\[60px\].left-\[69px\].w-\[1371px\].h-\[739px\] {
+  height: calc(100vh - 60px) !important;
+}
