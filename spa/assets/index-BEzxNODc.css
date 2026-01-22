@@ -28,3 +28,18 @@ html, body {
   width: 100vw !important;
   min-height: 100vh !important;
 }
+
+/* Родительский контейнер на 100% */
+.relative.w-\[1440px\].h-\[800px\].mx-auto {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Все большие элементы внутри на 100% */
+.relative.w-\[1440px\].h-\[800px\].mx-auto .w-\[1440px\],
+.relative.w-\[1440px\].h-\[800px\].mx-auto .w-\[1386px\],
+.relative.w-\[1440px\].h-\[800px\].mx-auto .w-\[1371px\],
+.relative.w-\[1440px\].h-\[800px\].mx-auto .w-\[1392px\] {
+  width: 100% !important;
+}
