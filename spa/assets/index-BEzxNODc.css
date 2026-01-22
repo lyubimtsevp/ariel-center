@@ -134,3 +134,9 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   pointer-events: none !important;
   user-select: none !important;
 }
+
+/* Блок с профилем справа - на одну высоту с рукопожатием */
+.absolute.bottom-\[438px\].right-\[1px\].w-\[186px\].h-\[281px\] {
+  bottom: auto !important;
+  top: 150px !important;
+}
