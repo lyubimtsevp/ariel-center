@@ -239,7 +239,7 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
 /* Переместить основной контейнер от футера к хедеру */
 [data-node-id="8:328"] {
   bottom: auto !important;
-  top: 60px !important;
+  
 }
 
 /* Привязать копирайт к низу страницы */
