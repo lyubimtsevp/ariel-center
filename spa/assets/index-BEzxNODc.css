@@ -283,3 +283,16 @@ header.h-\[60px\].bg-\[#fefefe\].flex-shrink-0.relative.z-20 {
 [data-node-id="8:247"] {
   right: 25px !important;
 }
+
+/* Hover эффект для блока загрузки фото */
+[data-node-id="8:277"] {
+  cursor: pointer !important;
+}
+
+[data-node-id="8:278"] {
+  transition: background-color 0.3s ease !important;
+}
+
+[data-node-id="8:277"]:hover [data-node-id="8:278"] {
+  background-color: #2a6a9a !important;
+}
