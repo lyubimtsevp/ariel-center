@@ -241,3 +241,17 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   bottom: auto !important;
   top: 60px !important;
 }
+
+/* Привязать копирайт к низу страницы */
+[data-node-id="8:361"] {
+  position: fixed !important;
+  bottom: 8px !important;
+  left: 90px !important;
+}
+
+/* Привязать соцсети к низу страницы */
+.absolute.bottom-\[6px\].right-\[19px\].flex.items-center.gap-\[8px\] {
+  position: fixed !important;
+  bottom: 6px !important;
+  right: 19px !important;
+}
