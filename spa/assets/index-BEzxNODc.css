@@ -260,3 +260,8 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
 aside {
   padding-top: 30px !important;
 }
+
+/* Изменить ширину главного контейнера на 100vh */
+.w-\[1440px\].min-h-screen.mx-auto.flex.flex-col {
+  width: 100vh !important;
+}
