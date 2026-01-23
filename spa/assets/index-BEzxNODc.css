@@ -273,3 +273,8 @@ header.h-\[60px\].bg-\[#fefefe\].flex-shrink-0.relative.z-20 {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
+/* Отступ справа 24px для блока с фото и статусами */
+[data-node-id="8:271"] {
+  right: 24px !important;
+}
