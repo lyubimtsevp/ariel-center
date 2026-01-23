@@ -269,7 +269,7 @@ header.h-\[60px\].bg-\[#fefefe\].flex-shrink-0.relative.z-20 {
 
 /* Изменить ширину главного контейнера на 100vw */
 .w-\[1440px\].min-h-screen.mx-auto.flex.flex-col {
-  width: calc(100vw - 69px) !important;
+  width: 100vw !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
