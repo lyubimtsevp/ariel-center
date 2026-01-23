@@ -261,12 +261,15 @@ aside {
   padding-top: 30px !important;
 }
 
-/* Изменить ширину главного контейнера на 100vh */
-.w-\[1440px\].min-h-screen.mx-auto.flex.flex-col {
-  width: calc(100vh - 69px) !important;
-}
 
 /* Установить ширину header 100vh */
 header.h-\[60px\].bg-\[#fefefe\].flex-shrink-0.relative.z-20 {
   width: 100vh !important;
+}
+
+/* Изменить ширину главного контейнера на 100vw */
+.w-\[1440px\].min-h-screen.mx-auto.flex.flex-col {
+  width: calc(100vw - 69px) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
