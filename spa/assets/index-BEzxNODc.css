@@ -278,3 +278,8 @@ header.h-\[60px\].bg-\[#fefefe\].flex-shrink-0.relative.z-20 {
 [data-node-id="8:271"] {
   right: 24px !important;
 }
+
+/* Отступ справа 25px для блока со статусом */
+[data-node-id="8:247"] {
+  right: 25px !important;
+}
