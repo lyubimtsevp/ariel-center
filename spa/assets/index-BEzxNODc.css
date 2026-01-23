@@ -263,5 +263,5 @@ aside {
 
 /* Изменить ширину главного контейнера на 100vh */
 .w-\[1440px\].min-h-screen.mx-auto.flex.flex-col {
-  width: 100vh !important;
+  width: calc(100vh - 69px) !important;
 }
