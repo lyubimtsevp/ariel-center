@@ -255,3 +255,8 @@ aside.fixed.left-0.top-\[60px\].w-\[69px\].h-\[740px\] {
   bottom: 6px !important;
   right: 19px !important;
 }
+
+/* Добавить отступ сверху для aside */
+aside {
+  padding-top: 30px !important;
+}
