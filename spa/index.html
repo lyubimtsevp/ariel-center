@@ -22,8 +22,9 @@
         const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
         const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
         const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+        const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
-        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage || isCashbackPage || isStructurePage) {
+        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage || isCashbackPage || isStructurePage || isFinancePage) {
           // Проверить, что меню еще не добавлено
           if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
             return;
@@ -237,8 +238,9 @@
         const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
         const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
         const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+        const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
-        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage) return;
+        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage && !isFinancePage) return;
 
         // Проверить, что контент еще не перемещен
         if (document.querySelector('[data-content-moved="true"]')) {
@@ -380,14 +382,15 @@
       setInterval(removeOlFromFooter, 1000);
     })();
 
-    // Добавить футер на страницах /cabinet/news и /cabinet/support
+    // Добавить футер на страницах /cabinet/news, /cabinet/support и /cabinet/finance
     (function() {
       function addContentFooter() {
         const path = window.location.pathname;
         const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+        const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
-        if (!isNewsPage && !isSupportPage) return;
+        if (!isNewsPage && !isSupportPage && !isFinancePage) return;
         if (document.querySelector('[data-content-footer]')) return;
 
         // Найти контейнер для футера
@@ -417,7 +420,7 @@
       }
     })();
 
-    // Заменить хедер на страницах /cabinet/news, /cabinet/support, /cabinet/info, /cabinet/photo, /cabinet/cashback и /cabinet/structure
+    // Заменить хедер на страницах /cabinet/news, /cabinet/support, /cabinet/info, /cabinet/photo, /cabinet/cashback, /cabinet/structure и /cabinet/finance
     (function() {
       function replaceNewsHeader() {
         const path = window.location.pathname;
@@ -427,8 +430,9 @@
         const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
         const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
         const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+        const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
-        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage) return;
+        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage && !isFinancePage) return;
         if (document.querySelector('[data-news-header-replaced]')) return;
 
         // Найти существующий хедер
