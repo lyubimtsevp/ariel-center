@@ -401,14 +401,14 @@
         const existingFooter = document.querySelector('[data-content-footer="true"]');
         if (existingFooter) {
           // Обновить стили существующего футера
-          existingFooter.style.cssText = 'position: fixed !important; bottom: 20px !important; left: 89px !important; right: 60px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;';
+          existingFooter.style.cssText = 'position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;';
           return;
         }
 
         // Создать футер блок
         const footerBlock = document.createElement('div');
         footerBlock.className = 'flex items-center justify-between';
-        footerBlock.style.cssText = 'position: fixed !important; bottom: 20px !important; left: 89px !important; right: 60px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;';
+        footerBlock.style.cssText = 'position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;';
         footerBlock.setAttribute('data-content-footer', 'true');
         footerBlock.innerHTML = '<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>';
 
