@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=51"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=52"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -221,6 +221,48 @@
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
+    })();
+
+    // Переместить контент на страницах /cabinet/news и /cabinet/support
+    (function() {
+      function moveContent() {
+        const path = window.location.pathname;
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+        const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+
+        if (!isNewsPage && !isSupportPage) return;
+
+        // Проверить, что контент еще не перемещен
+        if (document.querySelector('[data-content-moved="true"]')) {
+          return;
+        }
+
+        // Найти контентный блок по классу
+        const contentBlock = document.querySelector('div.h-full.overflow-y-auto.px-8');
+        if (!contentBlock) return;
+
+        // Найти целевой контейнер
+        const targetContainer = document.querySelector('.absolute.top-\\[60px\\].left-\\[69px\\]');
+        if (!targetContainer) return;
+
+        // Переместить контент
+        contentBlock.setAttribute('data-content-moved', 'true');
+        targetContainer.appendChild(contentBlock);
+        console.log('Content moved to correct container');
+      }
+
+      setTimeout(moveContent, 100);
+      setTimeout(moveContent, 300);
+      setTimeout(moveContent, 600);
+      setTimeout(moveContent, 1000);
+      setTimeout(moveContent, 2000);
+
+      const observer = new MutationObserver(moveContent);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(moveContent, 1000);
     })();
 
     </script>
