@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello world project</title>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=52"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
+    <script>
+    // Заменить левое меню на страницах /cabinet и /cabinet/news
+    (function() {
+      function replaceMenu() {
+        const path = window.location.pathname;
+        const hash = window.location.hash;
+
+        // Проверить что это главная страница /cabinet или /cabinet/news или /cabinet/profile или /cabinet/support
+        const isMainCabinet = (path === '/cabinet' || path === '/cabinet/') && (!hash || hash === '' || hash === '#' || hash === '#/');
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+        const isProfilePage = path === '/cabinet/profile' || path === '/cabinet/profile/';
+        const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+        const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
+        const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
+        const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
+        const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+
+        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage || isCashbackPage || isStructurePage) {
+          // Проверить, что меню еще не добавлено
+          if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
+            return;
+          }
+
+          // Удалить старое меню по data-node-id
+          const menuById = document.querySelector('[data-node-id="8:289"]');
+          if (menuById) {
+            menuById.remove();
+            console.log('Old menu removed by data-node-id');
+          }
+
+          // Удалить все aside элементы
+          const asides = document.querySelectorAll('aside');
+          asides.forEach(function(aside) {
+            if (!aside.hasAttribute('data-custom-menu')) {
+              aside.remove();
+              console.log('Old aside removed');
+            }
+          });
+
+          // Удалить старые элементы с иконками меню по классам
+          const menuDivs = document.querySelectorAll('div[class*="right-[1371px]"][class*="w-[69px]"][class*="h-[740px]"]');
+          menuDivs.forEach(function(div) {
+            div.remove();
+            console.log('Old menu div removed');
+          });
+
+          // Найти контейнер для вставки нового меню
+          let targetContainer = document.querySelector('[data-node-id="8:231"]');
+
+          // Если не нашли по data-node-id, попробовать найти по другим селекторам
+          if (!targetContainer) {
+            const root = document.getElementById('root');
+            if (root && root.firstElementChild) {
+              targetContainer = root.firstElementChild;
+            }
+          }
+
+          if (targetContainer && !document.querySelector('[data-custom-menu="main-cabinet"]')) {
+            // Определить активный класс для каждой кнопки
+            const activeClass = 'bg-[#2a6a9a]';
+            const hoverClass = 'hover:bg-[#2a6a9a]';
+
+            const homeActive = isMainCabinet ? activeClass : hoverClass;
+            const profileActive = (path === '/cabinet/profile' || path === '/cabinet/profile/') ? activeClass : hoverClass;
+            const financeActive = (path === '/cabinet/finance' || path === '/cabinet/finance/') ? activeClass : hoverClass;
+            const newsActive = isNewsPage ? activeClass : hoverClass;
+            const supportActive = (path === '/cabinet/support' || path === '/cabinet/support/') ? activeClass : hoverClass;
+            const infoActive = (path === '/cabinet/info' || path === '/cabinet/info/') ? activeClass : hoverClass;
+            const photoActive = (path === '/cabinet/photo' || path === '/cabinet/photo/') ? activeClass : hoverClass;
+            const cashbackActive = (path === '/cabinet/cashback' || path === '/cabinet/cashback/') ? activeClass : hoverClass;
+            const structureActive = (path === '/cabinet/structure' || path === '/cabinet/structure/') ? activeClass : hoverClass;
+
+            // Создать новое aside меню
+            const newAside = document.createElement('aside');
+            newAside.className = 'w-[69px] bg-[#1e5885] flex flex-col';
+            newAside.setAttribute('data-custom-menu', 'main-cabinet');
+            newAside.style.cssText = 'position: fixed; left: 0; top: 60px; bottom: 0; z-index: 99999; pointer-events: auto;';
+            newAside.innerHTML = '<a class="w-[69px] h-[70px] ' + homeActive + ' transition-all flex items-center justify-center" href="/cabinet"><img src="/assets/icon_home-D863mDdT.png" alt="Главная" class="w-[31px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + profileActive + ' transition-all flex items-center justify-center" href="/cabinet/profile"><img src="/assets/icon_news-C9e8K7EC.png" alt="Новости" class="w-[32px] h-[36px] object-cover"></a><a class="w-[69px] h-[74px] ' + financeActive + ' transition-all flex items-center justify-center" href="/cabinet/finance"><img src="/assets/icon_finance-wGJQG7h4.png" alt="Финансы" class="w-[37px] h-[34px] object-cover"></a><a class="w-[69px] h-[76px] ' + newsActive + ' transition-all flex items-center justify-center" href="/cabinet/news"><img src="/assets/icon_profile-CnXtXZMy.png" alt="Профиль" class="w-[36px] h-[34px] object-cover"></a><a class="w-[69px] h-[74px] ' + supportActive + ' transition-all flex items-center justify-center" href="/cabinet/support"><img src="/assets/icon_support-BqKEWXEa.png" alt="Поддержка" class="w-[30px] h-[36px] object-cover"></a><a class="w-[69px] h-[70px] ' + infoActive + ' transition-all flex items-center justify-center" href="/cabinet/info"><img src="/assets/icon_info-CAzu2RoW.png" alt="Информация" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[73px] ' + photoActive + ' transition-all flex items-center justify-center" href="/cabinet/photo"><img src="/assets/icon_photo-Y-EepUgg.png" alt="Фото" class="w-[36px] h-[32px] object-cover"></a><a class="w-[69px] h-[80px] ' + cashbackActive + ' transition-all flex items-center justify-center" href="/cabinet/cashback"><img src="/assets/icon_cashback-Ck05F8HY.png" alt="Кэшбэк" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + structureActive + ' transition-all flex items-center justify-center" href="/cabinet/structure"><img src="/assets/icon_structure-D7GgR2ft.png" alt="Структура" class="w-[37px] h-[32px] object-cover"></a><div class="flex-1"></div>';
+
+            // Вставить новое меню напрямую в body для максимального приоритета
+            document.body.appendChild(newAside);
+            console.log('New custom menu added to body');
+          }
+        }
+      }
+
+      setTimeout(replaceMenu, 50);
+      setTimeout(replaceMenu, 200);
+      setTimeout(replaceMenu, 500);
+      setTimeout(replaceMenu, 1000);
+      setTimeout(replaceMenu, 2000);
+
+      const observer = new MutationObserver(replaceMenu);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(replaceMenu, 500);
+    })();
+
+    // Растянуть главный контейнер на всю высоту и зафиксировать фон
+    (function() {
+      function stretchContainer() {
+        const mainContainer = document.querySelector('#root > div > div');
+
+        if (mainContainer && !mainContainer.hasAttribute('data-stretched')) {
+          mainContainer.style.minHeight = '100vh';
+          mainContainer.style.height = 'auto';
+          mainContainer.style.backgroundAttachment = 'fixed';
+          mainContainer.setAttribute('data-stretched', 'true');
+          console.log('Container stretched and background fixed');
+        }
+      }
+
+      setTimeout(stretchContainer, 100);
+      setTimeout(stretchContainer, 500);
+      setTimeout(stretchContainer, 1000);
+
+      const observer = new MutationObserver(stretchContainer);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Удалить фоновое изображение из DOM
+    (function() {
+      function removeBgImage() {
+        const bgImage = document.querySelector('img[src*="bg_main"]');
+
+        if (bgImage) {
+          bgImage.remove();
+          console.log('Background image removed from DOM');
+        }
+      }
+
+      setTimeout(removeBgImage, 100);
+      setTimeout(removeBgImage, 500);
+      setTimeout(removeBgImage, 1000);
+
+      const observer = new MutationObserver(removeBgImage);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Объединить футер в единый объект
+    (function() {
+      function unifyFooter() {
+        const copyright = document.querySelector('[class*="bottom-"][class*="left-"]');
+        const socials = document.querySelector('[class*="bottom-"][class*="right-"]');
+
+        if (!copyright || !socials) return;
+        if (document.querySelector('[data-footer-unified]')) return;
+
+        const footerContainer = document.createElement('div');
+        footerContainer.setAttribute('data-footer-unified', 'true');
+        footerContainer.style.cssText = 'position: fixed; bottom: 0; left: 69px; right: 0; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background-color: transparent; z-index: 9999;';
+
+        copyright.style.cssText = 'position: static;';
+        socials.style.cssText = 'position: static; display: flex; gap: 15px;';
+
+        footerContainer.appendChild(copyright);
+        footerContainer.appendChild(socials);
+        document.body.appendChild(footerContainer);
+
+        console.log('Footer unified');
+      }
+
+      setTimeout(unifyFooter, 100);
+      setTimeout(unifyFooter, 500);
+      setTimeout(unifyFooter, 1000);
+
+      const observer = new MutationObserver(unifyFooter);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Привязать фон к #root
+    (function() {
+      function attachBackground() {
+        const root = document.getElementById('root');
+
+        if (root && !root.hasAttribute('data-bg-attached')) {
+          root.style.backgroundImage = 'url(/assets/bg_main-DQr-V78G.png)';
+          root.style.backgroundSize = 'cover';
+          root.style.backgroundPosition = 'center';
+          root.style.backgroundAttachment = 'fixed';
+          root.style.minHeight = '100vh';
+          root.setAttribute('data-bg-attached', 'true');
+          console.log('Background attached to root');
+        }
+      }
+
+      setTimeout(attachBackground, 50);
+      setTimeout(attachBackground, 200);
+    })();
+
+    // Удалить старый copyright текст
+    (function() {
+      function removeOldCopyright() {
+        const copyrightElements = document.querySelectorAll('[class*="bottom-"]');
+
+        copyrightElements.forEach(function(el) {
+          if (el.textContent && el.textContent.includes('2019 © О00 Албикс')) {
+            el.remove();
+            console.log('Old copyright removed');
+          }
+        });
+      }
+
+      setTimeout(removeOldCopyright, 100);
+      setTimeout(removeOldCopyright, 500);
+      setTimeout(removeOldCopyright, 1000);
+
+      const observer = new MutationObserver(removeOldCopyright);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Переместить контент на страницах /cabinet/news и /cabinet/support
+    (function() {
+      function moveContent() {
+        const path = window.location.pathname;
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+        const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+        const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
+        const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
+        const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
+        const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+
+        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage) return;
+
+        // Проверить, что контент еще не перемещен
+        if (document.querySelector('[data-content-moved="true"]')) {
+          return;
+        }
+
+        // Найти контентный блок по классу
+        const contentBlock = document.querySelector('div.h-full.overflow-y-auto.px-8');
+        if (!contentBlock) return;
+
+        // Найти целевой контейнер
+        const targetContainer = document.querySelector('.absolute.top-\\[60px\\].left-\\[69px\\]');
+        if (!targetContainer) return;
+
+        // Переместить контент
+        contentBlock.setAttribute('data-content-moved', 'true');
+        targetContainer.appendChild(contentBlock);
+        console.log('Content moved to correct container');
+      }
+
+      setTimeout(moveContent, 100);
+      setTimeout(moveContent, 300);
+      setTimeout(moveContent, 600);
+      setTimeout(moveContent, 1000);
+      setTimeout(moveContent, 2000);
+
+      const observer = new MutationObserver(moveContent);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(moveContent, 1000);
+    })();
+
+    </script>
+  <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+  </body>
+</html>

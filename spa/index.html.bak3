@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello world project</title>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=58"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
+    <script>
+    // Заменить aside на правильную структуру
+    (function() {
+      let isReplacing = false;
+      let replaceCount = 0;
+      
+      function replaceAside() {
+        if (isReplacing) return;
+        
+        const aside = document.querySelector('aside');
+        if (!aside) return;
+        
+        // Проверить что aside уже заменен
+        if (aside.hasAttribute('data-replaced')) return;
+        
+        isReplacing = true;
+        replaceCount++;
+        
+        console.log('Replacing aside #' + replaceCount);
+        
+        // Сохранить классы и стили от старого aside
+        const classes = aside.className;
+        const styles = aside.getAttribute('style') || '';
+        
+        // Создать новый aside с правильной структурой кнопок
+        const newAside = document.createElement('aside');
+        newAside.className = classes;
+        if (styles) newAside.setAttribute('style', styles);
+        newAside.setAttribute('data-replaced', 'true');
+        
+        newAside.innerHTML = '<a class="w-[69px] h-[70px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet"><img src="/assets/icon_home-D863mDdT.png" alt="Главная" class="w-[31px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/news"><img src="/assets/icon_news-C9e8K7EC.png" alt="Новости" class="w-[32px] h-[36px] object-cover"></a><a class="w-[69px] h-[74px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/finance"><img src="/assets/icon_finance-wGJQG7h4.png" alt="Финансы" class="w-[37px] h-[34px] object-cover"></a><a class="w-[69px] h-[76px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/profile"><img src="/assets/icon_profile-CnXtXZMy.png" alt="Профиль" class="w-[36px] h-[34px] object-cover"></a><a class="w-[69px] h-[74px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/support"><img src="/assets/icon_support-BqKEWXEa.png" alt="Поддержка" class="w-[30px] h-[36px] object-cover"></a><a class="w-[69px] h-[70px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/info"><img src="/assets/icon_info-CAzu2RoW.png" alt="Информация" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[73px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/photo"><img src="/assets/icon_photo-Y-EepUgg.png" alt="Фото" class="w-[36px] h-[32px] object-cover"></a><a class="w-[69px] h-[80px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/cashback"><img src="/assets/icon_cashback-Ck05F8HY.png" alt="Кэшбэк" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/structure"><img src="/assets/icon_structure-D7GgR2ft.png" alt="Структура" class="w-[37px] h-[32px] object-cover"></a><div class="flex-1"></div>';
+        
+        aside.replaceWith(newAside);
+        
+        setTimeout(function() {
+          isReplacing = false;
+        }, 50);
+      }
+      
+      // Наблюдать за изменениями DOM и мгновенно заменять aside
+      const observer = new MutationObserver(function(mutations) {
+        replaceAside();
+      });
+      
+      // Запустить немедленно
+      replaceAside();
+      
+      // Запустить после загрузки DOM
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          replaceAside();
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true
+          });
+        });
+      } else {
+        replaceAside();
+        if (document.body) {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true
+          });
+        }
+      }
+      
+      // Проверять каждые 50мс первые 5 секунд, затем каждые 200мс
+      let checks = 0;
+      const fastInterval = setInterval(function() {
+        replaceAside();
+        checks++;
+        if (checks > 100) {
+          clearInterval(fastInterval);
+          setInterval(replaceAside, 200);
+        }
+      }, 50);
+    })();
+    </script>
+  <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+  </body>
+</html>
