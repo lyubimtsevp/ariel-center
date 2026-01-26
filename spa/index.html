@@ -433,25 +433,30 @@
         const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
         if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage && !isFinancePage) return;
-        if (document.querySelector('[data-news-header-replaced]')) return;
 
-        // Найти существующий хедер
-        const existingHeader = document.querySelector('header');
-        if (!existingHeader) return;
+        // Проверить, что наш хедер уже добавлен
+        if (document.querySelector('[data-news-header-replaced="true"]')) return;
+
+        // Удалить все старые хедеры без нашего атрибута
+        const oldHeaders = document.querySelectorAll('header:not([data-news-header-replaced])');
+        oldHeaders.forEach(function(header) {
+          header.remove();
+        });
 
         // Создать новый хедер
         const newHeader = document.createElement('header');
         newHeader.className = 'h-[60px] bg-[#fefefe] flex-shrink-0 relative z-20';
         newHeader.setAttribute('data-header-fixed', 'true');
         newHeader.setAttribute('data-news-header-replaced', 'true');
-        newHeader.style.cssText = 'position: fixed; top: 0px; left: 0px; right: 0px; z-index: 100000;';
+        newHeader.style.cssText = 'position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important; z-index: 100000 !important; pointer-events: auto !important;';
         newHeader.innerHTML = '<a class="absolute top-[10px] left-[20px]" href="/"><img src="/images/logo.png?v=2" alt="Albixe" class="h-[40px] w-auto object-contain"></a><div class="absolute top-[38px] left-[72px] text-[#a8d4e5] text-[5px] font-semibold" style="font-family: Inter, sans-serif;">POWER TECH</div><a href="https://albixe.com" class="absolute top-[20px] left-[656px] text-[#7095b1] text-[16px] hover:underline" style="font-family: Inter, sans-serif;">albixe.com</a><div class="absolute top-[16px] right-[100px] flex items-center gap-2"><img src="/assets/flag_usa-CYCU23Vu.png" alt="EN" class="w-[30px] h-[21px]"><span class="text-[#7095b1] text-base">Eng</span></div><a class="absolute top-[21px] right-[20px] w-[18px] h-[18px] hover:opacity-80" href="/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADYSURBVHgBrZPBDYMwDEVtlBE6AiN0hI7QETpCR+gI3aBbdISO0BHKCGWEMkL/XRxOCZGgF0v5Ovnt2DkJ4I8opi3btizL8rquqyzL8vm+V865hzHma9u2Mx9jXZZlEUIQ5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBPkBKB5H2VDi5JMAAAAASUVORK5CYII=" alt="" class="w-full h-full object-contain"></a>';
 
-        // Заменить старый хедер на новый
-        existingHeader.parentNode.replaceChild(newHeader, existingHeader);
-        console.log('News page header replaced');
+        // Добавить хедер в body как первый элемент
+        document.body.insertBefore(newHeader, document.body.firstChild);
+        console.log('News page header added to body');
       }
 
+      setTimeout(replaceNewsHeader, 50);
       setTimeout(replaceNewsHeader, 100);
       setTimeout(replaceNewsHeader, 300);
       setTimeout(replaceNewsHeader, 600);
@@ -462,6 +467,8 @@
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
+
+      setInterval(replaceNewsHeader, 300);
     })();
 
     </script>
