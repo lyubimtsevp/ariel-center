@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=43"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=44"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -47,7 +47,15 @@
           });
 
           // Найти контейнер для вставки нового меню
-          const targetContainer = document.querySelector('[data-node-id="8:231"]');
+          let targetContainer = document.querySelector('[data-node-id="8:231"]');
+
+          // Если не нашли по data-node-id, попробовать найти по другим селекторам
+          if (!targetContainer) {
+            const root = document.getElementById('root');
+            if (root && root.firstElementChild) {
+              targetContainer = root.firstElementChild;
+            }
+          }
 
           if (targetContainer && !document.querySelector('[data-custom-menu="main-cabinet"]')) {
             // Создать новое aside меню
