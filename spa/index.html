@@ -353,6 +353,107 @@
       }
     })();
 
+    // Удалить <ol> элемент из футера
+    (function() {
+      function removeOlFromFooter() {
+        const footer = document.querySelector('[data-footer-unified]');
+        if (footer) {
+          const olElement = footer.querySelector('ol');
+          if (olElement) {
+            olElement.remove();
+            console.log('OL element removed from footer');
+          }
+        }
+      }
+
+      setTimeout(removeOlFromFooter, 100);
+      setTimeout(removeOlFromFooter, 300);
+      setTimeout(removeOlFromFooter, 600);
+      setTimeout(removeOlFromFooter, 1000);
+      setTimeout(removeOlFromFooter, 2000);
+
+      const observer = new MutationObserver(removeOlFromFooter);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(removeOlFromFooter, 1000);
+    })();
+
+    // Добавить футер на страницах /cabinet/news и /cabinet/support
+    (function() {
+      function addContentFooter() {
+        const path = window.location.pathname;
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+        const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+
+        if (!isNewsPage && !isSupportPage) return;
+        if (document.querySelector('[data-content-footer]')) return;
+
+        // Найти контейнер для футера
+        const mainContent = document.querySelector('div.h-full.overflow-y-auto.px-8');
+        if (!mainContent) return;
+
+        // Создать футер блок
+        const footerBlock = document.createElement('div');
+        footerBlock.className = 'mt-8 flex items-center justify-between';
+        footerBlock.setAttribute('data-content-footer', 'true');
+        footerBlock.innerHTML = '<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>';
+
+        mainContent.appendChild(footerBlock);
+        console.log('Content footer added to ' + path);
+      }
+
+      setTimeout(addContentFooter, 100);
+      setTimeout(addContentFooter, 300);
+      setTimeout(addContentFooter, 600);
+      setTimeout(addContentFooter, 1000);
+      setTimeout(addContentFooter, 2000);
+
+      const observer = new MutationObserver(addContentFooter);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Заменить хедер на странице /cabinet/news
+    (function() {
+      function replaceNewsHeader() {
+        const path = window.location.pathname;
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+
+        if (!isNewsPage) return;
+        if (document.querySelector('[data-news-header-replaced]')) return;
+
+        // Найти существующий хедер
+        const existingHeader = document.querySelector('header');
+        if (!existingHeader) return;
+
+        // Создать новый хедер
+        const newHeader = document.createElement('header');
+        newHeader.className = 'h-[60px] bg-[#fefefe] flex-shrink-0 relative z-20';
+        newHeader.setAttribute('data-header-fixed', 'true');
+        newHeader.setAttribute('data-news-header-replaced', 'true');
+        newHeader.style.cssText = 'position: fixed; top: 0px; left: 0px; right: 0px; z-index: 100000;';
+        newHeader.innerHTML = '<a class="absolute top-[10px] left-[20px]" href="/"><img src="/images/logo.png?v=2" alt="Albixe" class="h-[40px] w-auto object-contain"></a><div class="absolute top-[38px] left-[72px] text-[#a8d4e5] text-[5px] font-semibold" style="font-family: Inter, sans-serif;">POWER TECH</div><a href="https://albixe.com" class="absolute top-[20px] left-[656px] text-[#7095b1] text-[16px] hover:underline" style="font-family: Inter, sans-serif;">albixe.com</a><div class="absolute top-[16px] right-[100px] flex items-center gap-2"><img src="/assets/flag_usa-CYCU23Vu.png" alt="EN" class="w-[30px] h-[21px]"><span class="text-[#7095b1] text-base">Eng</span></div><a class="absolute top-[21px] right-[20px] w-[18px] h-[18px] hover:opacity-80" href="/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADYSURBVHgBrZPBDYMwDEVtlBE6AiN0hI7QETpCR+gI3aBbdISO0BHKCGWEMkL/XRxOCZGgF0v5Ovnt2DkJ4I8opi3btizL8rquqyzL8vm+V865hzHma9u2Mx9jXZZlEUIQ5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBPkBKB5H2VDi5JMAAAAASUVORK5CYII=" alt="" class="w-full h-full object-contain"></a>';
+
+        // Заменить старый хедер на новый
+        existingHeader.parentNode.replaceChild(newHeader, existingHeader);
+        console.log('News page header replaced');
+      }
+
+      setTimeout(replaceNewsHeader, 100);
+      setTimeout(replaceNewsHeader, 300);
+      setTimeout(replaceNewsHeader, 600);
+      setTimeout(replaceNewsHeader, 1000);
+      setTimeout(replaceNewsHeader, 2000);
+
+      const observer = new MutationObserver(replaceNewsHeader);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
   </head>
