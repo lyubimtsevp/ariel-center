@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=34"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=35"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить aside на правильную структуру
@@ -165,6 +165,26 @@
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
+    })();
+
+    // Привязать фон к #root
+    (function() {
+      function attachBackground() {
+        const root = document.getElementById('root');
+
+        if (root && !root.hasAttribute('data-bg-attached')) {
+          root.style.backgroundImage = 'url(/assets/bg_main-DQr-V78G.png)';
+          root.style.backgroundSize = 'cover';
+          root.style.backgroundPosition = 'center';
+          root.style.backgroundAttachment = 'fixed';
+          root.style.minHeight = '100vh';
+          root.setAttribute('data-bg-attached', 'true');
+          console.log('Background attached to root');
+        }
+      }
+
+      setTimeout(attachBackground, 50);
+      setTimeout(attachBackground, 200);
     })();
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
