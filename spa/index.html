@@ -20,8 +20,9 @@
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
         const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
         const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
+        const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
 
-        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage) {
+        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage || isCashbackPage) {
           // Проверить, что меню еще не добавлено
           if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
             return;
@@ -233,8 +234,9 @@
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
         const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
         const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
+        const isCashbackPage = path === '/cabinet/cashback' || path === '/cabinet/cashback/';
 
-        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage) return;
+        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage) return;
 
         // Проверить, что контент еще не перемещен
         if (document.querySelector('[data-content-moved="true"]')) {
