@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=32"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=33"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить aside на правильную структуру
@@ -88,7 +88,7 @@
       }, 50);
     })();
 
-    // Растянуть главный контейнер на всю высоту
+    // Растянуть главный контейнер на всю высоту и зафиксировать фон
     (function() {
       function stretchContainer() {
         const mainContainer = document.querySelector('#root > div > div');
@@ -96,8 +96,9 @@
         if (mainContainer && !mainContainer.hasAttribute('data-stretched')) {
           mainContainer.style.minHeight = '100vh';
           mainContainer.style.height = 'auto';
+          mainContainer.style.backgroundAttachment = 'fixed';
           mainContainer.setAttribute('data-stretched', 'true');
-          console.log('Container stretched');
+          console.log('Container stretched and background fixed');
         }
       }
 
