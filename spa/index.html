@@ -19,8 +19,9 @@
         const isProfilePage = path === '/cabinet/profile' || path === '/cabinet/profile/';
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
         const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
+        const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
 
-        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage) {
+        if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage) {
           // Проверить, что меню еще не добавлено
           if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
             return;
@@ -231,8 +232,9 @@
         const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
         const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
+        const isPhotoPage = path === '/cabinet/photo' || path === '/cabinet/photo/';
 
-        if (!isNewsPage && !isSupportPage && !isInfoPage) return;
+        if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage) return;
 
         // Проверить, что контент еще не перемещен
         if (document.querySelector('[data-content-moved="true"]')) {
