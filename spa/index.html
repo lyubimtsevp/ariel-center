@@ -507,14 +507,14 @@
         const existingBlock = document.querySelector('[data-profile-block="true"]');
         if (existingBlock) {
           // Обновить стили существующего блока
-          existingBlock.style.cssText = 'position: fixed !important; top: 80px !important; left: 89px !important; width: 185px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
+          existingBlock.style.cssText = 'position: fixed !important; top: 80px !important; left: 89px !important; width: 185px !important; margin-right: 20px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
           return;
         }
 
         // Создать блок профиля
         const profileBlock = document.createElement('div');
         profileBlock.className = 'w-[185px] flex flex-col gap-2';
-        profileBlock.style.cssText = 'position: fixed !important; top: 80px !important; left: 89px !important; width: 185px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
+        profileBlock.style.cssText = 'position: fixed !important; top: 80px !important; left: 89px !important; width: 185px !important; margin-right: 20px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
         profileBlock.setAttribute('data-profile-block', 'true');
         profileBlock.innerHTML = '<div class="bg-[#246393] rounded p-4 flex flex-col items-center"><div class="w-[145px] h-[145px] bg-[#1f5986] rounded flex flex-col items-center justify-center cursor-pointer hover:bg-[#2a6a9a] transition-colors"><img src="/assets/camera-Bca7ToUt.png" alt="Загрузить фото" class="w-10 h-10 mb-2 opacity-70"><span class="text-[#92aec4] text-[13px]">Загрузить свое</span><span class="text-[#97b1c6] text-sm">фото</span></div><div class="bg-[#1f5986] border border-[#286ea3] rounded h-[31px] w-full mt-4 flex items-center justify-center"><span class="text-[#98b2c7] text-[13px]">ID 4586</span></div><div class="text-center mt-4"><div class="text-[#a8c8e4] text-[15px]">Иванов Иван</div><div class="text-[#a8c7e4] text-base font-light">Иванович</div></div></div><div class="bg-[#246393] rounded p-4"><div class="bg-[#1f5986] border border-[#2a75a4] rounded h-[31px] flex items-center justify-center mb-2"><span class="text-[#9ab4c8] text-xs">Статус</span></div><div class="text-center text-[#a1c5e2] text-[13px]">Отсутствует</div></div>';
 
