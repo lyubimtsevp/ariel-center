@@ -26,7 +26,10 @@
 
         if (isMainCabinet || isNewsPage || isProfilePage || isSupportPage || isInfoPage || isPhotoPage || isCashbackPage || isStructurePage || isFinancePage) {
           // Проверить, что меню еще не добавлено
-          if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
+          const existingMenu = document.querySelector('[data-custom-menu="main-cabinet"]');
+          if (existingMenu) {
+            // Обновить стили существующего меню
+            existingMenu.style.cssText = 'position: fixed !important; left: 0 !important; top: 60px !important; bottom: 0 !important; z-index: 99999 !important; pointer-events: auto !important; overflow-y: auto !important; overflow-x: hidden !important; flex-shrink: 0 !important; display: flex !important; visibility: visible !important; opacity: 1 !important;';
             return;
           }
 
@@ -83,7 +86,7 @@
             const newAside = document.createElement('aside');
             newAside.className = 'w-[69px] bg-[#1e5885] flex flex-col';
             newAside.setAttribute('data-custom-menu', 'main-cabinet');
-            newAside.style.cssText = 'position: fixed !important; left: 0 !important; top: 60px !important; bottom: 0 !important; z-index: 99999 !important; pointer-events: auto !important; overflow-y: auto !important; overflow-x: hidden !important; flex-shrink: 0 !important;';
+            newAside.style.cssText = 'position: fixed !important; left: 0 !important; top: 60px !important; bottom: 0 !important; z-index: 99999 !important; pointer-events: auto !important; overflow-y: auto !important; overflow-x: hidden !important; flex-shrink: 0 !important; display: flex !important; visibility: visible !important; opacity: 1 !important; width: 69px !important;';
             newAside.innerHTML = '<a class="w-[69px] h-[70px] ' + homeActive + ' transition-all flex items-center justify-center" href="/cabinet"><img src="/assets/icon_home-D863mDdT.png" alt="Главная" class="w-[31px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + profileActive + ' transition-all flex items-center justify-center" href="/cabinet/profile"><img src="/assets/icon_news-C9e8K7EC.png" alt="Новости" class="w-[32px] h-[36px] object-cover"></a><a class="w-[69px] h-[74px] ' + financeActive + ' transition-all flex items-center justify-center" href="/cabinet/finance"><img src="/assets/icon_finance-wGJQG7h4.png" alt="Финансы" class="w-[37px] h-[34px] object-cover"></a><a class="w-[69px] h-[76px] ' + newsActive + ' transition-all flex items-center justify-center" href="/cabinet/news"><img src="/assets/icon_profile-CnXtXZMy.png" alt="Профиль" class="w-[36px] h-[34px] object-cover"></a><a class="w-[69px] h-[74px] ' + supportActive + ' transition-all flex items-center justify-center" href="/cabinet/support"><img src="/assets/icon_support-BqKEWXEa.png" alt="Поддержка" class="w-[30px] h-[36px] object-cover"></a><a class="w-[69px] h-[70px] ' + infoActive + ' transition-all flex items-center justify-center" href="/cabinet/info"><img src="/assets/icon_info-CAzu2RoW.png" alt="Информация" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[73px] ' + photoActive + ' transition-all flex items-center justify-center" href="/cabinet/photo"><img src="/assets/icon_photo-Y-EepUgg.png" alt="Фото" class="w-[36px] h-[32px] object-cover"></a><a class="w-[69px] h-[80px] ' + cashbackActive + ' transition-all flex items-center justify-center" href="/cabinet/cashback"><img src="/assets/icon_cashback-Ck05F8HY.png" alt="Кэшбэк" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + structureActive + ' transition-all flex items-center justify-center" href="/cabinet/structure"><img src="/assets/icon_structure-D7GgR2ft.png" alt="Структура" class="w-[37px] h-[32px] object-cover"></a><div class="flex-1"></div>';
 
             // Вставить меню в body для максимального приоритета
@@ -93,7 +96,9 @@
         }
       }
 
+      setTimeout(replaceMenu, 10);
       setTimeout(replaceMenu, 50);
+      setTimeout(replaceMenu, 100);
       setTimeout(replaceMenu, 200);
       setTimeout(replaceMenu, 500);
       setTimeout(replaceMenu, 1000);
@@ -104,7 +109,7 @@
         observer.observe(document.body, { childList: true, subtree: true });
       }
 
-      setInterval(replaceMenu, 300);
+      setInterval(replaceMenu, 100);
     })();
 
     // Растянуть главный контейнер на всю высоту и зафиксировать фон
@@ -435,7 +440,17 @@
         if (!isNewsPage && !isSupportPage && !isInfoPage && !isPhotoPage && !isCashbackPage && !isStructurePage && !isFinancePage) return;
 
         // Проверить, что наш хедер уже добавлен
-        if (document.querySelector('[data-news-header-replaced="true"]')) return;
+        const existingHeader = document.querySelector('[data-news-header-replaced="true"]');
+        if (existingHeader) {
+          // Обновить стили существующего хедера
+          existingHeader.style.cssText = 'position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important; z-index: 100000 !important; pointer-events: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; height: 60px !important;';
+          // Удалить все другие хедеры
+          const otherHeaders = document.querySelectorAll('header:not([data-news-header-replaced])');
+          otherHeaders.forEach(function(header) {
+            header.remove();
+          });
+          return;
+        }
 
         // Удалить все старые хедеры без нашего атрибута
         const oldHeaders = document.querySelectorAll('header:not([data-news-header-replaced])');
@@ -448,7 +463,7 @@
         newHeader.className = 'h-[60px] bg-[#fefefe] flex-shrink-0 relative z-20';
         newHeader.setAttribute('data-header-fixed', 'true');
         newHeader.setAttribute('data-news-header-replaced', 'true');
-        newHeader.style.cssText = 'position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important; z-index: 100000 !important; pointer-events: auto !important;';
+        newHeader.style.cssText = 'position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important; z-index: 100000 !important; pointer-events: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; height: 60px !important;';
         newHeader.innerHTML = '<a class="absolute top-[10px] left-[20px]" href="/"><img src="/images/logo.png?v=2" alt="Albixe" class="h-[40px] w-auto object-contain"></a><div class="absolute top-[38px] left-[72px] text-[#a8d4e5] text-[5px] font-semibold" style="font-family: Inter, sans-serif;">POWER TECH</div><a href="https://albixe.com" class="absolute top-[20px] left-[656px] text-[#7095b1] text-[16px] hover:underline" style="font-family: Inter, sans-serif;">albixe.com</a><div class="absolute top-[16px] right-[100px] flex items-center gap-2"><img src="/assets/flag_usa-CYCU23Vu.png" alt="EN" class="w-[30px] h-[21px]"><span class="text-[#7095b1] text-base">Eng</span></div><a class="absolute top-[21px] right-[20px] w-[18px] h-[18px] hover:opacity-80" href="/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADYSURBVHgBrZPBDYMwDEVtlBE6AiN0hI7QETpCR+gI3aBbdISO0BHKCGWEMkL/XRxOCZGgF0v5Ovnt2DkJ4I8opi3btizL8rquqyzL8vm+V865hzHma9u2Mx9jXZZlEUIQ5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBCGEoJwT5xwhBPkBKB5H2VDi5JMAAAAASUVORK5CYII=" alt="" class="w-full h-full object-contain"></a>';
 
         // Добавить хедер в body как первый элемент
@@ -456,6 +471,7 @@
         console.log('News page header added to body');
       }
 
+      setTimeout(replaceNewsHeader, 10);
       setTimeout(replaceNewsHeader, 50);
       setTimeout(replaceNewsHeader, 100);
       setTimeout(replaceNewsHeader, 300);
@@ -468,7 +484,7 @@
         observer.observe(document.body, { childList: true, subtree: true });
       }
 
-      setInterval(replaceNewsHeader, 300);
+      setInterval(replaceNewsHeader, 100);
     })();
 
     </script>
