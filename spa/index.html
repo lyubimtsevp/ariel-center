@@ -83,10 +83,10 @@
             const newAside = document.createElement('aside');
             newAside.className = 'w-[69px] bg-[#1e5885] flex flex-col';
             newAside.setAttribute('data-custom-menu', 'main-cabinet');
-            newAside.style.cssText = 'position: fixed; left: 0; top: 60px; bottom: 0; z-index: 99999; pointer-events: auto;';
+            newAside.style.cssText = 'position: fixed !important; left: 0 !important; top: 60px !important; bottom: 0 !important; z-index: 99999 !important; pointer-events: auto !important; overflow-y: auto !important; overflow-x: hidden !important; flex-shrink: 0 !important;';
             newAside.innerHTML = '<a class="w-[69px] h-[70px] ' + homeActive + ' transition-all flex items-center justify-center" href="/cabinet"><img src="/assets/icon_home-D863mDdT.png" alt="Главная" class="w-[31px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + profileActive + ' transition-all flex items-center justify-center" href="/cabinet/profile"><img src="/assets/icon_news-C9e8K7EC.png" alt="Новости" class="w-[32px] h-[36px] object-cover"></a><a class="w-[69px] h-[74px] ' + financeActive + ' transition-all flex items-center justify-center" href="/cabinet/finance"><img src="/assets/icon_finance-wGJQG7h4.png" alt="Финансы" class="w-[37px] h-[34px] object-cover"></a><a class="w-[69px] h-[76px] ' + newsActive + ' transition-all flex items-center justify-center" href="/cabinet/news"><img src="/assets/icon_profile-CnXtXZMy.png" alt="Профиль" class="w-[36px] h-[34px] object-cover"></a><a class="w-[69px] h-[74px] ' + supportActive + ' transition-all flex items-center justify-center" href="/cabinet/support"><img src="/assets/icon_support-BqKEWXEa.png" alt="Поддержка" class="w-[30px] h-[36px] object-cover"></a><a class="w-[69px] h-[70px] ' + infoActive + ' transition-all flex items-center justify-center" href="/cabinet/info"><img src="/assets/icon_info-CAzu2RoW.png" alt="Информация" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[73px] ' + photoActive + ' transition-all flex items-center justify-center" href="/cabinet/photo"><img src="/assets/icon_photo-Y-EepUgg.png" alt="Фото" class="w-[36px] h-[32px] object-cover"></a><a class="w-[69px] h-[80px] ' + cashbackActive + ' transition-all flex items-center justify-center" href="/cabinet/cashback"><img src="/assets/icon_cashback-Ck05F8HY.png" alt="Кэшбэк" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] ' + structureActive + ' transition-all flex items-center justify-center" href="/cabinet/structure"><img src="/assets/icon_structure-D7GgR2ft.png" alt="Структура" class="w-[37px] h-[32px] object-cover"></a><div class="flex-1"></div>';
 
-            // Вставить новое меню напрямую в body для максимального приоритета
+            // Вставить меню в body для максимального приоритета
             document.body.appendChild(newAside);
             console.log('New custom menu added to body');
           }
@@ -104,7 +104,7 @@
         observer.observe(document.body, { childList: true, subtree: true });
       }
 
-      setInterval(replaceMenu, 500);
+      setInterval(replaceMenu, 300);
     })();
 
     // Растянуть главный контейнер на всю высоту и зафиксировать фон
