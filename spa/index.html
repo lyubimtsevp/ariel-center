@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=33"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=34"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить aside на правильную структуру
@@ -107,6 +107,28 @@
       setTimeout(stretchContainer, 1000);
 
       const observer = new MutationObserver(stretchContainer);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Убрать высоту у фонового изображения
+    (function() {
+      function removeImageHeight() {
+        const bgImage = document.querySelector('img[src*="bg_main"]');
+
+        if (bgImage && !bgImage.hasAttribute('data-height-removed')) {
+          bgImage.style.height = 'auto';
+          bgImage.setAttribute('data-height-removed', 'true');
+          console.log('Background image height removed');
+        }
+      }
+
+      setTimeout(removeImageHeight, 100);
+      setTimeout(removeImageHeight, 500);
+      setTimeout(removeImageHeight, 1000);
+
+      const observer = new MutationObserver(removeImageHeight);
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
