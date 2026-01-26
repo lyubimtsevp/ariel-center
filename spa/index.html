@@ -416,14 +416,15 @@
       }
     })();
 
-    // Заменить хедер на страницах /cabinet/news и /cabinet/support
+    // Заменить хедер на страницах /cabinet/news, /cabinet/support и /cabinet/info
     (function() {
       function replaceNewsHeader() {
         const path = window.location.pathname;
         const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
+        const isInfoPage = path === '/cabinet/info' || path === '/cabinet/info/';
 
-        if (!isNewsPage && !isSupportPage) return;
+        if (!isNewsPage && !isSupportPage && !isInfoPage) return;
         if (document.querySelector('[data-news-header-replaced]')) return;
 
         // Найти существующий хедер
