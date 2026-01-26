@@ -273,6 +273,86 @@
       setInterval(moveContent, 1000);
     })();
 
+    // Зафиксировать хедер
+    (function() {
+      function fixHeader() {
+        // Найти хедер - обычно это первый элемент в контейнере или элемент header
+        const headers = document.querySelectorAll('header');
+
+        if (headers.length > 0) {
+          headers.forEach(function(header) {
+            if (!header.hasAttribute('data-header-fixed')) {
+              header.style.position = 'fixed';
+              header.style.top = '0';
+              header.style.left = '0';
+              header.style.right = '0';
+              header.style.zIndex = '100000';
+              header.setAttribute('data-header-fixed', 'true');
+              console.log('Header fixed');
+            }
+          });
+        }
+
+        // Также попробовать найти хедер по высоте 60px в верхней части
+        const potentialHeaders = document.querySelectorAll('[class*="h-[60px]"], [class*="top-"]');
+        potentialHeaders.forEach(function(elem) {
+          const rect = elem.getBoundingClientRect();
+          if (rect.top === 0 && rect.height === 60 && !elem.hasAttribute('data-header-fixed')) {
+            elem.style.position = 'fixed';
+            elem.style.top = '0';
+            elem.style.left = '0';
+            elem.style.right = '0';
+            elem.style.zIndex = '100000';
+            elem.setAttribute('data-header-fixed', 'true');
+            console.log('Header-like element fixed');
+          }
+        });
+      }
+
+      setTimeout(fixHeader, 100);
+      setTimeout(fixHeader, 300);
+      setTimeout(fixHeader, 600);
+      setTimeout(fixHeader, 1000);
+
+      const observer = new MutationObserver(fixHeader);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
+    // Добавить отступ контенту от левого меню
+    (function() {
+      function addContentMargin() {
+        const path = window.location.pathname;
+        const isProfilePage = path === '/cabinet/profile' || path === '/cabinet/profile/';
+
+        if (isProfilePage) {
+          // Найти основной контент блок
+          const contentBlocks = document.querySelectorAll('div.relative.p-6');
+
+          contentBlocks.forEach(function(block) {
+            if (!block.hasAttribute('data-margin-added')) {
+              block.style.marginLeft = '69px';
+              block.style.marginTop = '16px';
+              block.setAttribute('data-margin-added', 'true');
+              console.log('Content margin added');
+            }
+          });
+        }
+      }
+
+      setTimeout(addContentMargin, 100);
+      setTimeout(addContentMargin, 300);
+      setTimeout(addContentMargin, 600);
+      setTimeout(addContentMargin, 1000);
+      setTimeout(addContentMargin, 2000);
+
+      const observer = new MutationObserver(addContentMargin);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    })();
+
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
   </head>
