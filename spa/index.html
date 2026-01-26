@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=52"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=76"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -387,15 +387,16 @@
       setInterval(removeOlFromFooter, 1000);
     })();
 
-    // Добавить футер на страницах /cabinet/news, /cabinet/support и /cabinet/finance
+    // Добавить футер на страницах /cabinet/news, /cabinet/support, /cabinet/finance и /cabinet/structure
     (function() {
       function addContentFooter() {
         const path = window.location.pathname;
         const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
         const isSupportPage = path === '/cabinet/support' || path === '/cabinet/support/';
         const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
+        const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
 
-        if (!isNewsPage && !isSupportPage && !isFinancePage) return;
+        if (!isNewsPage && !isSupportPage && !isFinancePage && !isStructurePage) return;
 
         // Проверить, что футер уже добавлен
         const existingFooter = document.querySelector('[data-content-footer="true"]');
@@ -539,12 +540,321 @@
       setInterval(addProfileBlock, 100);
     })();
 
+    // Удалить блоки с правой стороны на главной странице /cabinet
+    (function() {
+      function removeBlocks() {
+        const path = window.location.pathname;
+        const hash = window.location.hash;
+
+        // Проверить что это главная страница /cabinet
+        const isMainCabinet = (path === '/cabinet' || path === '/cabinet/') && (!hash || hash === '' || hash === '#' || hash === '#/');
+
+        if (!isMainCabinet) return;
+
+        // Удалить блоки по data-node-id
+        const block246 = document.querySelector('[data-node-id="8:246"]');
+        const block247 = document.querySelector('[data-node-id="8:247"]');
+        const block271 = document.querySelector('[data-node-id="8:271"]');
+
+        if (block246) {
+          block246.remove();
+          console.log('Block 8:246 removed from /cabinet');
+        }
+
+        if (block247) {
+          block247.remove();
+          console.log('Block 8:247 removed from /cabinet');
+        }
+
+        if (block271) {
+          block271.remove();
+          console.log('Block 8:271 removed from /cabinet');
+        }
+      }
+
+      setTimeout(removeBlocks, 10);
+      setTimeout(removeBlocks, 50);
+      setTimeout(removeBlocks, 100);
+      setTimeout(removeBlocks, 300);
+      setTimeout(removeBlocks, 600);
+      setTimeout(removeBlocks, 1000);
+      setTimeout(removeBlocks, 2000);
+
+      const observer = new MutationObserver(removeBlocks);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(removeBlocks, 100);
+    })();
+
+    // Добавить блок профиля на главной странице /cabinet
+    (function() {
+      function addProfileBlockCabinet() {
+        const path = window.location.pathname;
+        const hash = window.location.hash;
+
+        // Проверить что это главная страница /cabinet
+        const isMainCabinet = (path === '/cabinet' || path === '/cabinet/') && (!hash || hash === '' || hash === '#' || hash === '#/');
+
+        if (!isMainCabinet) return;
+
+        // Проверить, что блок уже добавлен
+        const existingBlock = document.querySelector('[data-profile-block-cabinet="true"]');
+        if (existingBlock) {
+          // Обновить стили существующего блока
+          existingBlock.style.cssText = 'position: fixed !important; top: 80px !important; right: 20px !important; width: 185px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
+          return;
+        }
+
+        // Создать блок профиля
+        const profileBlock = document.createElement('div');
+        profileBlock.className = 'w-[185px] flex flex-col gap-2';
+        profileBlock.style.cssText = 'position: fixed !important; top: 80px !important; right: 20px !important; width: 185px !important; z-index: 9998 !important; display: flex !important; flex-direction: column !important; gap: 8px !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;';
+        profileBlock.setAttribute('data-profile-block-cabinet', 'true');
+        profileBlock.innerHTML = '<div class="bg-[#246393] rounded p-4 flex flex-col items-center"><div class="w-[145px] h-[145px] bg-[#1f5986] rounded flex flex-col items-center justify-center cursor-pointer hover:bg-[#2a6a9a] transition-colors"><img src="/assets/camera-Bca7ToUt.png" alt="Загрузить фото" class="w-10 h-10 mb-2 opacity-70"><span class="text-[#92aec4] text-[13px]">Загрузить свое</span><span class="text-[#97b1c6] text-sm">фото</span></div><div class="bg-[#1f5986] border border-[#286ea3] rounded h-[31px] w-full mt-4 flex items-center justify-center"><span class="text-[#98b2c7] text-[13px]">ID 4586</span></div><div class="text-center mt-4"><div class="text-[#a8c8e4] text-[15px]">Иванов Иван</div><div class="text-[#a8c7e4] text-base font-light">Иванович</div></div></div><div class="bg-[#246393] rounded p-4"><div class="bg-[#1f5986] border border-[#2a75a4] rounded h-[31px] flex items-center justify-center mb-2"><span class="text-[#9ab4c8] text-xs">Статус</span></div><div class="text-center text-[#a1c5e2] text-[13px]">Отсутствует</div></div>';
+
+        // ВСТАВИТЬ В BODY НАПРЯМУЮ
+        document.body.appendChild(profileBlock);
+        console.log('Profile block FORCED into body on /cabinet');
+      }
+
+      setTimeout(addProfileBlockCabinet, 10);
+      setTimeout(addProfileBlockCabinet, 50);
+      setTimeout(addProfileBlockCabinet, 100);
+      setTimeout(addProfileBlockCabinet, 300);
+      setTimeout(addProfileBlockCabinet, 600);
+      setTimeout(addProfileBlockCabinet, 1000);
+      setTimeout(addProfileBlockCabinet, 2000);
+
+      const observer = new MutationObserver(addProfileBlockCabinet);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(addProfileBlockCabinet, 100);
+    })();
+
+    // Переместить main блок в div root на странице /cabinet/structure ЖЕЕЕЕЕСТКО
+    (function() {
+      function moveMainToRoot() {
+        const path = window.location.pathname;
+        const isStructurePage = path === '/cabinet/structure' || path === '/cabinet/structure/';
+
+        if (!isStructurePage) return;
+
+        // Найти div root
+        const root = document.getElementById('root');
+        if (!root) return;
+
+        // Попробовать найти main элемент разными способами
+        let mainBlock = document.querySelector('main[class*="absolute"][class*="top-"][class*="left-"]');
+        if (!mainBlock) {
+          mainBlock = document.querySelector('main.absolute');
+        }
+        if (!mainBlock) {
+          mainBlock = document.querySelector('main');
+        }
+
+        if (mainBlock) {
+          // ПРИНУДИТЕЛЬНО переместить в root ВСЕГДА
+          if (mainBlock.parentElement !== root) {
+            root.appendChild(mainBlock);
+            console.log('Main block FORCED to root on /cabinet/structure');
+          }
+
+          // Применить ЖЕСТКИЕ стили БЕЗ РАСТЯЖЕНИЯ
+          mainBlock.style.cssText = 'position: absolute !important; top: 60px !important; left: 69px !important; right: 0 !important; display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1 !important; min-height: auto !important; height: auto !important;';
+          mainBlock.setAttribute('data-moved-to-root', 'true');
+
+          // Найти первый div внутри main и применить стили
+          const firstDiv = mainBlock.querySelector('div');
+          if (firstDiv) {
+            firstDiv.style.cssText = 'padding: 24px !important; display: block !important; visibility: visible !important; opacity: 1 !important;';
+          }
+        }
+      }
+
+      setTimeout(moveMainToRoot, 5);
+      setTimeout(moveMainToRoot, 10);
+      setTimeout(moveMainToRoot, 20);
+      setTimeout(moveMainToRoot, 50);
+      setTimeout(moveMainToRoot, 100);
+      setTimeout(moveMainToRoot, 200);
+      setTimeout(moveMainToRoot, 300);
+      setTimeout(moveMainToRoot, 500);
+      setTimeout(moveMainToRoot, 800);
+      setTimeout(moveMainToRoot, 1000);
+      setTimeout(moveMainToRoot, 1500);
+      setTimeout(moveMainToRoot, 2000);
+      setTimeout(moveMainToRoot, 3000);
+
+      const observer = new MutationObserver(moveMainToRoot);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(moveMainToRoot, 50);
+    })();
+
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
+  <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
+    <script>
+    // ЕДИНЫЙ СКРИПТ ДЛЯ /cabinet/support - ПЕРЕНОС MAIN В ROOT
+    (function() {
+      function MEGA_MOVE_SUPPORT() {
+        var path = window.location.pathname;
+        if (path !== '/cabinet/support' && path !== '/cabinet/support/' && path !== '/cabinet/info' && path !== '/cabinet/info/' && path !== '/cabinet/photo' && path !== '/cabinet/photo/' && path !== '/cabinet/cashback' && path !== '/cabinet/cashback/') return;
+        
+        var root = document.getElementById('root');
+        var mainBlock = document.querySelector('main');
+        
+        if (!root || !mainBlock) return;
+        
+        // Если main уже в root - выходим
+        if (mainBlock.parentElement === root) return;
+        
+        // Клонируем main и вставляем в root
+        var clone = mainBlock.cloneNode(true);
+        root.appendChild(clone);
+        mainBlock.remove();
+        
+        // Применяем стили
+        clone.style.cssText = 'position: absolute !important; top: 60px !important; left: 69px !important; right: 0 !important; bottom: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; visibility: visible !important; opacity: 1 !important; z-index: 10 !important;';
+        
+        console.log('MEGA: main перемещен в root');
+      }
+      
+      setInterval(MEGA_MOVE_SUPPORT, 50);
+      for (var i = 0; i < 5000; i += 50) {
+        setTimeout(MEGA_MOVE_SUPPORT, i);
+      }
+      new MutationObserver(MEGA_MOVE_SUPPORT).observe(document.documentElement, {childList: true, subtree: true});
+    })();
+    
+    // Скрыть футер на странице новостей
+    (function() {
+      function hideFooterNews() {
+        var path = window.location.pathname;
+        if (path !== '/cabinet/news' && path !== '/cabinet/news/') return;
+        
+        var footer = document.querySelector('[data-content-footer]');
+        if (footer) footer.remove();
+        
+        var bottoms = document.querySelectorAll('[class*=bottom-]');
+        bottoms.forEach(function(el) {
+          if (el.textContent && el.textContent.indexOf('Албикс') !== -1) {
+            el.remove();
+          }
+        });
+      }
+      setInterval(hideFooterNews, 100);
+    })();
+    </script>
+<script>    // Футер для /cabinet/cashback    (function() {      function fixCashbackFooter() {        var path = window.location.pathname;        if (path !== "/cabinet/cashback" && path !== "/cabinet/cashback/") return;                var oldFooter = document.querySelector("[data-content-footer]");        if (oldFooter) oldFooter.remove();                var existingFooter = document.querySelector("[data-footer-unified]");        if (existingFooter) {          existingFooter.style.cssText = "position: fixed; bottom: 0px; left: 69px; right: 0px; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0px 30px; background-color: transparent; z-index: 9999;";          return;        }                var footer = document.createElement("div");        footer.setAttribute("data-footer-unified", "true");        footer.style.cssText = "position: fixed; bottom: 0px; left: 69px; right: 0px; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0px 30px; background-color: transparent; z-index: 9999;";        document.body.appendChild(footer);      }      setInterval(fixCashbackFooter, 100);      [0,50,100,200,500,1000].forEach(function(t) { setTimeout(fixCashbackFooter, t); });    })();    </script>
+<script>    (function(){      function CASHBACK_FOOTER_ULTRA(){        if(location.pathname.indexOf("/cabinet/cashback")===-1)return;        document.querySelectorAll("[data-content-footer]").forEach(function(e){e.remove();});        var f=document.querySelector("[data-footer-unified]");        if(!f){          f=document.createElement("div");          f.setAttribute("data-footer-unified","true");          document.body.appendChild(f);        }        f.style.cssText="position:fixed!important;bottom:0!important;left:69px!important;right:0!important;height:60px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:0 30px!important;background-color:transparent!important;z-index:9999!important;";        f.innerHTML="<span style="color:#95b5de;font-size:16px;">2019 © ООО Албикс. Все права защищены.</span><div style="display:flex;align-items:center;gap:8px;"><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_yt-D-OAslMW.png" style="width:20px;height:20px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_vk-DVhhSvRr.png" style="width:18px;height:18px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_inst-Be0b4DfN.png" style="width:20px;height:20px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_ok-1imOTysm.png" style="width:20px;height:20px;"></a></div>";      }      setInterval(CASHBACK_FOOTER_ULTRA,30);      new MutationObserver(CASHBACK_FOOTER_ULTRA).observe(document.documentElement,{childList:true,subtree:true});      for(var i=0;i<3000;i+=30)setTimeout(CASHBACK_FOOTER_ULTRA,i);    })();    </script>
+<script>    (function(){      function CASHBACK_FOOTER_EXACT(){        if(location.pathname.indexOf("/cabinet/cashback")===-1)return;        var old=document.querySelector("[data-cashback-footer-exact]");        if(old)return;        document.querySelectorAll("[data-content-footer]").forEach(function(e){e.remove();});        document.querySelectorAll("[data-footer-unified]").forEach(function(e){e.remove();});        var f=document.createElement("div");        f.className="flex items-center justify-between";        f.setAttribute("data-content-footer","true");        f.setAttribute("data-cashback-footer-exact","true");        f.style.cssText="position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;";        f.innerHTML="<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>";        document.body.appendChild(f);      }      setInterval(CASHBACK_FOOTER_EXACT,30);      new MutationObserver(CASHBACK_FOOTER_EXACT).observe(document.documentElement,{childList:true,subtree:true});      for(var i=0;i<3000;i+=30)setTimeout(CASHBACK_FOOTER_EXACT,i);    })();    </script>
   </head>
 
   <body>
-    <div id="root"></div>
-
+    <div id=root></div>
   </body>
 </html>
+</body>
+</html>
+<script>
+(function(){
+var FOOTER_HTML='<div class="flex items-center justify-between" data-content-footer="true" data-ultra-footer="true" style="position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;"><span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div></div>';
+function ULTRA_FOOTER(){
+var p=location.pathname;
+if(p.indexOf('/cabinet/cashback')===-1 && p.indexOf('/cabinet/photo')===-1 && p.indexOf('/cabinet/info')===-1 && p.indexOf('/cabinet/news')===-1)return;
+if(document.querySelector('[data-ultra-footer]'))return;
+document.querySelectorAll('[data-content-footer],[data-footer-unified]').forEach(function(e){e.remove();});
+document.body.insertAdjacentHTML('beforeend',FOOTER_HTML);
+}
+setInterval(ULTRA_FOOTER,20);
+new MutationObserver(ULTRA_FOOTER).observe(document,{childList:true,subtree:true});
+document.addEventListener('DOMContentLoaded',ULTRA_FOOTER);
+window.addEventListener('load',ULTRA_FOOTER);
+ULTRA_FOOTER();
+})();
+</script>
+<script>
+(function(){
+function FIX_NEWS_DATE(){
+if(location.pathname.indexOf('/cabinet/news')===-1)return;
+var headers=document.querySelectorAll('.grid.grid-cols-2 .bg-\[\#1e5885\]');
+headers.forEach(function(h){
+if(h.getAttribute('data-fixed-date'))return;
+h.style.cssText='position:sticky!important;top:0!important;z-index:10!important;';
+h.setAttribute('data-fixed-date','true');
+});
+}
+setInterval(FIX_NEWS_DATE,50);
+new MutationObserver(FIX_NEWS_DATE).observe(document,{childList:true,subtree:true});
+FIX_NEWS_DATE();
+})();
+</script>
+<script>
+(function(){
+function ULTRA_FIX_NEWS_DATE(){
+if(location.pathname.indexOf('/cabinet/news')===-1)return;
+var cards=document.querySelectorAll('.grid.grid-cols-2 > .rounded-lg');
+cards.forEach(function(card){
+if(card.getAttribute('data-ultra-fixed'))return;
+var dateHeader=card.querySelector('.bg-\[\#1e5885\]');
+if(!dateHeader)return;
+dateHeader.style.position='sticky';
+dateHeader.style.top='0';
+dateHeader.style.zIndex='100';
+dateHeader.style.flexShrink='0';
+card.style.display='flex';
+card.style.flexDirection='column';
+card.setAttribute('data-ultra-fixed','true');
+var content=document.createElement('div');
+content.style.cssText='flex:1;overflow-y:auto;';
+while(card.children.length>1){
+content.appendChild(card.children[1]);
+}
+card.appendChild(content);
+});
+}
+setInterval(ULTRA_FIX_NEWS_DATE,30);
+new MutationObserver(ULTRA_FIX_NEWS_DATE).observe(document,{childList:true,subtree:true});
+for(var i=0;i<3000;i+=30)setTimeout(ULTRA_FIX_NEWS_DATE,i);
+})();
+</script>
+<script>
+(function(){
+function MEGA_FIX_DATE(){
+if(location.pathname.indexOf('/cabinet/news')===-1)return;
+var cards=document.querySelectorAll('.grid.grid-cols-2 > .rounded-lg');
+cards.forEach(function(card){
+var dateHeader=card.querySelector('.bg-\[\#1e5885\]');
+if(!dateHeader)return;
+card.style.position='relative';
+dateHeader.style.cssText='position:absolute!important;top:0!important;left:0!important;right:0!important;z-index:100!important;';
+});
+}
+setInterval(MEGA_FIX_DATE,20);
+new MutationObserver(MEGA_FIX_DATE).observe(document,{childList:true,subtree:true});
+MEGA_FIX_DATE();
+})();
+</script>
+<script>
+(function(){
+function FORCE_DATE_TOP(){
+if(location.pathname.indexOf('/cabinet/news')===-1)return;
+var all=document.querySelectorAll('.bg-\[\#1e5885\]');
+for(var i=0;i<all.length;i++){
+var el=all[i];
+if(el.querySelector('svg')){
+el.style.cssText='position:sticky!important;top:0!important;left:0!important;right:0!important;z-index:9999!important;background:#1e5885!important;';
+}
+}
+}
+setInterval(FORCE_DATE_TOP,10);
+FORCE_DATE_TOP();
+})();
+</script>
