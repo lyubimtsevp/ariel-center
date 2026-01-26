@@ -1350,3 +1350,91 @@ if(orders)orders.style.display='none';
 },true);
 })();
 </script>
+<style>
+[data-node-id="8:431"]{
+position:fixed!important;
+left:50%!important;
+top:50%!important;
+transform:translate(-50%,-50%)!important;
+right:auto!important;
+bottom:auto!important;
+}
+[data-node-id="8:615"]{
+position:fixed!important;
+left:50%!important;
+top:50%!important;
+transform:translate(-50%,-50%)!important;
+right:auto!important;
+bottom:auto!important;
+}
+</style>
+<script>
+(function(){
+var regLinkDone=false;
+var regCenterDone=false;
+var regBgDone=false;
+var forgotCenterDone=false;
+var forgotBgDone=false;
+
+function REGISTER_PAGE_FIXES(){
+var p=location.pathname;
+
+// LOGIN PAGE - make Зарегистрируйтесь a link
+if((p==='/login'||p==='/login/')&&!regLinkDone){
+var spans=document.querySelectorAll('span,p,div');
+for(var i=0;i<spans.length;i++){
+var el=spans[i];
+var txt=el.innerHTML;
+if(txt.indexOf('Зарегистрируйтесь')!==-1&&txt.indexOf('<a')===-1){
+el.innerHTML=txt.replace(/Зарегистрируйтесь/g,'<a href="/register" style="text-decoration:underline;color:inherit;cursor:pointer;">Зарегистрируйтесь</a>');
+regLinkDone=true;
+break;
+}
+}
+}
+
+// REGISTER PAGE
+if(p==='/register'||p==='/register/'){
+// Remove bg_desktop
+if(!regBgDone){
+var imgs=document.querySelectorAll('img[src*="bg_desktop"]');
+if(imgs.length>0){
+imgs.forEach(function(img){img.remove();});
+regBgDone=true;
+}
+}
+// Center form
+if(!regCenterDone){
+var form=document.querySelector('[data-node-id="8:431"]');
+if(form){
+form.style.cssText='position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);right:auto;bottom:auto;width:706px;height:581px;';
+regCenterDone=true;
+}
+}
+}
+
+// FORGOT-PASSWORD PAGE
+if(p==='/forgot-password'||p==='/forgot-password/'){
+// Remove bg_desktop
+if(!forgotBgDone){
+var imgs=document.querySelectorAll('img[src*="bg_desktop"]');
+if(imgs.length>0){
+imgs.forEach(function(img){img.remove();});
+forgotBgDone=true;
+}
+}
+// Center form 8:615
+if(!forgotCenterDone){
+var form=document.querySelector('[data-node-id="8:615"]');
+if(form){
+form.style.cssText='position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);right:auto;bottom:auto;width:543px;height:477px;';
+forgotCenterDone=true;
+}
+}
+}
+}
+
+setInterval(REGISTER_PAGE_FIXES,100);
+new MutationObserver(REGISTER_PAGE_FIXES).observe(document,{childList:true,subtree:true});
+})();
+</script>
