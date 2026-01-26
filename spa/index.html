@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=30"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=31"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить aside на правильную структуру
@@ -86,6 +86,39 @@
           setInterval(replaceAside, 200);
         }
       }, 50);
+    })();
+
+    // Объединить футер в единый объект
+    (function() {
+      function unifyFooter() {
+        const copyright = document.querySelector('[class*="bottom-"][class*="left-"]');
+        const socials = document.querySelector('[class*="bottom-"][class*="right-"]');
+
+        if (!copyright || !socials) return;
+        if (document.querySelector('[data-footer-unified]')) return;
+
+        const footerContainer = document.createElement('div');
+        footerContainer.setAttribute('data-footer-unified', 'true');
+        footerContainer.style.cssText = 'position: fixed; bottom: 0; left: 69px; right: 0; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background-color: transparent; z-index: 9999;';
+
+        copyright.style.cssText = 'position: static;';
+        socials.style.cssText = 'position: static; display: flex; gap: 15px;';
+
+        footerContainer.appendChild(copyright);
+        footerContainer.appendChild(socials);
+        document.body.appendChild(footerContainer);
+
+        console.log('Footer unified');
+      }
+
+      setTimeout(unifyFooter, 100);
+      setTimeout(unifyFooter, 500);
+      setTimeout(unifyFooter, 1000);
+
+      const observer = new MutationObserver(unifyFooter);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
     })();
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
