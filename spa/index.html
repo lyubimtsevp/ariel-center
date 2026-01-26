@@ -4,19 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=42"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=43"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
-    // Заменить левое меню на главной странице /cabinet
+    // Заменить левое меню на страницах /cabinet и /cabinet/news
     (function() {
       function replaceMenu() {
         const path = window.location.pathname;
         const hash = window.location.hash;
 
-        // Проверить что это главная страница /cabinet
+        // Проверить что это главная страница /cabinet или /cabinet/news
         const isMainCabinet = (path === '/cabinet' || path === '/cabinet/') && (!hash || hash === '' || hash === '#' || hash === '#/');
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
 
-        if (isMainCabinet) {
+        if (isMainCabinet || isNewsPage) {
           // Проверить, что меню еще не добавлено
           if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
             return;
@@ -34,7 +35,7 @@
           asides.forEach(function(aside) {
             if (!aside.hasAttribute('data-custom-menu')) {
               aside.remove();
-              console.log('Old aside removed from /cabinet');
+              console.log('Old aside removed');
             }
           });
 
@@ -58,7 +59,7 @@
 
             // Вставить новое меню в начало контейнера с data-node-id="8:231"
             targetContainer.insertBefore(newAside, targetContainer.firstChild);
-            console.log('New custom menu added to /cabinet inside container 8:231');
+            console.log('New custom menu added inside container 8:231');
           }
         }
       }
