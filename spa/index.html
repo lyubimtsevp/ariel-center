@@ -396,16 +396,23 @@
         const isFinancePage = path === '/cabinet/finance' || path === '/cabinet/finance/';
 
         if (!isNewsPage && !isSupportPage && !isFinancePage) return;
-        if (document.querySelector('[data-content-footer]')) return;
 
         // Найти контейнер для футера
         const mainContent = document.querySelector('div.h-full.overflow-y-auto.px-8');
         if (!mainContent) return;
 
+        // Проверить, что футер уже добавлен
+        const existingFooter = mainContent.querySelector('[data-content-footer]');
+        if (existingFooter) {
+          // Обновить стили существующего футера
+          existingFooter.style.cssText = 'margin-top: 2rem !important; padding-right: 60px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important;';
+          return;
+        }
+
         // Создать футер блок
         const footerBlock = document.createElement('div');
         footerBlock.className = 'mt-8 flex items-center justify-between';
-        footerBlock.style.paddingRight = '60px';
+        footerBlock.style.cssText = 'margin-top: 2rem !important; padding-right: 60px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important;';
         footerBlock.setAttribute('data-content-footer', 'true');
         footerBlock.innerHTML = '<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>';
 
@@ -413,6 +420,8 @@
         console.log('Content footer added to ' + path);
       }
 
+      setTimeout(addContentFooter, 10);
+      setTimeout(addContentFooter, 50);
       setTimeout(addContentFooter, 100);
       setTimeout(addContentFooter, 300);
       setTimeout(addContentFooter, 600);
@@ -423,6 +432,8 @@
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
+
+      setInterval(addContentFooter, 100);
     })();
 
     // Заменить хедер на страницах /cabinet/news, /cabinet/support, /cabinet/info, /cabinet/photo, /cabinet/cashback, /cabinet/structure и /cabinet/finance
