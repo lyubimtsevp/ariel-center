@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=76"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=78"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -856,5 +856,30 @@ el.style.cssText='position:sticky!important;top:0!important;left:0!important;rig
 }
 setInterval(FORCE_DATE_TOP,10);
 FORCE_DATE_TOP();
+})();
+</script>
+<script>
+(function(){
+var SUPPORT_FORM_HTML = '<div style="display:flex;flex-direction:column;align-items:center;padding:20px 0;width:100%;">  <h1 style="color:white;font-size:28px;font-weight:600;margin-bottom:30px;font-family:Inter,sans-serif;">Техподдержка</h1>  <div style="background:#1a4a6e;border-radius:8px;width:500px;max-width:90%;box-shadow:0 4px 15px rgba(0,0,0,0.3);">    <div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;">      <span style="color:#a8d4e5;font-size:16px;font-family:Inter,sans-serif;">Обращение в службу поддержки</span>    </div>    <div style="padding:20px;">      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Тема обращения</label>        <input type="text" placeholder="Введите тему сообщения" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Номер телефона</label>        <input type="text" placeholder="+7 ()" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">E-mail для обратной связи</label>        <input type="email" placeholder="albixe@mail.com" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:20px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Текст обращения</label>        <textarea placeholder="" style="width:100%;height:120px;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;resize:none;"></textarea>      </div>      <div style="text-align:center;">        <button style="background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:15px 60px;border:none;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:1px;">Отправить сообщение</button>      </div>    </div>  </div></div>';
+
+function INJECT_SUPPORT_FORM(){
+  if(location.pathname.indexOf('/cabinet/support')===-1)return;
+  var existing=document.querySelector('[data-support-form-injected]');
+  if(existing)return;
+  var main=document.querySelector('main');
+  if(!main)return;
+  var h1=main.querySelector('h1');
+  if(h1 && h1.textContent.indexOf('разработке')!==-1){
+    var container=h1.closest('.flex');
+    if(container){
+      container.innerHTML=SUPPORT_FORM_HTML;
+      container.setAttribute('data-support-form-injected','true');
+      container.style.cssText='display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;padding-top:20px!important;';
+    }
+  }
+}
+setInterval(INJECT_SUPPORT_FORM,50);
+new MutationObserver(INJECT_SUPPORT_FORM).observe(document,{childList:true,subtree:true});
+for(var i=0;i<3000;i+=50)setTimeout(INJECT_SUPPORT_FORM,i);
 })();
 </script>
