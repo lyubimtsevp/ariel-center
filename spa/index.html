@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=49"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=50"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -13,11 +13,12 @@
         const path = window.location.pathname;
         const hash = window.location.hash;
 
-        // Проверить что это главная страница /cabinet или /cabinet/news
+        // Проверить что это главная страница /cabinet или /cabinet/news или /cabinet/profile
         const isMainCabinet = (path === '/cabinet' || path === '/cabinet/') && (!hash || hash === '' || hash === '#' || hash === '#/');
         const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+        const isProfilePage = path === '/cabinet/profile' || path === '/cabinet/profile/';
 
-        if (isMainCabinet || isNewsPage) {
+        if (isMainCabinet || isNewsPage || isProfilePage) {
           // Проверить, что меню еще не добавлено
           if (document.querySelector('[data-custom-menu="main-cabinet"]')) {
             return;
