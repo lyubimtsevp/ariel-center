@@ -1177,3 +1177,214 @@ INIT();
 [data-modal-wholesale]>div::-webkit-scrollbar{display:none;}
 [data-modal-wholesale] input::placeholder{color:#7db4d4;}
 </style>
+<script>
+(function(){
+
+/* ===== LEGAL ENTITY MODAL STEP 1 ===== */
+var LEGAL_STEP1_HTML='<div data-modal-legal-step1 style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:420px;max-width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,0.4);scrollbar-width:none;-ms-overflow-style:none;"><div style="background:#3bb4c1;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;"><span style="color:white;font-size:16px;font-weight:500;">Заказать как юр лицо</span><button data-close-legal style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Название Организации</label><input type="text" data-field="org_name" placeholder="Название Организации" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">ФИО</label><input type="text" data-field="full_name" placeholder="Иванов Иван Иванович" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Телефон</label><input type="text" data-field="phone" placeholder="+7()" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Юридический адрес организации</label><input type="text" data-field="legal_address" placeholder="628462, Россия, Ханты-манси." style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">ИНН</label><input type="text" data-field="inn" placeholder="860903536804" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">ОГРН</label><input type="text" data-field="ogrn" placeholder="322861700066285" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:20px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Расчетный счет</label><input type="text" data-field="bank_account" placeholder="40802810300003659355" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><button data-action="legal-next" style="width:100%;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Далее</button></div></div></div>';
+
+/* ===== LEGAL ENTITY MODAL STEP 2 ===== */
+var LEGAL_STEP2_HTML='<div data-modal-legal-step2 style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:420px;max-width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,0.4);scrollbar-width:none;-ms-overflow-style:none;"><div style="background:#3bb4c1;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;"><span style="color:white;font-size:16px;font-weight:500;">Заказать как юр лицо</span><button data-close-legal2 style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Банк</label><input type="text" data-field="bank_name" placeholder="АО &quot;ТИНЬКОФФ БАНК&quot;" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">ИНН банка</label><input type="text" data-field="bank_inn" placeholder="7710140679" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">БИК банка</label><input type="text" data-field="bank_bik" placeholder="044525974" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Корреспондентский счет банка</label><input type="text" data-field="bank_corr_account" placeholder="30101810145250000974" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:20px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Юридический адрес банка</label><input type="text" data-field="bank_address" placeholder="Москва, 127287, ул. Хуторская 2-я" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><button data-action="legal-submit" style="width:100%;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Отправить</button></div></div></div>';
+
+function INJECT_LEGAL_MODALS(){
+if(!document.querySelector('[data-modal-legal-step1]')){
+document.body.insertAdjacentHTML('beforeend',LEGAL_STEP1_HTML);
+}
+if(!document.querySelector('[data-modal-legal-step2]')){
+document.body.insertAdjacentHTML('beforeend',LEGAL_STEP2_HTML);
+}
+}
+
+document.addEventListener('click',function(e){
+var t=e.target;
+
+// OPEN LEGAL MODAL STEP 1
+var btn=t.closest('button');
+if(btn&&!btn.closest('[data-modal-legal-step1]')&&!btn.closest('[data-modal-legal-step2]')){
+var txt=(btn.textContent||'').toLowerCase();
+if(txt.indexOf('заказать')!==-1&&txt.indexOf('юр')!==-1&&txt.indexOf('лицо')!==-1){
+e.preventDefault();
+e.stopPropagation();
+setTimeout(function(){
+var modal=document.querySelector('[data-modal-legal-step1]');
+if(modal)modal.style.display='flex';
+},10);
+return;
+}
+}
+
+// CLOSE LEGAL STEP 1
+if(t.matches('[data-close-legal]')||t.closest('[data-close-legal]')||t.matches('[data-modal-legal-step1]')){
+if(t.matches('[data-modal-legal-step1]')||t.matches('[data-close-legal]')||t.closest('[data-close-legal]')){
+var modal=document.querySelector('[data-modal-legal-step1]');
+if(modal&&(t===modal||t.matches('[data-close-legal]')||t.closest('[data-close-legal]')))modal.style.display='none';
+}
+return;
+}
+
+// NEXT - GO TO STEP 2
+if(t.matches('[data-action="legal-next"]')||t.closest('[data-action="legal-next"]')){
+var step1=document.querySelector('[data-modal-legal-step1]');
+var step2=document.querySelector('[data-modal-legal-step2]');
+if(step1)step1.style.display='none';
+if(step2)step2.style.display='flex';
+return;
+}
+
+// CLOSE LEGAL STEP 2
+if(t.matches('[data-close-legal2]')||t.closest('[data-close-legal2]')||t.matches('[data-modal-legal-step2]')){
+if(t.matches('[data-modal-legal-step2]')||t.matches('[data-close-legal2]')||t.closest('[data-close-legal2]')){
+var modal=document.querySelector('[data-modal-legal-step2]');
+if(modal&&(t===modal||t.matches('[data-close-legal2]')||t.closest('[data-close-legal2]')))modal.style.display='none';
+}
+return;
+}
+
+// SUBMIT LEGAL ORDER
+if(t.matches('[data-action="legal-submit"]')||t.closest('[data-action="legal-submit"]')){
+var step1=document.querySelector('[data-modal-legal-step1]');
+var step2=document.querySelector('[data-modal-legal-step2]');
+var data={
+org_name:step1.querySelector('[data-field="org_name"]').value,
+full_name:step1.querySelector('[data-field="full_name"]').value,
+phone:step1.querySelector('[data-field="phone"]').value,
+legal_address:step1.querySelector('[data-field="legal_address"]').value,
+inn:step1.querySelector('[data-field="inn"]').value,
+ogrn:step1.querySelector('[data-field="ogrn"]').value,
+bank_account:step1.querySelector('[data-field="bank_account"]').value,
+bank_name:step2.querySelector('[data-field="bank_name"]').value,
+bank_inn:step2.querySelector('[data-field="bank_inn"]').value,
+bank_bik:step2.querySelector('[data-field="bank_bik"]').value,
+bank_corr_account:step2.querySelector('[data-field="bank_corr_account"]').value,
+bank_address:step2.querySelector('[data-field="bank_address"]').value
+};
+console.log('Legal order:',data);
+alert('Заявка как юр лицо отправлена!');
+step2.style.display='none';
+return;
+}
+});
+
+setInterval(INJECT_LEGAL_MODALS,50);
+INJECT_LEGAL_MODALS();
+
+})();
+</script>
+<style>
+[data-modal-legal-step1]>div::-webkit-scrollbar{display:none;}
+[data-modal-legal-step2]>div::-webkit-scrollbar{display:none;}
+[data-modal-legal-step1] input::placeholder{color:#7db4d4;}
+[data-modal-legal-step2] input::placeholder{color:#7db4d4;}
+</style>
+<script>
+(function(){
+
+/* ===== INDIVIDUAL MODAL STEP 1 ===== */
+var IND_STEP1_HTML='<div data-modal-ind-step1 style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:420px;max-width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,0.4);scrollbar-width:none;-ms-overflow-style:none;"><div style="background:#3bb4c1;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;"><span style="color:white;font-size:16px;font-weight:500;">Заказать как физ лицо</span><button data-close-ind1 style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="color:#a8d4e5;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:15px;">Товар</div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Выберите товар</label><div style="position:relative;"><select data-field="product" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;appearance:none;cursor:pointer;"><option value="vga-90">ВГА-90</option><option value="vga-60">ВГА-60</option><option value="vga-30">ВГА-30</option></select><div style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:white;">▼</div></div></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Количество</label><div style="display:flex;align-items:center;background:#1e5885;border-radius:4px;width:fit-content;"><button data-ind-qty-minus style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;width:44px;height:44px;">−</button><span data-field="quantity" style="color:white;font-size:16px;min-width:30px;text-align:center;">1</span><button data-ind-qty-plus style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;width:44px;height:44px;">+</button></div></div><div style="margin-bottom:20px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Способ оплаты</label><div style="position:relative;"><select data-field="payment_method" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;appearance:none;cursor:pointer;"><option value="card">Оплата картой</option><option value="cash">Наличными</option><option value="invoice">По счету</option></select><div style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:white;">▼</div></div></div><div style="border-top:1px solid #2a6a9a;padding-top:15px;margin-bottom:15px;"><div style="color:#a8d4e5;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:15px;">Данные получателя</div></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">ФИО</label><input type="text" data-field="full_name" placeholder="ФИО" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Email</label><input type="email" data-field="email" placeholder="email@example.com" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:20px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Телефон</label><input type="text" data-field="phone" placeholder="+7()" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><button data-action="ind-next" style="width:100%;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Далее</button></div></div></div>';
+
+/* ===== INDIVIDUAL MODAL STEP 2 ===== */
+var IND_STEP2_HTML='<div data-modal-ind-step2 style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:420px;max-width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,0.4);scrollbar-width:none;-ms-overflow-style:none;"><div style="background:#3bb4c1;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;"><span style="color:white;font-size:16px;font-weight:500;">Адрес доставки СДЭК</span><button data-close-ind2 style="background:transparent;border:none;color:white;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Область</label><input type="text" data-field="region" placeholder="Московская область" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Индекс</label><input type="text" data-field="postal_code" placeholder="123456" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Город/поселение *</label><input type="text" data-field="city" placeholder="Москва" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Улица *</label><input type="text" data-field="street" placeholder="ул. Ленина" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:20px;"><label style="color:white;font-size:14px;display:block;margin-bottom:8px;">Дом *</label><input type="text" data-field="house" placeholder="д. 1, корп. 2" style="width:100%;padding:12px 15px;background:#1e5885;border:none;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:15px 0;border-top:1px solid #2a6a9a;border-bottom:1px solid #2a6a9a;"><span style="color:#a8d4e5;font-size:14px;">Итого к оплате</span><span data-field="total_price" style="color:#3bb4c1;font-size:28px;font-weight:700;">90 323 ₽</span></div><div style="margin-bottom:12px;"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;"><input type="checkbox" data-field="agree_privacy" checked style="width:18px;height:18px;margin-top:2px;accent-color:#3bb4c1;"><span style="color:#a8d4e5;font-size:13px;line-height:1.4;">Я согласен с <span style="color:#3bb4c1;text-decoration:underline;">политикой обработки персональных данных</span> *</span></label></div><div style="margin-bottom:20px;"><label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;"><input type="checkbox" data-field="agree_terms" style="width:18px;height:18px;margin-top:2px;accent-color:#3bb4c1;"><span style="color:#a8d4e5;font-size:13px;line-height:1.4;">Я согласен с <span style="color:#3bb4c1;text-decoration:underline;">публичной офертой</span> и <span style="color:#3bb4c1;text-decoration:underline;">пользовательским соглашением</span> *</span></label></div><button data-action="ind-submit" style="width:100%;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Оформить заказ</button></div></div></div>';
+
+var indQtyValue=1;
+
+function INJECT_IND_MODALS(){
+if(!document.querySelector('[data-modal-ind-step1]')){
+document.body.insertAdjacentHTML('beforeend',IND_STEP1_HTML);
+}
+if(!document.querySelector('[data-modal-ind-step2]')){
+document.body.insertAdjacentHTML('beforeend',IND_STEP2_HTML);
+}
+}
+
+document.addEventListener('click',function(e){
+var t=e.target;
+
+// OPEN INDIVIDUAL MODAL STEP 1
+var btn=t.closest('button');
+if(btn&&!btn.closest('[data-modal-ind-step1]')&&!btn.closest('[data-modal-ind-step2]')){
+var txt=(btn.textContent||'').toLowerCase();
+if(txt.indexOf('заказать')!==-1&&txt.indexOf('физ')!==-1&&txt.indexOf('лицо')!==-1){
+e.preventDefault();
+e.stopPropagation();
+setTimeout(function(){
+var modal=document.querySelector('[data-modal-ind-step1]');
+if(modal)modal.style.display='flex';
+},10);
+return;
+}
+}
+
+// CLOSE IND STEP 1
+if(t.matches('[data-close-ind1]')||t.closest('[data-close-ind1]')||t.matches('[data-modal-ind-step1]')){
+var modal=document.querySelector('[data-modal-ind-step1]');
+if(modal&&(t===modal||t.matches('[data-close-ind1]')||t.closest('[data-close-ind1]')))modal.style.display='none';
+return;
+}
+
+// QUANTITY BUTTONS
+if(t.matches('[data-ind-qty-minus]')||t.closest('[data-ind-qty-minus]')){
+if(indQtyValue>1)indQtyValue--;
+var span=document.querySelector('[data-modal-ind-step1] [data-field="quantity"]');
+if(span)span.textContent=indQtyValue;
+return;
+}
+if(t.matches('[data-ind-qty-plus]')||t.closest('[data-ind-qty-plus]')){
+indQtyValue++;
+var span=document.querySelector('[data-modal-ind-step1] [data-field="quantity"]');
+if(span)span.textContent=indQtyValue;
+return;
+}
+
+// NEXT - GO TO STEP 2
+if(t.matches('[data-action="ind-next"]')||t.closest('[data-action="ind-next"]')){
+var step1=document.querySelector('[data-modal-ind-step1]');
+var step2=document.querySelector('[data-modal-ind-step2]');
+if(step1)step1.style.display='none';
+if(step2)step2.style.display='flex';
+return;
+}
+
+// CLOSE IND STEP 2
+if(t.matches('[data-close-ind2]')||t.closest('[data-close-ind2]')||t.matches('[data-modal-ind-step2]')){
+var modal=document.querySelector('[data-modal-ind-step2]');
+if(modal&&(t===modal||t.matches('[data-close-ind2]')||t.closest('[data-close-ind2]')))modal.style.display='none';
+return;
+}
+
+// SUBMIT INDIVIDUAL ORDER
+if(t.matches('[data-action="ind-submit"]')||t.closest('[data-action="ind-submit"]')){
+var step1=document.querySelector('[data-modal-ind-step1]');
+var step2=document.querySelector('[data-modal-ind-step2]');
+var data={
+product:step1.querySelector('[data-field="product"]').value,
+quantity:indQtyValue,
+payment_method:step1.querySelector('[data-field="payment_method"]').value,
+full_name:step1.querySelector('[data-field="full_name"]').value,
+email:step1.querySelector('[data-field="email"]').value,
+phone:step1.querySelector('[data-field="phone"]').value,
+region:step2.querySelector('[data-field="region"]').value,
+postal_code:step2.querySelector('[data-field="postal_code"]').value,
+city:step2.querySelector('[data-field="city"]').value,
+street:step2.querySelector('[data-field="street"]').value,
+house:step2.querySelector('[data-field="house"]').value,
+agree_privacy:step2.querySelector('[data-field="agree_privacy"]').checked,
+agree_terms:step2.querySelector('[data-field="agree_terms"]').checked
+};
+console.log('Individual order:',data);
+alert('Заказ как физ лицо оформлен!');
+step2.style.display='none';
+return;
+}
+});
+
+setInterval(INJECT_IND_MODALS,50);
+INJECT_IND_MODALS();
+
+})();
+</script>
+<style>
+[data-modal-ind-step1]>div::-webkit-scrollbar{display:none;}
+[data-modal-ind-step2]>div::-webkit-scrollbar{display:none;}
+[data-modal-ind-step1] input::placeholder{color:#7db4d4;}
+[data-modal-ind-step2] input::placeholder{color:#7db4d4;}
+</style>
