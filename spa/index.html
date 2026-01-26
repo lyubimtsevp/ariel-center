@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=39"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=40"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на главной странице /cabinet
@@ -46,19 +46,18 @@
           });
 
           // Найти контейнер для вставки нового меню
-          const root = document.getElementById('root');
-          const mainContainer = root ? root.firstElementChild : null;
+          const targetContainer = document.querySelector('[data-node-id="8:231"]');
 
-          if (mainContainer && !document.querySelector('[data-custom-menu="main-cabinet"]')) {
+          if (targetContainer && !document.querySelector('[data-custom-menu="main-cabinet"]')) {
             // Создать новое aside меню
             const newAside = document.createElement('aside');
             newAside.className = 'w-[69px] bg-[#1e5885] flex flex-col';
             newAside.setAttribute('data-custom-menu', 'main-cabinet');
             newAside.innerHTML = '<a class="w-[69px] h-[70px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet"><img src="/assets/icon_home-D863mDdT.png" alt="Главная" class="w-[31px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/profile"><img src="/assets/icon_news-C9e8K7EC.png" alt="Новости" class="w-[32px] h-[36px] object-cover"></a><a class="w-[69px] h-[74px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/finance"><img src="/assets/icon_finance-wGJQG7h4.png" alt="Финансы" class="w-[37px] h-[34px] object-cover"></a><a class="w-[69px] h-[76px] bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/news"><img src="/assets/icon_profile-CnXtXZMy.png" alt="Профиль" class="w-[36px] h-[34px] object-cover"></a><a class="w-[69px] h-[74px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/support"><img src="/assets/icon_support-BqKEWXEa.png" alt="Поддержка" class="w-[30px] h-[36px] object-cover"></a><a class="w-[69px] h-[70px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/info"><img src="/assets/icon_info-CAzu2RoW.png" alt="Информация" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[73px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/photo"><img src="/assets/icon_photo-Y-EepUgg.png" alt="Фото" class="w-[36px] h-[32px] object-cover"></a><a class="w-[69px] h-[80px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/cashback"><img src="/assets/icon_cashback-Ck05F8HY.png" alt="Кэшбэк" class="w-[36px] h-[36px] object-cover"></a><a class="w-[69px] h-[77px] hover:bg-[#2a6a9a] transition-all flex items-center justify-center" href="/cabinet/structure"><img src="/assets/icon_structure-D7GgR2ft.png" alt="Структура" class="w-[37px] h-[32px] object-cover"></a><div class="flex-1"></div>';
 
-            // Вставить новое меню в начало контейнера
-            mainContainer.insertBefore(newAside, mainContainer.firstChild);
-            console.log('New custom menu added to /cabinet');
+            // Вставить новое меню в начало контейнера с data-node-id="8:231"
+            targetContainer.insertBefore(newAside, targetContainer.firstChild);
+            console.log('New custom menu added to /cabinet inside container 8:231');
           }
         }
       }
