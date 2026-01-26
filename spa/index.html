@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=44"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=45"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -205,6 +205,47 @@
       if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
       }
+    })();
+
+    // Переместить контент на странице /cabinet/news
+    (function() {
+      function moveNewsContent() {
+        const path = window.location.pathname;
+        const isNewsPage = path === '/cabinet/news' || path === '/cabinet/news/';
+
+        if (!isNewsPage) return;
+
+        // Проверить, что контент еще не перемещен
+        if (document.querySelector('[data-content-moved="true"]')) {
+          return;
+        }
+
+        // Найти контентный блок по классу
+        const contentBlock = document.querySelector('div.h-full.overflow-y-auto.px-8');
+        if (!contentBlock) return;
+
+        // Найти целевой контейнер
+        const targetContainer = document.querySelector('.absolute.top-\\[60px\\].left-\\[69px\\]');
+        if (!targetContainer) return;
+
+        // Переместить контент
+        contentBlock.setAttribute('data-content-moved', 'true');
+        targetContainer.appendChild(contentBlock);
+        console.log('News content moved to correct container');
+      }
+
+      setTimeout(moveNewsContent, 100);
+      setTimeout(moveNewsContent, 300);
+      setTimeout(moveNewsContent, 600);
+      setTimeout(moveNewsContent, 1000);
+      setTimeout(moveNewsContent, 2000);
+
+      const observer = new MutationObserver(moveNewsContent);
+      if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      setInterval(moveNewsContent, 1000);
     })();
     </script>
   <style>.hide-scrollbar::-webkit-scrollbar{display:none;}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}</style>
