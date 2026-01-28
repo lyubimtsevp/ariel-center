@@ -29,6 +29,7 @@ route('/ajax/cabinet/my_fees', 'main', 'cabinet#my_fees');
 route('/cabinet/amount_sales', 'cabinet#amount_sales');
 route('/cabinet/information', 'cabinet#information');
 route('/cabinet/info', 'cabinet#information');
+  route('/cabinet/photo', 'cabinet#events');
 route('/cabinet/events', 'cabinet#events');
 route('/cabinet/news', 'cabinet#news');
 route('/cabinet/shop', 'cabinet#shop');
