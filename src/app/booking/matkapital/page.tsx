@@ -10,7 +10,7 @@ import offerData from '@/data/offer-matkapital.json';
 
 const ADMIN_PHONE = '+7 (383) 255-12-55';
 
-// Компонент для поля даты с placeholder
+// Компонент для поля даты - использует нативный date input БЕЗ кастомного placeholder
 function DateInput({ value, onChange, placeholder, required, className }: {
   value: string;
   onChange: (value: string) => void;
@@ -18,25 +18,14 @@ function DateInput({ value, onChange, placeholder, required, className }: {
   required?: boolean;
   className?: string;
 }) {
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
-    <div className="relative">
-      <input
-        type="date"
-        required={required}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent ${className || ''}`}
-      />
-      {!value && !isFocused && (
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none select-none">
-          {placeholder}
-        </span>
-      )}
-    </div>
+    <input
+      type="date"
+      required={required}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent ${className || ''}`}
+    />
   );
 }
 
