@@ -72,6 +72,104 @@
   background-color: rgb(74 144 164 / 0.7);
 }
 
+/* Offer Contract Scrollbar - ЖЕСТКО ВИДИМЫЙ на всех платформах включая macOS */
+.offer-scroll {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #4A90A4 #f1f1f1;
+
+  /* ПРИНУДИТЕЛЬНО показываем скроллбар ВСЕГДА */
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+/* ЖЕСТКО переопределяем все webkit стили для macOS */
+.offer-scroll::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.offer-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 6px !important;
+  -webkit-appearance: none !important;
+  display: block !important;
+}
+
+.offer-scroll::-webkit-scrollbar-thumb {
+  background: #4A90A4 !important;
+  border-radius: 6px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: block !important;
+  visibility: visible !important;
+  min-height: 30px !important;
+  border: 2px solid #3b7d8f !important;
+}
+
+.offer-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3b7d8f !important;
+}
+
+/* Кнопки скроллбара - показываем их */
+.offer-scroll::-webkit-scrollbar-button {
+  display: block !important;
+  height: 0 !important;
+}
+
+/* Offer Contract Scrollbar для маткапитала - ЖЕСТКО ВИДИМЫЙ оранжевый */
+.offer-scroll-orange {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #F5A962 #f1f1f1;
+
+  /* ПРИНУДИТЕЛЬНО показываем скроллбар ВСЕГДА */
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+/* ЖЕСТКО переопределяем все webkit стили для macOS */
+.offer-scroll-orange::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 6px !important;
+  -webkit-appearance: none !important;
+  display: block !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-thumb {
+  background: #F5A962 !important;
+  border-radius: 6px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: block !important;
+  visibility: visible !important;
+  min-height: 30px !important;
+  border: 2px solid #e8994f !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-thumb:hover {
+  background: #e8994f !important;
+}
+
+/* Кнопки скроллбара - показываем их */
+.offer-scroll-orange::-webkit-scrollbar-button {
+  display: block !important;
+  height: 0 !important;
+}
+
 /* Utilities needed because we removed @tailwind utilities */
 .container {
   width: 100%;

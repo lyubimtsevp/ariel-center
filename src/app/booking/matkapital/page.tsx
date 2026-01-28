@@ -211,12 +211,7 @@ export default function BookingMatkapitalPage() {
                 </div>
               </div>
               <div
-                className="p-6 prose prose-sm max-w-none max-h-[400px] overflow-y-auto overflow-x-hidden overscroll-contain cursor-default"
-                style={{
-                  scrollbarWidth: 'thin',
-                  scrollbarColor: '#F5A962 #f1f1f1',
-                  WebkitOverflowScrolling: 'touch'
-                }}
+                className="p-6 prose prose-sm max-w-none max-h-[400px] overflow-x-hidden overscroll-contain cursor-default offer-scroll-orange"
                 dangerouslySetInnerHTML={{ __html: offerData.content }}
               />
             </div>
