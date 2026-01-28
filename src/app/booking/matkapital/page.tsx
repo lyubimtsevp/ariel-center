@@ -18,23 +18,21 @@ function DateInput({ value, onChange, placeholder, required, className }: {
   required?: boolean;
   className?: string;
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="relative">
       <input
-        ref={inputRef}
         type="date"
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F5A962] focus:border-transparent ${className || ''}`}
       />
-      {!value && (
-        <span
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-          onClick={() => inputRef.current?.showPicker?.()}
-        >
+      {!value && !isFocused && (
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none select-none">
           {placeholder}
         </span>
       )}
