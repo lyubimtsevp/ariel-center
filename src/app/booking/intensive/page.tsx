@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -37,6 +37,25 @@ export default function BookingIntensivePage() {
   });
 
   const canProceed = agreePersonalData && agreeOffer;
+
+  // Принудительно держим скроллбар видимым на macOS (Яндекс Браузер)
+  useEffect(() => {
+    if (step === 'offer') {
+      const scrollContainer = document.querySelector('.offer-scroll');
+      if (scrollContainer) {
+        // Делаем микро-скролл каждые 500ms чтобы скроллбар оставался видимым
+        const interval = setInterval(() => {
+          const currentScroll = scrollContainer.scrollTop;
+          scrollContainer.scrollTop = currentScroll + 0.1;
+          requestAnimationFrame(() => {
+            scrollContainer.scrollTop = currentScroll;
+          });
+        }, 500);
+
+        return () => clearInterval(interval);
+      }
+    }
+  }, [step]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
