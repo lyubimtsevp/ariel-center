@@ -72,32 +72,66 @@
   background-color: rgb(74 144 164 / 0.7);
 }
 
-/* Offer Contract Scrollbar - НАТИВНЫЙ скроллбар всегда виден */
+/* Offer Contract Scrollbar - всегда видимый на всех платформах */
 .offer-scroll {
-  /* Показываем нативный скроллбар ВСЕГДА на всех платформах */
+  /* Показываем скроллбар ВСЕГДА */
   overflow-y: scroll !important;
 
   /* Firefox - кастомные цвета */
   scrollbar-width: thin;
   scrollbar-color: #4A90A4 #f1f1f1;
-
-  /* Для плавной прокрутки */
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
 }
 
-/* Offer Contract Scrollbar для маткапитала - НАТИВНЫЙ скроллбар всегда виден */
+/* Webkit стили для Chromium (Яндекс, Chrome, Edge) */
+.offer-scroll::-webkit-scrollbar {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.offer-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 7px !important;
+}
+
+.offer-scroll::-webkit-scrollbar-thumb {
+  background: #4A90A4 !important;
+  border-radius: 7px !important;
+  border: 3px solid #e5e7eb !important;
+}
+
+.offer-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3b7d8f !important;
+}
+
+/* Offer Contract Scrollbar для маткапитала - всегда видимый */
 .offer-scroll-orange {
-  /* Показываем нативный скроллбар ВСЕГДА на всех платформах */
+  /* Показываем скроллбар ВСЕГДА */
   overflow-y: scroll !important;
 
   /* Firefox - кастомные цвета */
   scrollbar-width: thin;
   scrollbar-color: #F5A962 #f1f1f1;
+}
 
-  /* Для плавной прокрутки */
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+/* Webkit стили для Chromium (Яндекс, Chrome, Edge) */
+.offer-scroll-orange::-webkit-scrollbar {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 7px !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-thumb {
+  background: #F5A962 !important;
+  border-radius: 7px !important;
+  border: 3px solid #e5e7eb !important;
+}
+
+.offer-scroll-orange::-webkit-scrollbar-thumb:hover {
+  background: #e8994f !important;
 }
 
 /* Utilities needed because we removed @tailwind utilities */
