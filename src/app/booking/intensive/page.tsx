@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
+import { CustomScrollbar } from '@/components/CustomScrollbar';
 import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall, CreditCard, Upload, MapPin } from 'lucide-react';
 import offerData from '@/data/offer-intensive.json';
 
@@ -37,25 +38,6 @@ export default function BookingIntensivePage() {
   });
 
   const canProceed = agreePersonalData && agreeOffer;
-
-  // Принудительно держим скроллбар видимым на macOS (Яндекс Браузер)
-  useEffect(() => {
-    if (step === 'offer') {
-      const scrollContainer = document.querySelector('.offer-scroll');
-      if (scrollContainer) {
-        // Делаем микро-скролл каждые 500ms чтобы скроллбар оставался видимым
-        const interval = setInterval(() => {
-          const currentScroll = scrollContainer.scrollTop;
-          scrollContainer.scrollTop = currentScroll + 0.1;
-          requestAnimationFrame(() => {
-            scrollContainer.scrollTop = currentScroll;
-          });
-        }, 500);
-
-        return () => clearInterval(interval);
-      }
-    }
-  }, [step]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -181,10 +163,14 @@ export default function BookingIntensivePage() {
                   </div>
                 </div>
               </div>
-              <div
-                className="p-6 prose prose-sm max-w-none max-h-[400px] overflow-x-hidden overscroll-contain cursor-default offer-scroll"
-                dangerouslySetInnerHTML={{ __html: offerData.content }}
-              />
+              <CustomScrollbar
+                maxHeight="400px"
+                thumbColor="#4A90A4"
+                trackColor="#e5e7eb"
+                className="p-6 prose prose-sm max-w-none cursor-default"
+              >
+                <div dangerouslySetInnerHTML={{ __html: offerData.content }} />
+              </CustomScrollbar>
             </div>
 
             {/* Галочки согласия */}
