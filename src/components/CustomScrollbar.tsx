@@ -94,11 +94,44 @@ export function CustomScrollbar({
     content.scrollTop = scrollRatio * (content.scrollHeight - content.clientHeight);
   };
 
+  // ЖЕСТКИЙ обработчик прокрутки колесиком - работает ВЕЗДЕ
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault(); // Блокируем дефолтное поведение
+    e.stopPropagation(); // Блокируем всплытие
+
+    const content = contentRef.current;
+    if (!content) return;
+
+    // Нормализуем deltaY в пиксели для всех браузеров
+    let delta = e.deltaY;
+
+    // deltaMode: 0=pixels, 1=lines, 2=pages
+    if (e.deltaMode === 1) {
+      // Lines - умножаем на высоту строки (обычно ~16px)
+      delta *= 16;
+    } else if (e.deltaMode === 2) {
+      // Pages - умножаем на высоту контейнера
+      delta *= content.clientHeight;
+    }
+
+    // Применяем прокрутку с ограничением по границам
+    const newScrollTop = Math.max(
+      0,
+      Math.min(
+        content.scrollHeight - content.clientHeight,
+        content.scrollTop + delta
+      )
+    );
+
+    content.scrollTop = newScrollTop;
+  };
+
   return (
     <div className="relative">
       <div
         ref={contentRef}
         className={className}
+        onWheel={handleWheel}
         style={{
           maxHeight,
           overflowY: 'scroll',
