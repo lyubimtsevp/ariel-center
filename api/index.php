@@ -82,6 +82,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/shop': return getShop($pdo);
         case 'cabinet/support': return handleSupport($input, $pdo);
         case 'cabinet/fees': return getFees($pdo);
+        case 'cabinet/withdrawals': return handleWithdrawals($input, $pdo);
         case 'auth/debug-token': return handleDebugToken($input, $pdo);
         case 'profile':
             return $method === 'GET' ? getProfile($pdo) : updateProfile($input, $pdo);
@@ -530,6 +531,100 @@ function getFees($pdo) {
             'yearly_totals' => $yearlyTotals
         ]
     ];
+}
+
+// ==================== WITHDRAWALS ====================
+
+function handleWithdrawals($input, $pdo) {
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        return ['success' => false, 'error' => 'Требуется авторизация'];
+    }
+
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) return ['success' => false, 'error' => 'User not found'];
+
+    $method = $_SERVER['REQUEST_METHOD'];
+
+    // GET - return withdrawal history + ways
+    if ($method === 'GET') {
+        $stmt = $pdo->prepare('SELECT id, type, amount, total_amount, comission, status, created_at FROM withdrawals WHERE uid = ? ORDER BY id DESC');
+        $stmt->execute([$user['uid']]);
+        $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt2 = $pdo->query('SELECT id, title FROM ways ORDER BY sort');
+        $ways = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt3 = $pdo->query('SELECT wind_comission, min_wind FROM options LIMIT 1');
+        $options = $stmt3->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'success' => true,
+            'withdrawals' => $list,
+            'ways' => $ways,
+            'balance' => floatval($user['balance']),
+            'comission' => floatval($options['wind_comission']),
+            'min_amount' => floatval($options['min_wind'])
+        ];
+    }
+
+    // POST - create withdrawal
+    if ($method === 'POST') {
+        $amount = floatval($input['amount'] ?? 0);
+        $wayId = intval($input['way_id'] ?? 0);
+        $transferUid = trim($input['transfer_uid'] ?? '');
+
+        $stmt = $pdo->query('SELECT wind_comission, min_wind FROM options LIMIT 1');
+        $options = $stmt->fetch(PDO::FETCH_ASSOC);
+        $comission = floatval($options['wind_comission']);
+        $minWind = floatval($options['min_wind']);
+
+        if ($amount < $minWind) {
+            return ['success' => false, 'error' => 'Минимальная сумма вывода ' . $minWind . ' руб.'];
+        }
+        if ($amount > floatval($user['balance'])) {
+            return ['success' => false, 'error' => 'Недостаточно средств'];
+        }
+
+        $stmt = $pdo->prepare('SELECT title FROM ways WHERE id = ?');
+        $stmt->execute([$wayId]);
+        $way = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$way) return ['success' => false, 'error' => 'Неверный способ вывода'];
+
+        $com = floor($amount / 100 * $comission);
+        $totalSum = $amount - $com;
+
+        $text = '<strong>Электронный кошелек: </strong>' . htmlspecialchars($user['wallet'] ?? '') . '<br><strong>Банковская карта:</strong> ' . htmlspecialchars($user['card'] ?? '');
+        if ($transferUid) {
+            $text .= '<br><strong>Перевод пользователю ID:</strong> ' . htmlspecialchars($transferUid);
+        }
+
+        $stmt = $pdo->prepare('SELECT COALESCE(MAX(sort),0)+1 as next_sort FROM withdrawals');
+        $stmt->execute();
+        $nextSort = $stmt->fetch(PDO::FETCH_ASSOC)['next_sort'];
+
+        $stmt = $pdo->prepare('INSERT INTO withdrawals (uid, title, type, amount, total_amount, comission, text, status, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, NOW(), NOW())');
+        $stmt->execute([
+            $user['uid'],
+            $user['name'] . ' ' . $user['surname'],
+            $way['title'],
+            $totalSum,
+            $amount,
+            $comission,
+            $text,
+            $nextSort
+        ]);
+
+        // Deduct from balance
+        $stmt = $pdo->prepare('UPDATE users SET balance = balance - ? WHERE id = ?');
+        $stmt->execute([$amount, $user['id']]);
+
+        return ['success' => true, 'message' => 'Заявка на вывод создана'];
+    }
+
+    return ['success' => false, 'error' => 'Method not allowed'];
 }
 // ==================== SUPPORT ====================
 
