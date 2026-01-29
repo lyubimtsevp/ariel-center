@@ -1072,6 +1072,35 @@
   }
   setInterval(updateSupportProfile, 500);
 })();</script>
+<script>
+// Update real balance on finance page
+(function() {
+  function updateBalance() {
+    if (window.location.pathname.indexOf('/cabinet/finance') !== 0) return;
+    var el = document.querySelector('[data-field="current_balance"]');
+    if (!el || el.getAttribute('data-balance-loaded')) return;
+
+    var token = localStorage.getItem('auth_token');
+    fetch('/api/cabinet/dashboard', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.dashboard) return;
+      var bal = parseFloat(data.dashboard.balance) || 0;
+      var formatted = bal.toLocaleString('ru-RU', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+      el.innerHTML = formatted + ' <span style="font-size:16px;font-weight:400;">РУБ.</span>';
+      el.setAttribute('data-balance-loaded', '1');
+    }).catch(function(){});
+  }
+  setInterval(updateBalance, 500);
+  var _ps = history.pushState;
+  history.pushState = function() { _ps.apply(history, arguments); setTimeout(updateBalance, 300); };
+  window.addEventListener('popstate', function() { setTimeout(updateBalance, 300); });
+})();
+</script>
 </head>
 
   <body>
