@@ -1167,6 +1167,57 @@
   window.addEventListener('popstate', function() { setTimeout(updateFees, 300); });
 })();
 </script>
+
+<script>
+(function(){
+  function uyb(){
+    if(window.location.pathname.indexOf("/cabinet/finance")!==0)return;
+    if(document.querySelector("[data-yearly-done]"))return;
+    var all=document.querySelectorAll("div");
+    var parent=null;
+    for(var i=0;i<all.length;i++){
+      if(all[i].children.length===2
+        &&all[i].children[0].tagName==="DIV"
+        &&all[i].children[0].textContent.indexOf("Общая сумма бонусов")!==-1
+        &&all[i].children[1].tagName==="DIV"){
+        parent=all[i].children[1];
+        break;
+      }
+    }
+    if(!parent)return;
+    var token=localStorage.getItem("auth_token");
+    fetch("/api/cabinet/fees",{method:"GET",headers:{"Content-Type":"application/json","Authorization":token?"Bearer "+token:""},credentials:"include"})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.success||!data.fees||!data.fees.yearly_totals)return;
+      var yt=data.fees.yearly_totals;
+      var mx=0;
+      for(var j=0;j<yt.length;j++){if(yt[j].total>mx)mx=yt[j].total;}
+      if(mx===0)mx=1;
+      var h="";
+      for(var j=0;j<yt.length;j++){
+        var p=Math.round((yt[j].total/mx)*100);
+        if(p<3&&yt[j].total>0)p=3;
+        var f=Number(yt[j].total).toLocaleString("ru-RU");
+        var mb=j<yt.length-1?"margin-bottom:12px;":"";
+        h+="<div style=\"display:flex;align-items:center;gap:10px;"+mb+"\">"
+          +"<span style=\"color:#8ab4c8;font-size:12px;width:35px;\">"+yt[j].year+"</span>"
+          +"<div style=\"flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;\">"
+          +"<div style=\"width:"+p+"%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;\"></div>"
+          +"</div>"
+          +"<span style=\"color:#c8dce8;font-size:12px;width:70px;text-align:right;\">"+f+"</span>"
+          +"</div>";
+      }
+      parent.innerHTML=h;
+      parent.setAttribute("data-yearly-done","1");
+    }).catch(function(){});
+  }
+  setInterval(uyb,600);
+  var ps=history.pushState;
+  history.pushState=function(){ps.apply(history,arguments);setTimeout(uyb,400);};
+  window.addEventListener("popstate",function(){setTimeout(uyb,400);});
+})();
+</script>
 </head>
 
   <body>

@@ -467,19 +467,19 @@ function getFees($pdo) {
 
     $uid = $me['uid'];
     $year = $_GET['year'] ?? date('Y');
+    $y0 = strval($year);
+    $y1 = strval($year - 1);
+    $y2 = strval($year - 2);
 
     $stmt = $pdo->prepare("SELECT type, text, value, amount, value_p, created_at FROM operations WHERE uid = ? AND (type='leader_bonus' OR type='new_status' OR type='cashback' OR type='adm_cashback' OR type='agent_reward') AND status = 1");
     $stmt->execute([$uid]);
 
-    $lp = 0; // за личные продажи
-    $lb = 0; // лидерский бонус
-    $sb = 0; // бонус за статус
+    $lp = 0;
+    $lb = 0;
+    $sb = 0;
+    $totals = [$y0 => 0, $y1 => 0, $y2 => 0];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        if (strpos($row['created_at'], $year) === false) continue;
-
-        // Calculate sum based on type
-        $sum = 0;
         $t = $row['type'];
         $val = floatval($row['value']);
         $amt = $row['amount'];
@@ -493,18 +493,31 @@ function getFees($pdo) {
             $sum = $val;
         }
 
-        // за личные продажи
+        // Yearly totals
+        foreach ([$y0, $y1, $y2] as $yr) {
+            if (strpos($row['created_at'], $yr . '-') !== false) {
+                $totals[$yr] += $sum;
+                break;
+            }
+        }
+
+        // Current year breakdowns
+        if (strpos($row['created_at'], $y0 . '-') === false) continue;
+
         if ($t == 'leader_bonus' && $row['text'] == '1') {
             $lp += $sum;
         }
-        // лидерский бонус
         if ($t == 'leader_bonus' && $row['text'] != '1') {
             $lb += $sum;
         }
-        // бонус за статус
         if ($t == 'new_status' && $amt != 'World Tour' && $amt != 'Dream Car') {
             $sb += $sum;
         }
+    }
+
+    $yearlyTotals = [];
+    foreach ($totals as $yr => $total) {
+        $yearlyTotals[] = ['year' => intval($yr), 'total' => $total];
     }
 
     return [
@@ -513,7 +526,8 @@ function getFees($pdo) {
             'personal_sales' => $lp,
             'leader_bonus' => $lb,
             'status_bonus' => $sb,
-            'year' => $year
+            'year' => $year,
+            'yearly_totals' => $yearlyTotals
         ]
     ];
 }
