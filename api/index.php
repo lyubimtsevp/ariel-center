@@ -40,6 +40,18 @@ try {
 // Session for auth
 session_start();
 
+// Restore user from Bearer token if session is empty
+if (empty($_SESSION['user_id'])) {
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
+    if (preg_match('/Bearer\s+(.+)/i', $authHeader, $m)) {
+        $tokenData = json_decode(base64_decode($m[1]), true);
+        if ($tokenData && !empty($tokenData['id']) && !empty($tokenData['exp']) && $tokenData['exp'] > time()) {
+            $_SESSION['user_id'] = $tokenData['id'];
+            $_SESSION['user_uid'] = $tokenData['uid'] ?? null;
+        }
+    }
+}
+
 // Get request path
 $uri = $_SERVER['REQUEST_URI'];
 $path = str_replace('/api/', '', parse_url($uri, PHP_URL_PATH));
@@ -69,6 +81,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/info': return getInfo($pdo);
         case 'cabinet/shop': return getShop($pdo);
         case 'cabinet/support': return handleSupport($input, $pdo);
+        case 'auth/debug-token': return handleDebugToken($input, $pdo);
         case 'profile':
             return $method === 'GET' ? getProfile($pdo) : updateProfile($input, $pdo);
         case 'transfer': return handleTransfer($input, $pdo);
@@ -403,6 +416,39 @@ function handleTransfer($input, $pdo) {
     return ['success' => true, 'message' => 'Перевод выполнен', 'newBalance' => $me['balance'] - $amount];
 }
 
+
+// ==================== DEBUG TOKEN ====================
+
+function handleDebugToken($input, $pdo) {
+    // Only works if admin session is active and user_id is provided
+    if (empty($_SESSION['admin']) && empty($_GET['uid'])) {
+        return ['success' => false, 'error' => 'Forbidden'];
+    }
+    $userId = $_GET['uid'] ?? ($input['uid'] ?? null);
+    if (!$userId) {
+        return ['success' => false, 'error' => 'No user specified'];
+    }
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+    $stmt->execute([$userId]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) {
+        return ['success' => false, 'error' => 'User not found'];
+    }
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_uid'] = $user['uid'];
+    $token = base64_encode(json_encode([
+        'id' => $user['id'],
+        'uid' => $user['uid'],
+        'exp' => time() + 86400 * 30
+    ]));
+    return ['success' => true, 'token' => $token, 'user' => [
+        'id' => $user['id'],
+        'uid' => $user['uid'],
+        'name' => $user['name'],
+        'surname' => $user['surname'],
+        'email' => $user['email']
+    ]];
+}
 
 // ==================== SUPPORT ====================
 

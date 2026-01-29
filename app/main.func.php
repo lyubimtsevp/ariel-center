@@ -1607,9 +1607,9 @@ function debug(){
             $u = d()->User($_GET['auth']);
             d()->Auth->login($_GET['auth']);
 		    if($u->type=='fiz'){
-                header('Location: /cabinet/');
+                header('Location: /cabinet/?debug_auth='.$_GET['auth']);
             }else{
-                header('Location: /le_cabinet/');
+                header('Location: /le_cabinet/?debug_auth='.$_GET['auth']);
             }
 		}
 		

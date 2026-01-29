@@ -1101,6 +1101,29 @@
   window.addEventListener('popstate', function() { setTimeout(updateBalance, 300); });
 })();
 </script>
+<script>
+// Handle admin debug login - get fresh token for the target user
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var debugAuth = params.get('debug_auth');
+  if (!debugAuth) return;
+
+  // Clean URL
+  window.history.replaceState({}, '', window.location.pathname);
+
+  fetch('/api/auth/debug-token?uid=' + debugAuth, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.success && data.token) {
+      localStorage.setItem('auth_token', data.token);
+      window.location.reload();
+    }
+  }).catch(function(){});
+})();
+</script>
 </head>
 
   <body>
