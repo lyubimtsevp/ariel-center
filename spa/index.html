@@ -1220,175 +1220,147 @@
 </script>
 <script>
 (function(){
-  function initWithdrawals(){
-    if(window.location.pathname.indexOf('/cabinet/finance')!==0)return;
-    if(document.querySelector('[data-wd-init]'))return;
+  var wdLoaded=false;
+  document.addEventListener("click",function(e){
+    var t=e.target;
 
-    // Find "История выводов" button
-    var btn=document.querySelector('[data-action="withdrawals_history"]');
-    if(!btn)return;
-    btn.setAttribute('data-wd-init','1');
-
-    // Find "Вывод средств" button
-    var wdBtn=document.querySelector('[data-action="withdraw"]');
-
-    var token=localStorage.getItem('auth_token');
-    var headers={'Content-Type':'application/json','Authorization':token?'Bearer '+token:''};
-
-    // Create withdrawals table (hidden)
-    var tbl=document.createElement('div');
-    tbl.setAttribute('data-withdrawals-table','');
-    tbl.style.cssText='background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;overflow:hidden;display:none;margin-top:15px;';
-    // Insert after orders table
-    var ordersTable=document.querySelector('[data-orders-table]');
-    if(ordersTable&&ordersTable.parentNode){
-      ordersTable.parentNode.insertBefore(tbl,ordersTable.nextSibling);
-    }
-
-    function loadHistory(){
-      fetch('/api/cabinet/withdrawals',{method:'GET',headers:headers,credentials:'include'})
+    // When withdraw modal opens - load ways
+    if(t.matches("[data-action=\"withdraw\"]")||t.closest("[data-action=\"withdraw\"]")){
+      if(wdLoaded)return;
+      var token=localStorage.getItem("auth_token");
+      var headers={"Content-Type":"application/json","Authorization":token?"Bearer "+token:""};
+      fetch("/api/cabinet/withdrawals",{method:"GET",headers:headers,credentials:"include"})
       .then(function(r){return r.json();})
       .then(function(data){
         if(!data.success)return;
-        var w=data.withdrawals;
-        var statusMap={0:'В обработке',1:'Одобрено',2:'Отклонено'};
-        var statusColor={0:'#f0ad4e',1:'#5cb85c',2:'#d9534f'};
-        var h='<div style="background:#1e5885;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;">'
-          +'<span style="color:#a8d4e5;font-size:14px;">История выводов</span>'
-          +'<button data-close-wd style="background:#2a6a9a;border:none;width:24px;height:24px;border-radius:4px;color:#a8d4e5;cursor:pointer;font-size:14px;">✕</button>'
-          +'</div>';
-        h+='<table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#1e5885;">'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">№</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Дата</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Сумма</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Комиссия</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Способ</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Перевод</th>'
-          +'<th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Статус</th>'
-          +'</tr></thead><tbody>';
-        if(w.length===0){
-          h+='<tr><td colspan="7" style="color:#8ab4c8;font-size:13px;padding:15px;text-align:center;">Нет выводов</td></tr>';
+        wdLoaded=true;
+        var modal=document.querySelector("[data-modal-withdraw]");
+        if(!modal)return;
+        // Set user ID
+        var uidInput=modal.querySelector("[data-field=\"user_id\"]");
+        if(uidInput){
+          var tk=localStorage.getItem("auth_token");
+          if(tk){try{var d=JSON.parse(atob(tk));if(d.uid)uidInput.value=d.uid;}catch(e){}}
         }
-        for(var i=0;i<w.length;i++){
-          var d=w[i].created_at?w[i].created_at.substring(0,10).split('-').reverse().join('.'):'';
-          var amt=Number(w[i].total_amount).toLocaleString('ru-RU');
-          var com=w[i].comission+'%';
-          var st=statusMap[w[i].status]||'Неизвестно';
-          var sc=statusColor[w[i].status]||'#c8dce8';
-          // Extract transfer uid if present
-          var transferInfo='-';
-          if(w[i].type==='Перевести'){transferInfo='Да';}
-          var bdr=i<w.length-1?'border-bottom:1px solid #2a6a9a;':'';
-          h+='<tr>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+w[i].id+'</td>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+d+'</td>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+amt+' руб.</td>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+com+'</td>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+w[i].type+'</td>'
-            +'<td style="color:#c8dce8;font-size:13px;padding:10px 12px;'+bdr+'">'+transferInfo+'</td>'
-            +'<td style="color:'+sc+';font-size:13px;padding:10px 12px;'+bdr+'">'+st+'</td>'
-            +'</tr>';
+        // Populate ways with per-way comission
+        var sel=modal.querySelector("[data-field=\"withdrawal_method\"]");
+        var waysData=data.ways||[];
+        if(sel&&waysData.length){
+          sel.innerHTML="";
+          for(var i=0;i<waysData.length;i++){
+            var o=document.createElement("option");
+            o.value=waysData[i].id;
+            o.textContent=waysData[i].title;
+            o.setAttribute("data-com",waysData[i].comission||0);
+            sel.appendChild(o);
+          }
+          var comEl=modal.querySelector("[data-wd-comission]");
+          function updateComDisplay(){
+            var opt=sel.options[sel.selectedIndex];
+            var cm=opt?parseFloat(opt.getAttribute("data-com")):0;
+            if(comEl){
+              if(cm===0){comEl.textContent="без комиссии";}
+              else{comEl.textContent="комиссия за вывод составляет "+cm+"%";}
+            }
+            var tb=modal.querySelector("[data-wd-transfer-block]");
+            if(tb)tb.style.display=opt&&opt.textContent==="Перевести"?"block":"none";
+          }
+          sel.addEventListener("change",updateComDisplay);
+          updateComDisplay();
         }
-        h+='</tbody></table>';
-        tbl.innerHTML=h;
-        var closeBtn=tbl.querySelector('[data-close-wd]');
-        if(closeBtn){closeBtn.addEventListener('click',function(){tbl.style.display='none';});}
+        var minEl=modal.querySelector("[data-wd-min]");
+        if(minEl)minEl.textContent="минимальная сумма вывода "+data.min_amount+" руб.";
       }).catch(function(){});
     }
 
-    btn.addEventListener('click',function(){
-      tbl.style.display=tbl.style.display==='none'?'block':'none';
-      if(tbl.style.display==='block')loadHistory();
-    });
-
-    // Withdraw button handler
-    if(wdBtn){
-      wdBtn.addEventListener('click',function(){
-        // Load ways and show modal
-        fetch('/api/cabinet/withdrawals',{method:'GET',headers:headers,credentials:'include'})
-        .then(function(r){return r.json();})
-        .then(function(data){
-          if(!data.success)return;
-          var ways=data.ways;
-          var bal=data.balance;
-          var com=data.comission;
-          var minAmt=data.min_amount;
-
-          // Build modal
-          var overlay=document.createElement('div');
-          overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;';
-
-          var opts='';
-          for(var i=0;i<ways.length;i++){
-            opts+='<option value="'+ways[i].id+'">'+ways[i].title+'</option>';
-          }
-
-          var modal='<div style="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:8px;padding:25px;width:380px;position:relative;">'
-            +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">'
-            +'<span style="color:white;font-size:18px;font-weight:600;">Вывод средств</span>'
-            +'<button data-wd-close style="background:none;border:none;color:#a8d4e5;font-size:20px;cursor:pointer;">✕</button>'
-            +'</div>'
-            +'<div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:5px;">Укажите ID пользователя:</label>'
-            +'<input data-wd-uid type="text" value="'+data.withdrawals.length+'" style="width:100%;padding:10px;background:#0d3a5c;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;" readonly></div>'
-            +'<div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:5px;">Выберите способ вывода:</label>'
-            +'<select data-wd-way style="width:100%;padding:10px;background:#0d3a5c;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;">'+opts+'</select></div>'
-            +'<div style="margin-bottom:5px;color:#a8d4e5;font-size:12px;">комиссия за вывод составляет '+com+'%</div>'
-            +'<div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:5px;">Сумма на вывод, руб:</label>'
-            +'<input data-wd-amount type="number" min="'+minAmt+'" style="width:100%;padding:10px;background:#0d3a5c;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;"></div>'
-            +'<div style="margin-bottom:15px;color:#8ab4c8;font-size:12px;">минимальная сумма вывода '+minAmt+' руб.</div>'
-            +'<div data-wd-transfer style="margin-bottom:15px;display:none;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:5px;">ID пользователя для перевода:</label>'
-            +'<input data-wd-transfer-uid type="text" style="width:100%;padding:10px;background:#0d3a5c;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;"></div>'
-            +'<div data-wd-error style="color:#d9534f;font-size:13px;margin-bottom:10px;display:none;"></div>'
-            +'<div style="display:flex;gap:10px;">'
-            +'<button data-wd-submit style="flex:1;background:#3bb4c1;color:white;font-size:13px;font-weight:500;padding:12px;border:none;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">ВЫВЕСТИ</button>'
-            +'<button data-wd-cancel style="flex:1;background:#1a4a6e;color:#a8d4e5;font-size:13px;font-weight:500;padding:12px;border:1px solid #2a6a9a;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">ОТМЕНА</button>'
-            +'</div></div>';
-
-          overlay.innerHTML=modal;
-          document.body.appendChild(overlay);
-
-          var waySelect=overlay.querySelector('[data-wd-way]');
-          var transferBlock=overlay.querySelector('[data-wd-transfer]');
-          waySelect.addEventListener('change',function(){
-            transferBlock.style.display=waySelect.options[waySelect.selectedIndex].text==='Перевести'?'block':'none';
-          });
-
-          overlay.querySelector('[data-wd-close]').addEventListener('click',function(){document.body.removeChild(overlay);});
-          overlay.querySelector('[data-wd-cancel]').addEventListener('click',function(){document.body.removeChild(overlay);});
-          overlay.addEventListener('click',function(e){if(e.target===overlay)document.body.removeChild(overlay);});
-
-          overlay.querySelector('[data-wd-submit]').addEventListener('click',function(){
-            var amt=parseFloat(overlay.querySelector('[data-wd-amount]').value)||0;
-            var wayId=parseInt(waySelect.value);
-            var transferUid=overlay.querySelector('[data-wd-transfer-uid]').value||'';
-            var errEl=overlay.querySelector('[data-wd-error]');
-
-            fetch('/api/cabinet/withdrawals',{
-              method:'POST',
-              headers:headers,
-              credentials:'include',
-              body:JSON.stringify({amount:amt,way_id:wayId,transfer_uid:transferUid})
-            })
-            .then(function(r){return r.json();})
-            .then(function(res){
-              if(res.success){
-                document.body.removeChild(overlay);
-                alert('Заявка на вывод создана');
-              }else{
-                errEl.textContent=res.error||'Ошибка';
-                errEl.style.display='block';
-              }
-            }).catch(function(){errEl.textContent='Ошибка сети';errEl.style.display='block';});
-          });
-        }).catch(function(){});
-      });
+    // Submit withdrawal
+    if(t.matches("[data-action=\"submit_withdrawal\"]")||t.closest("[data-action=\"submit_withdrawal\"]")){
+      var modal=document.querySelector("[data-modal-withdraw]");
+      if(!modal)return;
+      var amount=parseFloat(modal.querySelector("[data-field=\"withdrawal_amount\"]").value)||0;
+      var wayId=parseInt(modal.querySelector("[data-field=\"withdrawal_method\"]").value);
+      var transferUid="";
+      var tuInput=modal.querySelector("[data-field=\"transfer_uid\"]");
+      if(tuInput)transferUid=tuInput.value;
+      var errEl=modal.querySelector("[data-wd-error]");
+      var token=localStorage.getItem("auth_token");
+      fetch("/api/cabinet/withdrawals",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":token?"Bearer "+token:""},
+        credentials:"include",
+        body:JSON.stringify({amount:amount,way_id:wayId,transfer_uid:transferUid})
+      })
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(res.success){
+          modal.style.display="none";
+          alert(res.message||"Заявка на вывод создана");
+          // Reset balance loaded flag to refresh
+          var balEl=document.querySelector("[data-balance-loaded]");
+          if(balEl)balEl.removeAttribute("data-balance-loaded");
+        }else{
+          if(errEl){errEl.textContent=res.error||"Ошибка";errEl.style.display="block";}
+        }
+      }).catch(function(){if(errEl){errEl.textContent="Ошибка сети";errEl.style.display="block";}});
     }
-  }
-
-  setInterval(initWithdrawals,600);
-  var ps=history.pushState;
-  history.pushState=function(){ps.apply(history,arguments);setTimeout(initWithdrawals,400);};
-  window.addEventListener('popstate',function(){setTimeout(initWithdrawals,400);});
+  });
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click",function(e){
+    var t=e.target;
+    if(!t.matches("[data-action=\"withdrawals_history\"]")&&!t.closest("[data-action=\"withdrawals_history\"]"))return;
+    var tbl=document.querySelector("[data-withdrawals-table]");
+    if(!tbl){
+      tbl=document.createElement("div");
+      tbl.setAttribute("data-withdrawals-table","");
+      tbl.style.cssText="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;overflow:hidden;display:none;margin-top:15px;";
+      var ordT=document.querySelector("[data-orders-table]");
+      if(ordT&&ordT.parentNode)ordT.parentNode.insertBefore(tbl,ordT.nextSibling);
+    }
+    if(tbl.style.display==="block"){tbl.style.display="none";return;}
+    tbl.style.display="block";
+    var token=localStorage.getItem("auth_token");
+    fetch("/api/cabinet/withdrawals",{method:"GET",headers:{"Content-Type":"application/json","Authorization":token?"Bearer "+token:""},credentials:"include"})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.success)return;
+      var w=data.withdrawals;
+      var sm={0:"В обработке",1:"Одобрено",2:"Отклонено"};
+      var sc={0:"#f0ad4e",1:"#5cb85c",2:"#d9534f"};
+      var th="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;";
+      var h="<div style=\"background:#1e5885;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;\">"
+        +"<span style=\"color:#a8d4e5;font-size:14px;\">История выводов</span>"
+        +"<button data-close-wd style=\"background:#2a6a9a;border:none;width:24px;height:24px;border-radius:4px;color:#a8d4e5;cursor:pointer;font-size:14px;\">✕</button></div>";
+      h+="<table style=\"width:100%;border-collapse:collapse;\"><thead><tr style=\"background:#1e5885;\">"
+        +"<th style=\""+th+"\">№</th><th style=\""+th+"\">Дата</th><th style=\""+th+"\">Сумма</th>"
+        +"<th style=\""+th+"\">Комиссия</th><th style=\""+th+"\">Способ</th><th style=\""+th+"\">Статус</th>"
+        +"</tr></thead><tbody>";
+      if(w.length===0){
+        h+="<tr><td colspan=\"6\" style=\"color:#8ab4c8;font-size:13px;padding:15px;text-align:center;\">Нет выводов</td></tr>";
+      }
+      for(var i=0;i<w.length;i++){
+        var d=w[i].created_at?w[i].created_at.substring(0,10).split("-").reverse().join("."):"";
+        var amt=Number(w[i].total_amount).toLocaleString("ru-RU");
+        var com=w[i].comission+"%";
+        var st=sm[w[i].status]||"Неизвестно";
+        var stc=sc[w[i].status]||"#c8dce8";
+        var bdr=i<w.length-1?"border-bottom:1px solid #2a6a9a;":"";
+        var td="color:#c8dce8;font-size:13px;padding:10px 12px;"+bdr;
+        h+="<tr><td style=\""+td+"\">"+w[i].id+"</td>"
+          +"<td style=\""+td+"\">"+d+"</td>"
+          +"<td style=\""+td+"\">"+amt+" руб.</td>"
+          +"<td style=\""+td+"\">"+com+"</td>"
+          +"<td style=\""+td+"\">"+w[i].type+"</td>"
+          +"<td style=\"color:"+stc+";font-size:13px;padding:10px 12px;"+bdr+"\">"+st+"</td></tr>";
+      }
+      h+="</tbody></table>";
+      tbl.innerHTML=h;
+      var cb=tbl.querySelector("[data-close-wd]");
+      if(cb)cb.addEventListener("click",function(){tbl.style.display="none";});
+    }).catch(function(){});
+  });
 })();
 </script>
 </head>
@@ -1521,87 +1493,6 @@ for(var i=0;i<3000;i+=50)setTimeout(INJECT_SUPPORT_FORM,i);
 </script>
 <script>
 (function(){
-var WITHDRAW_MODAL_HTML='<div data-withdraw-overlay style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10000;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:400px;max-width:90%;box-shadow:0 4px 20px rgba(0,0,0,0.4);"><div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;"><span style="color:white;font-size:16px;font-weight:500;">Вывод средств</span><button data-close-modal style="background:transparent;border:none;color:#a8d4e5;font-size:20px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Укажите ID пользователя</label><input type="text" data-field="user_id" value="119823345" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Выберете способ вывода:</label><div style="position:relative;"><select data-field="withdrawal_method" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;"><option value="transfer">Перевести</option><option value="card">На карту</option><option value="crypto">Криптовалюта</option></select><div style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:#a8d4e5;">▼</div></div><div style="color:#7db4d4;font-size:12px;margin-top:6px;">комиссия за вывод составляет 4%</div></div><div style="margin-bottom:20px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Сумма на вывода, руб.:</label><input type="number" data-field="withdrawal_amount" value="500" min="500" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"><div style="color:#7db4d4;font-size:12px;margin-top:6px;">минимальная сумма вывода 500 руб.</div></div><div style="display:flex;gap:15px;"><button data-action="submit_withdrawal" style="flex:1;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px 20px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Вывести</button><button data-cancel-modal style="flex:1;background:#1e5885;color:#a8d4e5;font-size:14px;font-weight:600;padding:14px 20px;border:1px solid #2a6a9a;border-radius:4px;cursor:pointer;text-transform:uppercase;">Отмена</button></div></div></div></div>';
-
-function INJECT_MODAL(){
-var p=location.pathname;
-if(p!=='/cabinet/finance'&&p!=='/cabinet/finance/')return;
-if(document.querySelector('[data-withdraw-overlay]'))return;
-var body=document.body;
-if(!body)return;
-var modalContainer=document.createElement('div');
-modalContainer.innerHTML=WITHDRAW_MODAL_HTML;
-body.appendChild(modalContainer.firstChild);
-}
-
-function BIND_MODAL_EVENTS(){
-var p=location.pathname;
-if(p!=='/cabinet/finance'&&p!=='/cabinet/finance/')return;
-
-var overlay=document.querySelector('[data-withdraw-overlay]');
-if(!overlay)return;
-
-var withdrawBtn=document.querySelector('[data-action="withdraw"]');
-if(withdrawBtn&&!withdrawBtn.hasAttribute('data-modal-bound')){
-withdrawBtn.setAttribute('data-modal-bound','1');
-withdrawBtn.addEventListener('click',function(e){
-e.preventDefault();
-e.stopPropagation();
-overlay.style.display='flex';
-});
-}
-
-var closeBtn=overlay.querySelector('[data-close-modal]');
-if(closeBtn&&!closeBtn.hasAttribute('data-modal-bound')){
-closeBtn.setAttribute('data-modal-bound','1');
-closeBtn.addEventListener('click',function(e){
-e.preventDefault();
-overlay.style.display='none';
-});
-}
-
-var cancelBtn=overlay.querySelector('[data-cancel-modal]');
-if(cancelBtn&&!cancelBtn.hasAttribute('data-modal-bound')){
-cancelBtn.setAttribute('data-modal-bound','1');
-cancelBtn.addEventListener('click',function(e){
-e.preventDefault();
-overlay.style.display='none';
-});
-}
-
-if(!overlay.hasAttribute('data-overlay-bound')){
-overlay.setAttribute('data-overlay-bound','1');
-overlay.addEventListener('click',function(e){
-if(e.target===overlay){
-overlay.style.display='none';
-}
-});
-}
-
-var submitBtn=overlay.querySelector('[data-action="submit_withdrawal"]');
-if(submitBtn&&!submitBtn.hasAttribute('data-modal-bound')){
-submitBtn.setAttribute('data-modal-bound','1');
-submitBtn.addEventListener('click',function(e){
-e.preventDefault();
-var userId=overlay.querySelector('[data-field="user_id"]').value;
-var method=overlay.querySelector('[data-field="withdrawal_method"]').value;
-var amount=overlay.querySelector('[data-field="withdrawal_amount"]').value;
-console.log('Withdrawal request:',{user_id:userId,method:method,amount:amount});
-alert('Заявка на вывод отправлена!\nID: '+userId+'\nСумма: '+amount+' руб.');
-overlay.style.display='none';
-});
-}
-}
-
-setInterval(INJECT_MODAL,50);
-setInterval(BIND_MODAL_EVENTS,100);
-new MutationObserver(function(){INJECT_MODAL();BIND_MODAL_EVENTS();}).observe(document,{childList:true,subtree:true});
-for(var i=0;i<5000;i+=50)setTimeout(INJECT_MODAL,i);
-for(var i=0;i<5000;i+=100)setTimeout(BIND_MODAL_EVENTS,i);
-})();
-</script>
-<script>
-(function(){
 function MOVE_WITHDRAW_BTN(){
 var p=location.pathname;
 if(p!=='/cabinet/finance'&&p!=='/cabinet/finance/')return;
@@ -1652,7 +1543,7 @@ if(oldMain)oldMain.style.display='none';
 }
 
 /* ===== WITHDRAW MODAL ===== */
-var WITHDRAW_HTML='<div data-modal-withdraw style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:400px;max-width:90%;box-shadow:0 4px 20px rgba(0,0,0,0.4);"><div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;"><span style="color:white;font-size:16px;font-weight:500;">Вывод средств</span><button data-close-withdraw style="background:transparent;border:none;color:#a8d4e5;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Укажите ID пользователя</label><input type="text" data-field="user_id" value="119823345" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Выберете способ вывода:</label><div style="position:relative;"><select data-field="withdrawal_method" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;appearance:none;cursor:pointer;"><option value="transfer">Перевести</option><option value="card">На карту</option></select><div style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:#a8d4e5;">▼</div></div><div style="color:#7db4d4;font-size:12px;margin-top:6px;">комиссия за вывод составляет 4%</div></div><div style="margin-bottom:20px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Сумма на вывода, руб.:</label><input type="number" data-field="withdrawal_amount" value="500" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"><div style="color:#7db4d4;font-size:12px;margin-top:6px;">минимальная сумма вывода 500 руб.</div></div><div style="display:flex;gap:15px;"><button data-action="submit_withdrawal" style="flex:1;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Вывести</button><button data-cancel-withdraw style="flex:1;background:#1e5885;color:#a8d4e5;font-size:14px;font-weight:600;padding:14px;border:1px solid #2a6a9a;border-radius:4px;cursor:pointer;text-transform:uppercase;">Отмена</button></div></div></div></div>';
+var WITHDRAW_HTML='<div data-modal-withdraw style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:999999;justify-content:center;align-items:center;"><div style="background:#1a4a6e;border-radius:8px;width:400px;max-width:90%;box-shadow:0 4px 20px rgba(0,0,0,0.4);"><div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;"><span style="color:white;font-size:16px;font-weight:500;">Вывод средств</span><button data-close-withdraw style="background:transparent;border:none;color:#a8d4e5;font-size:20px;cursor:pointer;">✕</button></div><div style="padding:20px;"><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Укажите ID пользователя:</label><input type="text" data-field="user_id" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;" readonly></div><div style="margin-bottom:15px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Выберите способ вывода:</label><div style="position:relative;"><select data-field="withdrawal_method" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;appearance:none;cursor:pointer;"></select><div style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:#a8d4e5;">▼</div></div><div data-wd-comission style="color:#7db4d4;font-size:12px;margin-top:6px;"></div></div><div data-wd-transfer-block style="margin-bottom:15px;display:none;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">ID пользователя для перевода:</label><input type="text" data-field="transfer_uid" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"></div><div style="margin-bottom:20px;"><label style="color:#a8d4e5;font-size:13px;display:block;margin-bottom:8px;">Сумма на вывод, руб.:</label><input type="number" data-field="withdrawal_amount" min="500" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:white;font-size:14px;box-sizing:border-box;outline:none;"><div data-wd-min style="color:#7db4d4;font-size:12px;margin-top:6px;"></div></div><div data-wd-error style="color:#d9534f;font-size:13px;margin-bottom:10px;display:none;"></div><div style="display:flex;gap:15px;"><button data-action="submit_withdrawal" style="flex:1;background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:14px;border:none;border-radius:4px;cursor:pointer;text-transform:uppercase;">Вывести</button><button data-cancel-withdraw style="flex:1;background:#1e5885;color:#a8d4e5;font-size:14px;font-weight:600;padding:14px;border:1px solid #2a6a9a;border-radius:4px;cursor:pointer;text-transform:uppercase;">Отмена</button></div></div></div></div>';
 
 function INJECT_WITHDRAW_MODAL(){
 if(document.querySelector('[data-modal-withdraw]'))return;

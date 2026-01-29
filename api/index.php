@@ -554,7 +554,7 @@ function handleWithdrawals($input, $pdo) {
         $stmt->execute([$user['uid']]);
         $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt2 = $pdo->query('SELECT id, title FROM ways ORDER BY sort');
+        $stmt2 = $pdo->query('SELECT id, title, comission FROM ways ORDER BY sort');
         $ways = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
         $stmt3 = $pdo->query('SELECT wind_comission, min_wind FROM options LIMIT 1');
@@ -578,8 +578,12 @@ function handleWithdrawals($input, $pdo) {
 
         $stmt = $pdo->query('SELECT wind_comission, min_wind FROM options LIMIT 1');
         $options = $stmt->fetch(PDO::FETCH_ASSOC);
-        $comission = floatval($options['wind_comission']);
         $minWind = floatval($options['min_wind']);
+        // Use per-way comission
+        $stmt = $pdo->prepare('SELECT comission FROM ways WHERE id = ?');
+        $stmt->execute([$wayId]);
+        $wayData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $comission = ($wayData && $wayData['comission'] !== null) ? floatval($wayData['comission']) : floatval($options['wind_comission']);
 
         if ($amount < $minWind) {
             return ['success' => false, 'error' => 'Минимальная сумма вывода ' . $minWind . ' руб.'];
@@ -596,14 +600,52 @@ function handleWithdrawals($input, $pdo) {
         $com = floor($amount / 100 * $comission);
         $totalSum = $amount - $com;
 
-        $text = '<strong>Электронный кошелек: </strong>' . htmlspecialchars($user['wallet'] ?? '') . '<br><strong>Банковская карта:</strong> ' . htmlspecialchars($user['card'] ?? '');
-        if ($transferUid) {
-            $text .= '<br><strong>Перевод пользователю ID:</strong> ' . htmlspecialchars($transferUid);
-        }
-
         $stmt = $pdo->prepare('SELECT COALESCE(MAX(sort),0)+1 as next_sort FROM withdrawals');
         $stmt->execute();
         $nextSort = $stmt->fetch(PDO::FETCH_ASSOC)['next_sort'];
+
+        // Transfer to another user
+        if ($way['title'] === 'Перевести') {
+            if (empty($transferUid)) {
+                return ['success' => false, 'error' => 'Укажите ID пользователя для перевода'];
+            }
+            $stmt = $pdo->prepare('SELECT * FROM users WHERE uid = ?');
+            $stmt->execute([$transferUid]);
+            $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$recipient) {
+                return ['success' => false, 'error' => 'Пользователь с ID ' . $transferUid . ' не найден'];
+            }
+            if ($recipient['uid'] === $user['uid']) {
+                return ['success' => false, 'error' => 'Нельзя перевести самому себе'];
+            }
+
+            $text = '<strong>Перевод пользователю:</strong> ' . htmlspecialchars($recipient['name'] . ' ' . $recipient['surname']) . ' (ID: ' . htmlspecialchars($transferUid) . ')';
+
+            $stmt = $pdo->prepare('INSERT INTO withdrawals (uid, title, type, amount, total_amount, comission, text, status, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, NOW(), NOW())');
+            $stmt->execute([
+                $user['uid'],
+                $user['name'] . ' ' . $user['surname'],
+                $way['title'],
+                $totalSum,
+                $amount,
+                $comission,
+                $text,
+                $nextSort
+            ]);
+
+            // Deduct from sender
+            $stmt = $pdo->prepare('UPDATE users SET balance = balance - ? WHERE id = ?');
+            $stmt->execute([$amount, $user['id']]);
+
+            // Credit recipient (amount minus commission)
+            $stmt = $pdo->prepare('UPDATE users SET balance = balance + ? WHERE id = ?');
+            $stmt->execute([$totalSum, $recipient['id']]);
+
+            return ['success' => true, 'message' => 'Перевод выполнен. ' . $totalSum . ' руб. отправлено пользователю ID ' . $transferUid];
+        }
+
+        // Regular withdrawal
+        $text = '<strong>Электронный кошелек: </strong>' . htmlspecialchars($user['wallet'] ?? '') . '<br><strong>Банковская карта:</strong> ' . htmlspecialchars($user['card'] ?? '');
 
         $stmt = $pdo->prepare('INSERT INTO withdrawals (uid, title, type, amount, total_amount, comission, text, status, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, NOW(), NOW())');
         $stmt->execute([
