@@ -81,6 +81,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/info': return getInfo($pdo);
         case 'cabinet/shop': return getShop($pdo);
         case 'cabinet/support': return handleSupport($input, $pdo);
+        case 'cabinet/fees': return getFees($pdo);
         case 'auth/debug-token': return handleDebugToken($input, $pdo);
         case 'profile':
             return $method === 'GET' ? getProfile($pdo) : updateProfile($input, $pdo);
@@ -450,6 +451,72 @@ function handleDebugToken($input, $pdo) {
     ]];
 }
 
+
+// ==================== FEES ====================
+
+function getFees($pdo) {
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        return ['success' => false, 'error' => 'Требуется авторизация'];
+    }
+
+    $stmt = $pdo->prepare('SELECT uid FROM users WHERE id = ?');
+    $stmt->execute([$_SESSION['user_id']]);
+    $me = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$me) return ['success' => false, 'error' => 'User not found'];
+
+    $uid = $me['uid'];
+    $year = $_GET['year'] ?? date('Y');
+
+    $stmt = $pdo->prepare("SELECT type, text, value, amount, value_p, created_at FROM operations WHERE uid = ? AND (type='leader_bonus' OR type='new_status' OR type='cashback' OR type='adm_cashback' OR type='agent_reward') AND status = 1");
+    $stmt->execute([$uid]);
+
+    $lp = 0; // за личные продажи
+    $lb = 0; // лидерский бонус
+    $sb = 0; // бонус за статус
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if (strpos($row['created_at'], $year) === false) continue;
+
+        // Calculate sum based on type
+        $sum = 0;
+        $t = $row['type'];
+        $val = floatval($row['value']);
+        $amt = $row['amount'];
+        $vp = floatval($row['value_p']);
+
+        if ($t == 'new_status' && ($amt == 'World Tour' || $amt == 'Dream Car')) {
+            $sum = $vp;
+        } elseif ($t == 'buy_package' || $t == 'upgrade_package' || $t == 'buy_license' || $t == 'new_status' || $t == 'buy_shop' || $t == 'buy_event') {
+            $sum = floatval($amt);
+        } else {
+            $sum = $val;
+        }
+
+        // за личные продажи
+        if ($t == 'leader_bonus' && $row['text'] == '1') {
+            $lp += $sum;
+        }
+        // лидерский бонус
+        if ($t == 'leader_bonus' && $row['text'] != '1') {
+            $lb += $sum;
+        }
+        // бонус за статус
+        if ($t == 'new_status' && $amt != 'World Tour' && $amt != 'Dream Car') {
+            $sb += $sum;
+        }
+    }
+
+    return [
+        'success' => true,
+        'fees' => [
+            'personal_sales' => $lp,
+            'leader_bonus' => $lb,
+            'status_bonus' => $sb,
+            'year' => $year
+        ]
+    ];
+}
 // ==================== SUPPORT ====================
 
 function handleSupport($input, $pdo) {

@@ -1124,6 +1124,49 @@
   }).catch(function(){});
 })();
 </script>
+<script>
+// Update fee blocks on finance page with real data
+(function() {
+  function updateFees() {
+    if (window.location.pathname.indexOf('/cabinet/finance') !== 0) return;
+    var el = document.querySelector('[data-field="personal_bonus"]');
+    if (!el || el.getAttribute('data-fees-loaded')) return;
+
+    var token = localStorage.getItem('auth_token');
+    fetch('/api/cabinet/fees', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.fees) return;
+      var f = data.fees;
+      var fmt = function(n) { return Number(n).toLocaleString('ru-RU'); };
+
+      var pb = document.querySelector('[data-field="personal_bonus"]');
+      if (pb) {
+        pb.innerHTML = fmt(f.personal_sales) + ' <span style="font-size:14px;font-weight:400;">РУБ.</span>';
+        pb.setAttribute('data-fees-loaded', '1');
+      }
+
+      var lb = document.querySelector('[data-field="leader_bonus"]');
+      if (lb) {
+        lb.innerHTML = fmt(f.leader_bonus) + ' <span style="font-size:14px;font-weight:400;">РУБ.</span>';
+      }
+
+      var sb = document.querySelector('[data-field="status_bonus"]');
+      if (sb) {
+        sb.innerHTML = fmt(f.status_bonus) + ' <span style="font-size:14px;font-weight:400;">РУБ.</span>';
+      }
+    }).catch(function(){});
+  }
+  setInterval(updateFees, 500);
+  var _ps = history.pushState;
+  history.pushState = function() { _ps.apply(history, arguments); setTimeout(updateFees, 300); };
+  window.addEventListener('popstate', function() { setTimeout(updateFees, 300); });
+})();
+</script>
 </head>
 
   <body>
