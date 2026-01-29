@@ -68,6 +68,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/events': return getEvents($pdo);
         case 'cabinet/info': return getInfo($pdo);
         case 'cabinet/shop': return getShop($pdo);
+        case 'cabinet/support': return handleSupport($input, $pdo);
         case 'profile':
             return $method === 'GET' ? getProfile($pdo) : updateProfile($input, $pdo);
         case 'transfer': return handleTransfer($input, $pdo);
@@ -390,6 +391,84 @@ function handleTransfer($input, $pdo) {
     }
     
     return ['success' => true, 'message' => 'Перевод выполнен', 'newBalance' => $me['balance'] - $amount];
+}
+
+
+// ==================== SUPPORT ====================
+
+function handleSupport($input, $pdo) {
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        return ['success' => false, 'error' => 'Требуется авторизация'];
+    }
+
+    if (empty($input['subject']) || empty($input['email']) || empty($input['text'])) {
+        return ['success' => false, 'error' => 'Заполните все поля'];
+    }
+
+    $subject = htmlspecialchars(trim($input['subject']), ENT_QUOTES, 'UTF-8');
+    $email = filter_var(trim($input['email']), FILTER_VALIDATE_EMAIL);
+    $text = htmlspecialchars(trim($input['text']), ENT_QUOTES, 'UTF-8');
+
+    if (!$email) {
+        return ['success' => false, 'error' => 'Некорректный email'];
+    }
+
+    // Save to DB
+    $stmt = $pdo->prepare('INSERT INTO supports (title, email, text, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())');
+    $stmt->execute([$subject, $email, $text]);
+
+    // Send email via SMTP
+    $stmt2 = $pdo->query('SELECT email, smtp_server, smtp_port, smtp_mail, smtp_password, smtp_protocol, smtp_mfrom, smtp_tfrom FROM options LIMIT 1');
+    $option = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    if ($option && $option['smtp_server']) {
+        $to = $option['email'];
+        $mailSubject = "Техподдержка: " . $subject;
+        $mailBody = "Тема: $subject\nEmail: $email\n\nСообщение:\n$text";
+
+        $smtp = $option['smtp_server'];
+        $port = $option['smtp_port'];
+        $user = $option['smtp_mail'];
+        $pass = $option['smtp_password'];
+        $protocol = $option['smtp_protocol'];
+        $from = $option['smtp_mfrom'];
+        $fromName = $option['smtp_tfrom'];
+
+        $errno = 0;
+        $errstr = '';
+        $prefix = ($protocol === 'ssl') ? 'ssl://' : (($protocol === 'tls') ? 'tls://' : '');
+        $sock = @fsockopen($prefix . $smtp, (int)$port, $errno, $errstr, 10);
+
+        if ($sock) {
+            $resp = function() use ($sock) { return fgets($sock, 512); };
+            $cmd = function($c) use ($sock, $resp) { fputs($sock, $c . "\r\n"); return $resp(); };
+
+            $resp();
+            $cmd("EHLO localhost");
+            stream_set_timeout($sock, 2);
+            while ($line = fgets($sock, 512)) {
+                if (strpos($line, '250 ') === 0) break;
+            }
+            $cmd("AUTH LOGIN");
+            $cmd(base64_encode($user));
+            $cmd(base64_encode($pass));
+            $cmd("MAIL FROM:<$from>");
+            $cmd("RCPT TO:<$to>");
+            $cmd("DATA");
+            fputs($sock, "From: $fromName <$from>\r\n");
+            fputs($sock, "To: <$to>\r\n");
+            fputs($sock, "Subject: =?UTF-8?B?" . base64_encode($mailSubject) . "?=\r\n");
+            fputs($sock, "Content-Type: text/plain; charset=UTF-8\r\n");
+            fputs($sock, "\r\n");
+            fputs($sock, $mailBody . "\r\n");
+            $cmd(".");
+            $cmd("QUIT");
+            fclose($sock);
+        }
+    }
+
+    return ['success' => true, 'message' => 'Сообщение отправлено'];
 }
 
 // ==================== HELPERS ====================
