@@ -1363,6 +1363,45 @@
   });
 })();
 </script>
+<script>
+(function(){
+  var pkgLoaded=false;
+  var pkgList=[];
+  function loadPackages(cb){
+    if(pkgLoaded){cb(pkgList);return;}
+    fetch("/api/cabinet/packages",{method:"GET",headers:{"Content-Type":"application/json"},credentials:"include"})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data.success&&data.packages){pkgList=data.packages;pkgLoaded=true;}
+      cb(pkgList);
+    }).catch(function(){cb([]);});
+  }
+  function fillSelect(sel,packages){
+    if(!sel)return;
+    sel.innerHTML="";
+    for(var i=0;i<packages.length;i++){
+      var o=document.createElement("option");
+      o.value=packages[i].id;
+      var p=Number(packages[i].price);
+      o.textContent=packages[i].title+(p>0?" ("+p.toLocaleString("ru-RU")+" руб.)":"");
+      o.setAttribute("data-price",packages[i].price);
+      sel.appendChild(o);
+    }
+  }
+  function fillAllSelects(){
+    loadPackages(function(list){
+      var sels=document.querySelectorAll("[data-modal-wholesale] [data-field=\"product\"],[data-modal-ind-step1] [data-field=\"product\"],[data-modal-legal-step1] [data-field=\"product\"]");
+      for(var i=0;i<sels.length;i++){
+        if(sels[i].getAttribute("data-pkg-filled"))continue;
+        fillSelect(sels[i],list);
+        sels[i].setAttribute("data-pkg-filled","1");
+      }
+    });
+  }
+  // Modals are injected dynamically, so poll
+  setInterval(fillAllSelects,500);
+})();
+</script>
 </head>
 
   <body>
@@ -2271,12 +2310,22 @@ if(t.matches('[data-ind-qty-minus]')||t.closest('[data-ind-qty-minus]')){
 if(indQtyValue>1)indQtyValue--;
 var span=document.querySelector('[data-modal-ind-step1] [data-field="quantity"]');
 if(span)span.textContent=indQtyValue;
+var sel1=document.querySelector('[data-modal-ind-step1] [data-field="product"]');
+var opt1=sel1?sel1.options[sel1.selectedIndex]:null;
+var pr1=opt1?parseInt(opt1.getAttribute("data-price"))||0:0;
+var tp1=document.querySelector('[data-modal-ind-step2] [data-field="total_price"]');
+if(tp1)tp1.textContent=(pr1*indQtyValue).toLocaleString("ru-RU")+" ₽";
 return;
 }
 if(t.matches('[data-ind-qty-plus]')||t.closest('[data-ind-qty-plus]')){
 indQtyValue++;
 var span=document.querySelector('[data-modal-ind-step1] [data-field="quantity"]');
 if(span)span.textContent=indQtyValue;
+var sel2=document.querySelector('[data-modal-ind-step1] [data-field="product"]');
+var opt2=sel2?sel2.options[sel2.selectedIndex]:null;
+var pr2=opt2?parseInt(opt2.getAttribute("data-price"))||0:0;
+var tp2=document.querySelector('[data-modal-ind-step2] [data-field="total_price"]');
+if(tp2)tp2.textContent=(pr2*indQtyValue).toLocaleString("ru-RU")+" ₽";
 return;
 }
 
@@ -2285,7 +2334,15 @@ if(t.matches('[data-action="ind-next"]')||t.closest('[data-action="ind-next"]'))
 var step1=document.querySelector('[data-modal-ind-step1]');
 var step2=document.querySelector('[data-modal-ind-step2]');
 if(step1)step1.style.display='none';
-if(step2)step2.style.display='flex';
+if(step2){
+step2.style.display='flex';
+var sel=step1?step1.querySelector('[data-field="product"]'):null;
+var opt=sel?sel.options[sel.selectedIndex]:null;
+var price=opt?parseInt(opt.getAttribute("data-price"))||0:0;
+var total=price*indQtyValue;
+var tp=step2.querySelector('[data-field="total_price"]');
+if(tp)tp.textContent=total.toLocaleString("ru-RU")+" ₽";
+}
 return;
 }
 

@@ -68,6 +68,13 @@ try {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
 
+
+function getPackagesList($pdo) {
+    $stmt = $pdo->query('SELECT id, title, price FROM packages WHERE is_active = 1 ORDER BY sort');
+    $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ['success' => true, 'packages' => $list];
+}
+
 function route($path, $method, $input, $pdo) {
     switch ($path) {
         case 'auth/login': return handleLogin($input, $pdo);
@@ -82,6 +89,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/shop': return getShop($pdo);
         case 'cabinet/support': return handleSupport($input, $pdo);
         case 'cabinet/fees': return getFees($pdo);
+        case 'cabinet/packages': return getPackagesList($pdo);
         case 'cabinet/withdrawals': return handleWithdrawals($input, $pdo);
         case 'auth/debug-token': return handleDebugToken($input, $pdo);
         case 'profile':
