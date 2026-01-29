@@ -939,6 +939,109 @@
   });
 })();
 </script>
+<script>
+// Dynamic profile sidebar - load real user data
+(function() {
+  var profileLoaded = false;
+
+  function updateProfileBlock() {
+    if (window.location.pathname.indexOf('/cabinet') !== 0) return;
+    if (profileLoaded) return;
+
+    var block = document.querySelector('[data-profile-block]') || document.querySelector('[data-profile-block-cabinet]');
+    if (!block) {
+      // Fallback: find any sidebar profile block by structure
+      var candidates = document.querySelectorAll('div');
+      for (var j = 0; j < candidates.length; j++) {
+        var c = candidates[j];
+        if (c.className && c.className.indexOf('w-[185px]') !== -1 && c.querySelector && c.querySelector('span') && c.innerHTML.indexOf('ID ') !== -1 && c.innerHTML.indexOf('Статус') !== -1) {
+          block = c; break;
+        }
+      }
+    }
+    if (!block) return;
+
+    var token = localStorage.getItem('auth_token');
+    fetch('/api/cabinet/dashboard', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token ? 'Bearer ' + token : ''
+      },
+      credentials: 'include'
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.dashboard) return;
+      var d = data.dashboard;
+      var u = d.user;
+      profileLoaded = true;
+
+      // Update ID
+      var spans = block.querySelectorAll('span');
+      for (var i = 0; i < spans.length; i++) {
+        if (spans[i].textContent.indexOf('ID ') === 0) {
+          spans[i].textContent = 'ID ' + u.uid;
+        }
+      }
+
+      // Update name
+      var divs = block.querySelectorAll('div');
+      for (var i = 0; i < divs.length; i++) {
+        var txt = divs[i].textContent.trim();
+        if (txt === 'Иванов Иван') {
+          divs[i].textContent = u.name + (u.surname ? ' ' + u.surname.charAt(0) + '.' : '');
+          // Check next sibling for surname
+          var next = divs[i].nextElementSibling;
+          if (next && next.textContent.trim() === 'Иванович') {
+            next.textContent = u.surname || '';
+          }
+        }
+      }
+
+      // Update status
+      for (var i = 0; i < divs.length; i++) {
+        if (divs[i].textContent.trim() === 'Отсутствует' && divs[i].previousElementSibling) {
+          var prev = divs[i].previousElementSibling;
+          var prevSpan = prev.querySelector('span');
+          if (prevSpan && prevSpan.textContent.trim() === 'Статус') {
+            divs[i].textContent = d.status || 'Отсутствует';
+          }
+        }
+      }
+
+      // Update photo if user has one
+      if (u.image) {
+        var photoContainer = block.querySelector('.w-\\[145px\\]');
+        if (photoContainer) {
+          photoContainer.innerHTML = '<img src="' + u.image + '" alt="Фото" style="width:145px;height:145px;object-fit:cover;border-radius:6px;" />';
+        }
+      }
+    })
+    .catch(function() {});
+  }
+
+  // Poll until block appears
+  var intv = setInterval(function() {
+    if (window.location.pathname.indexOf('/cabinet') === 0) {
+      updateProfileBlock();
+      if (profileLoaded) clearInterval(intv);
+    }
+  }, 500);
+
+  // Reset on navigation
+  var _ps = history.pushState;
+  history.pushState = function() {
+    _ps.apply(history, arguments);
+    profileLoaded = false;
+    setTimeout(updateProfileBlock, 300);
+  };
+  window.addEventListener('popstate', function() {
+    profileLoaded = false;
+    setTimeout(updateProfileBlock, 300);
+  });
+})();
+</script>
 </head>
 
   <body>

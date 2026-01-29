@@ -248,6 +248,15 @@ function getDashboard($pdo) {
     $stmt->execute([$user['uid']]);
     $teamCount = $stmt->fetch(PDO::FETCH_ASSOC)['cnt'] ?? 0;
     
+    // Package
+    $package = 'Simple';
+    if ($user['package']) {
+        $stmt = $pdo->prepare('SELECT title FROM packages WHERE id = ?');
+        $stmt->execute([$user['package']]);
+        $p = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($p) $package = $p['title'];
+    }
+
     // Status
     $status = 'Отсутствует';
     if ($user['max_status']) {
@@ -265,7 +274,8 @@ function getDashboard($pdo) {
             'status' => $status,
             'referralLink' => 'https://albixe.com/?r=' . $user['uid'],
             'teamCount' => (int)$teamCount,
-            'salesVolume' => floatval($user['sale_volume'] ?? 0)
+            'salesVolume' => floatval($user['sale_volume'] ?? 0),
+            'package' => $package
         ]
     ];
 }
@@ -481,6 +491,7 @@ function formatUser($user) {
         'surname' => $user['surname'],
         'email' => $user['email'],
         'type' => $user['type'],
-        'balance' => floatval($user['balance'])
+        'balance' => floatval($user['balance']),
+        'image' => $user['image'] ?? ''
     ];
 }
