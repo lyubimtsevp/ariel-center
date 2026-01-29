@@ -1042,6 +1042,36 @@
   });
 })();
 </script>
+<script>
+// Update support page profile block with real data
+(function() {
+  function updateSupportProfile() {
+    if (window.location.pathname.indexOf('/cabinet/support') !== 0) return;
+    var uid = document.querySelector('[data-support-uid]');
+    if (!uid || uid.getAttribute('data-updated')) return;
+
+    var token = localStorage.getItem('auth_token');
+    fetch('/api/cabinet/dashboard', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json', 'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.dashboard) return;
+      var u = data.dashboard.user;
+      uid.textContent = 'ID ' + u.uid;
+      uid.setAttribute('data-updated', '1');
+      var nameEl = document.querySelector('[data-support-name]');
+      if (nameEl) nameEl.textContent = u.name || '';
+      var surnameEl = document.querySelector('[data-support-surname]');
+      if (surnameEl) surnameEl.textContent = u.surname || '';
+      var statusEl = document.querySelector('[data-support-status]');
+      if (statusEl) statusEl.textContent = data.dashboard.status || 'Отсутствует';
+    }).catch(function(){});
+  }
+  setInterval(updateSupportProfile, 500);
+})();</script>
 </head>
 
   <body>
@@ -1147,7 +1177,7 @@ FORCE_DATE_TOP();
 </script>
 <script>
 (function(){
-var SUPPORT_FORM_HTML = '<div style="display:flex;flex-direction:column;align-items:center;padding:20px 0;width:100%;">  <h1 style="color:white;font-size:28px;font-weight:600;margin-bottom:30px;font-family:Inter,sans-serif;">Техподдержка</h1>  <div style="background:#1a4a6e;border-radius:8px;width:500px;max-width:90%;box-shadow:0 4px 15px rgba(0,0,0,0.3);">    <div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;">      <span style="color:#a8d4e5;font-size:16px;font-family:Inter,sans-serif;">Обращение в службу поддержки</span>    </div>    <div style="padding:20px;">      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Тема обращения</label>        <input type="text" placeholder="Введите тему сообщения" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Номер телефона</label>        <input type="text" placeholder="+7 ()" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">E-mail для обратной связи</label>        <input type="email" placeholder="albixe@mail.com" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:20px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Текст обращения</label>        <textarea placeholder="" style="width:100%;height:120px;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;resize:none;"></textarea>      </div>      <div style="text-align:center;">        <button style="background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:15px 60px;border:none;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:1px;">Отправить сообщение</button>      </div>    </div>  </div></div>';
+var SUPPORT_FORM_HTML = '<div style="position:fixed;right:25px;top:120px;z-index:10;"><div class="w-[185px] flex flex-col gap-2" style="width:185px;display:flex;flex-direction:column;gap:8px;"><div style="background:#246393;border-radius:6px;padding:16px;display:flex;flex-direction:column;align-items:center;"><div style="width:145px;height:145px;background:#1f5986;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;"><img src="/assets/camera-Bca7ToUt.png" alt="" style="width:40px;height:40px;margin-bottom:8px;opacity:0.7;"><span style="color:#92aec4;font-size:13px;">Загрузить свое</span><span style="color:#97b1c6;font-size:14px;">фото</span></div><div style="background:#1f5986;border:1px solid #286ea3;border-radius:6px;height:31px;width:100%;margin-top:16px;display:flex;align-items:center;justify-content:center;"><span style="color:#98b2c7;font-size:13px;" data-support-uid>ID 4586</span></div><div style="text-align:center;margin-top:16px;"><div style="color:#a8c8e4;font-size:15px;" data-support-name>Иванов Иван</div><div style="color:#a8c7e4;font-size:16px;font-weight:300;" data-support-surname>Иванович</div></div></div><div style="background:#246393;border-radius:6px;padding:16px;"><div style="background:#1f5986;border:1px solid #2a75a4;border-radius:6px;height:31px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;"><span style="color:#9ab4c8;font-size:12px;">Статус</span></div><div style="text-align:center;color:#a1c5e2;font-size:13px;" data-support-status>Отсутствует</div></div></div></div><div style="display:flex;flex-direction:column;align-items:center;padding:20px 0;width:100%;">  <h1 style="color:white;font-size:28px;font-weight:600;margin-bottom:30px;font-family:Inter,sans-serif;">Техподдержка</h1>  <div style="background:#1a4a6e;border-radius:8px;width:500px;max-width:90%;box-shadow:0 4px 15px rgba(0,0,0,0.3);">    <div style="background:#1e5885;padding:15px 20px;border-radius:8px 8px 0 0;">      <span style="color:#a8d4e5;font-size:16px;font-family:Inter,sans-serif;">Обращение в службу поддержки</span>    </div>    <div style="padding:20px;">      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Тема обращения</label>        <input type="text" placeholder="Введите тему сообщения" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Номер телефона</label>        <input type="text" placeholder="+7 ()" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:15px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">E-mail для обратной связи</label>        <input type="email" placeholder="albixe@mail.com" style="width:100%;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;">      </div>      <div style="margin-bottom:20px;">        <label style="color:white;font-size:14px;display:block;margin-bottom:8px;font-family:Inter,sans-serif;">Текст обращения</label>        <textarea placeholder="" style="width:100%;height:120px;padding:12px 15px;background:#1e5885;border:1px solid #2a6a9a;border-radius:4px;color:#a8d4e5;font-size:14px;font-family:Inter,sans-serif;box-sizing:border-box;outline:none;resize:none;"></textarea>      </div>      <div style="text-align:center;">        <button style="background:#3bb4c1;color:white;font-size:14px;font-weight:600;padding:15px 60px;border:none;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:1px;">Отправить сообщение</button>      </div>    </div>  </div></div>';
 
 function INJECT_SUPPORT_FORM(){
   if(location.pathname.indexOf('/cabinet/support')===-1)return;
