@@ -1402,6 +1402,212 @@
   setInterval(fillAllSelects,500);
 })();
 </script>
+<script>
+(function(){
+  function showPackages(){
+    var p=location.pathname;
+    if(p!=="/cabinet"&&p!=="/cabinet/")return;
+    if(document.querySelector("[data-packages-block]"))return;
+    var main=document.querySelector("main");
+    if(!main)return;
+
+    var block=document.createElement("div");
+    block.setAttribute("data-packages-block","");
+    block.style.cssText="max-width:1200px;margin:30px auto;padding:0 20px;";
+    block.innerHTML="<h2 style=\"color:#fff;font-size:20px;font-weight:500;margin-bottom:20px;text-align:center;\">Пакеты</h2><div data-pkg-grid style=\"display:flex;flex-wrap:wrap;gap:20px;justify-content:center;\"><div style=\"color:#a8d4e5;\">Загрузка...</div></div>";
+    main.appendChild(block);
+
+    var token=localStorage.getItem("auth_token");
+    fetch("/api/cabinet/packages",{headers:{"Content-Type":"application/json","Authorization":token?"Bearer "+token:""},credentials:"include"})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.success||!data.packages)return;
+      var grid=block.querySelector("[data-pkg-grid]");
+      grid.innerHTML="";
+      var pkgs=data.packages;
+      for(var i=0;i<pkgs.length;i++){
+        (function(pkg){
+          var price=Number(pkg.price);
+          var card=document.createElement("div");
+          card.style.cssText="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:8px;padding:20px;width:200px;text-align:center;";
+          var h=document.createElement("div");
+          h.style.cssText="color:#fff;font-size:18px;font-weight:600;margin-bottom:10px;";
+          h.textContent=pkg.title;
+          card.appendChild(h);
+          var pr=document.createElement("div");
+          pr.style.cssText="color:#3bb4c1;font-size:22px;font-weight:700;margin-bottom:15px;";
+          pr.textContent=price>0?price.toLocaleString("ru-RU")+" ₽":"Бесплатно";
+          card.appendChild(pr);
+          if(price>0){
+            var btn=document.createElement("button");
+            btn.style.cssText="background:#3bb4c1;color:#fff;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:600;text-transform:uppercase;width:100%;";
+            btn.textContent="Купить";
+            btn.onclick=function(){
+              if(!confirm("Купить пакет "+pkg.title+" за "+price.toLocaleString("ru-RU")+" руб.?"))return;
+              var tk=localStorage.getItem("auth_token");
+              fetch("/api/cabinet/buy-package",{method:"POST",headers:{"Content-Type":"application/json","Authorization":tk?"Bearer "+tk:""},credentials:"include",body:JSON.stringify({package_id:pkg.id})})
+              .then(function(r){return r.json();})
+              .then(function(res){
+                if(res.success){alert(res.message||"Пакет куплен!");location.reload();}
+                else{alert(res.error||"Ошибка");}
+              }).catch(function(){alert("Ошибка сети");});
+            };
+            card.appendChild(btn);
+          }else{
+            var tag=document.createElement("div");
+            tag.style.cssText="color:#7db4d4;font-size:12px;";
+            tag.textContent="Ваш текущий пакет";
+            card.appendChild(tag);
+          }
+          grid.appendChild(card);
+        })(pkgs[i]);
+      }
+    });
+  }
+  setInterval(showPackages,500);
+})();
+</script>
+<script>
+(function(){
+  function addRefLink(){
+    var p=location.pathname;
+    if(p!=="/cabinet"&&p!=="/cabinet/")return;
+    if(document.querySelector("[data-ref-link-block-OLD]"))return;
+
+    // Find the right sidebar block with user ID
+    var spans=document.querySelectorAll("span");
+    var idSpan=null;
+    for(var i=0;i<spans.length;i++){
+      if(spans[i].textContent.match(/^ID \d+$/)){idSpan=spans[i];break;}
+    }
+    if(!idSpan)return;
+
+    var uid=idSpan.textContent.replace("ID ","").trim();
+    if(!uid||uid==="4586")return; // mock data not yet loaded
+
+    // Find the sidebar container (parent with background #246393)
+    var sidebar=idSpan.closest("div[style*=\"background\"]");
+    while(sidebar&&sidebar.style.background.indexOf("246393")===-1&&sidebar.style.background.indexOf("#246393")===-1){
+      sidebar=sidebar.parentElement;
+      if(!sidebar)break;
+    }
+    // Go up to the flex column container
+    var container=sidebar?sidebar.parentElement:null;
+    if(!container)return;
+
+    var refBlock=document.createElement("div");
+    refBlock.setAttribute("data-ref-link-block-OLD","");
+    refBlock.style.cssText="background:#246393;border-radius:6px;padding:16px;margin-top:8px;";
+
+    var label=document.createElement("div");
+    label.style.cssText="background:#1f5986;border:1px solid #2a75a4;border-radius:6px;height:31px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;";
+    label.innerHTML="<span style=\"color:#9ab4c8;font-size:12px;\">Реферальная ссылка</span>";
+    refBlock.appendChild(label);
+
+    var linkBox=document.createElement("div");
+    linkBox.style.cssText="background:#1f5986;border:1px solid #286ea3;border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;";
+
+    var refUrl=location.origin+"/ref/"+uid;
+    var linkText=document.createElement("input");
+    linkText.type="text";
+    linkText.readOnly=true;
+    linkText.value=refUrl;
+    linkText.style.cssText="flex:1;background:transparent;border:none;color:#a8c8e4;font-size:11px;outline:none;width:100%;";
+    linkBox.appendChild(linkText);
+
+    var copyBtn=document.createElement("button");
+    copyBtn.textContent="\u2398";
+    copyBtn.title="Копировать";
+    copyBtn.style.cssText="background:#3bb4c1;border:none;color:#fff;border-radius:4px;width:28px;height:28px;cursor:pointer;font-size:14px;flex-shrink:0;";
+    copyBtn.onclick=function(){
+      navigator.clipboard.writeText(refUrl).then(function(){
+        copyBtn.textContent="\u2713";
+        setTimeout(function(){copyBtn.textContent="\u2398";},1500);
+      });
+    };
+    linkBox.appendChild(copyBtn);
+    refBlock.appendChild(linkBox);
+    container.appendChild(refBlock);
+  }
+  setInterval(addRefLink,500);
+})();
+</script>
+<script>
+(function(){
+  function fillSponsor(){
+    var p=location.pathname;
+    if(p!=="/register"&&p!=="/register/")return;
+    var params=new URLSearchParams(location.search);
+    var sponsor=params.get("sponsor");
+    if(!sponsor)return;
+    // Find the oderId input
+    var inp=document.querySelector("input[name=\"oderId\"]");
+    if(!inp||inp.getAttribute("data-sponsor-filled"))return;
+    // Set value using React-compatible method
+    var nativeInputValueSetter=Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,"value").set;
+    nativeInputValueSetter.call(inp,sponsor);
+    inp.dispatchEvent(new Event("input",{bubbles:true}));
+    inp.dispatchEvent(new Event("change",{bubbles:true}));
+    inp.setAttribute("data-sponsor-filled","1");
+  }
+  setInterval(fillSponsor,300);
+})();
+</script>
+
+<script>
+(function(){
+  var refDone2=false;
+  function copyToClipboard(text){
+    var ta=document.createElement("textarea");
+    ta.value=text;
+    ta.style.cssText="position:fixed;left:-9999px;top:-9999px;";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{document.execCommand("copy");return true;}catch(e){return false;}
+    finally{ta.remove();}
+  }
+  function setupRefLink2(){
+    if(refDone2)return;
+    var p=location.pathname;
+    if(p!=="/cabinet"&&p!=="/cabinet/")return;
+    var imgs=document.querySelectorAll("img[src*='handshake']");
+    if(!imgs.length)return;
+    var spans=document.querySelectorAll("span");
+    var uid="";
+    for(var i=0;i<spans.length;i++){
+      var m=spans[i].textContent.match(/^ID (\d+)$/);
+      if(m){uid=m[1];break;}
+    }
+    if(!uid||uid==="4586")return;
+    var refUrl=location.origin+"/ref/"+uid;
+    var img=imgs[0];
+    var container=img.closest("a")||img.parentElement.parentElement;
+    if(!container)return;
+    container.style.cursor="pointer";
+    container.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      copyToClipboard(refUrl);
+      var n=document.createElement("div");
+      n.style.cssText="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#3bb4c1;color:#fff;padding:12px 24px;border-radius:6px;font-size:14px;z-index:999999;box-shadow:0 4px 15px rgba(0,0,0,0.3);";
+      n.textContent="Ссылка скопирована: "+refUrl;
+      document.body.appendChild(n);
+      setTimeout(function(){n.remove();},2500);
+    };
+    var arrow=document.querySelector("img[src*='arrow_link']");
+    if(arrow){
+      var arrowP=arrow.closest("a")||arrow.parentElement;
+      if(arrowP){
+        arrowP.style.cursor="pointer";
+        arrowP.onclick=container.onclick;
+      }
+    }
+    refDone2=true;
+  }
+  setInterval(setupRefLink2,500);
+})();
+</script>
 </head>
 
   <body>
@@ -1968,7 +2174,7 @@ container.className='hide-scrollbar';
 container.innerHTML='<h1 style="text-align:center;font-weight:500;font-size:24px;color:#fff;margin:0 0 30px 0;">Новости</h1><div id="news-grid" style="display:flex;flex-wrap:wrap;gap:25px;width:825px;margin-left:60px;"><div style="color:#a8d4e5;text-align:center;width:100%;padding:20px;">Загрузка...</div></div>';
 root.appendChild(container);
 
-fetch('/get_news.php')
+fetch('/api/cabinet/news')
 .then(function(r){return r.json();})
 .then(function(data){
   var grid=document.getElementById('news-grid');

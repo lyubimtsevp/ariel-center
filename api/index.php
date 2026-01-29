@@ -75,6 +75,227 @@ function getPackagesList($pdo) {
     return ['success' => true, 'packages' => $list];
 }
 
+
+// === HELPER: Get effective lines for a user ===
+function getEffectiveLines($user, $package) {
+    $lines = intval($package['a_lines']);
+    if ($user['user_lines_activated'] == 1 && $lines == 0) {
+        $lines = 5; // User with activated lines
+    }
+    return $lines;
+}
+
+// === HELPER: Create sv_users sponsor relationships ===
+function createSvUsers($uid, $pdo) {
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE uid = ?');
+    $stmt->execute([$uid]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) return;
+
+    // Load all packages
+    $pkgs = [];
+    $allPkgs = $pdo->query('SELECT * FROM packages')->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($allPkgs as $pk) $pkgs[$pk['id']] = $pk;
+
+    $sponsor = $user['user_id'];
+    $type = 1;
+
+    if ($user['type'] == 'fiz') {
+        while ($type <= 16) {
+            $stmt = $pdo->prepare('SELECT * FROM users WHERE uid = ?');
+            $stmt->execute([$sponsor]);
+            $sp = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$sp) break;
+
+            $spPkg = $pkgs[$sp['package']] ?? null;
+            $spLines = $spPkg ? getEffectiveLines($sp, $spPkg) : 0;
+
+            if ($type > $spLines || $sp['type'] != 'fiz') {
+                $sponsor = $sp['user_id'];
+                $type++;
+                continue;
+            }
+
+            // Check if relationship already exists
+            $chk = $pdo->prepare('SELECT id FROM sv_users WHERE uid = ? AND sponsor = ? AND type = ?');
+            $chk->execute([$uid, $sponsor, $type]);
+            if (!$chk->fetch()) {
+                $ins = $pdo->prepare('INSERT INTO sv_users (uid, sponsor, type, created_at) VALUES (?, ?, ?, NOW())');
+                $ins->execute([$uid, $sponsor, $type]);
+            }
+
+            $sponsor = $sp['user_id'];
+            $type++;
+        }
+    }
+}
+
+// === HELPER: Expand sv_users lines after package upgrade ===
+function expandLines($uid, $oldLines, $newLines, $pdo) {
+    if ($newLines <= $oldLines) return;
+
+    $cl = $oldLines;
+    $childs = [];
+
+    while ($cl <= $newLines) {
+        if (empty($childs)) {
+            $stmt = $pdo->prepare('SELECT uid FROM sv_users WHERE sponsor = ? AND type = ?');
+            $stmt->execute([$uid, $cl]);
+            $childs = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
+        if (empty($childs)) break;
+
+        // Get next level: first-line referrals of current childs
+        $placeholders = implode(',', array_fill(0, count($childs), '?'));
+        $stmt = $pdo->prepare("SELECT uid FROM sv_users WHERE sponsor IN ($placeholders) AND type = 1");
+        $stmt->execute($childs);
+        $subchilds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        if (empty($subchilds)) break;
+
+        $cl++;
+        if ($cl > $newLines) break;
+
+        foreach ($subchilds as $childUid) {
+            $chk = $pdo->prepare('SELECT id FROM sv_users WHERE uid = ? AND sponsor = ? AND type = ?');
+            $chk->execute([$childUid, $uid, $cl]);
+            if (!$chk->fetch()) {
+                $ins = $pdo->prepare('INSERT INTO sv_users (uid, sponsor, type, created_at) VALUES (?, ?, ?, NOW())');
+                $ins->execute([$childUid, $uid, $cl]);
+            }
+        }
+        $childs = $subchilds;
+    }
+}
+
+// === HELPER: Check and activate User lines ===
+function checkUserActivation($sponsorUid, $pdo) {
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE uid = ?');
+    $stmt->execute([$sponsorUid]);
+    $sponsor = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$sponsor) return;
+
+    // Only for User package (a_lines=0) with not yet activated lines
+    $stmt2 = $pdo->prepare('SELECT a_lines FROM packages WHERE id = ?');
+    $stmt2->execute([$sponsor['package']]);
+    $pkg = $stmt2->fetch(PDO::FETCH_ASSOC);
+    if (!$pkg || $pkg['a_lines'] > 0) return; // Not a User package
+    if ($sponsor['user_lines_activated'] == 1) return; // Already activated
+
+    $reqVol = intval($sponsor['user_required_volume']);
+    if ($reqVol <= 0) $reqVol = 226000;
+
+    if (intval($sponsor['priv_sale_volume']) >= $reqVol) {
+        // Activate 5 lines
+        $pdo->prepare('UPDATE users SET user_lines_activated = 1 WHERE uid = ?')->execute([$sponsorUid]);
+        // Expand lines from 0 to 5
+        expandLines($sponsorUid, 0, 5, $pdo);
+    }
+}
+
+// === BUY PACKAGE ===
+function handleBuyPackage($input, $pdo) {
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        return ['success' => false, 'error' => 'Требуется авторизация'];
+    }
+
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) return ['success' => false, 'error' => 'User not found'];
+
+    $packageId = intval($input['package_id'] ?? 0);
+    if (!$packageId) return ['success' => false, 'error' => 'Не указан пакет'];
+
+    $stmt = $pdo->prepare('SELECT * FROM packages WHERE id = ? AND is_active = 1');
+    $stmt->execute([$packageId]);
+    $newPkg = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$newPkg) return ['success' => false, 'error' => 'Пакет не найден'];
+
+    $price = floatval($newPkg['price']);
+    if ($price <= 0) return ['success' => false, 'error' => 'Этот пакет нельзя купить'];
+
+    $balance = floatval($user['balance']);
+    if ($balance < $price) {
+        return ['success' => false, 'error' => 'Недостаточно средств. Баланс: ' . number_format($balance, 0, ',', ' ') . ' руб., нужно: ' . number_format($price, 0, ',', ' ') . ' руб.'];
+    }
+
+    // Get old package info
+    $stmt = $pdo->prepare('SELECT * FROM packages WHERE id = ?');
+    $stmt->execute([$user['package']]);
+    $oldPkg = $stmt->fetch(PDO::FETCH_ASSOC);
+    $oldLines = $oldPkg ? getEffectiveLines($user, $oldPkg) : 0;
+    $newLines = intval($newPkg['a_lines']);
+
+    // Deduct balance
+    $pdo->prepare('UPDATE users SET balance = balance - ?, package = ?, user_lines_activated = 1 WHERE id = ?')
+        ->execute([$price, $packageId, $user['id']]);
+
+    // Create operation record
+    $pdo->prepare('INSERT INTO operations (uid, type, value, amount, text, status, created_at) VALUES (?, ?, ?, ?, ?, 1, NOW())')
+        ->execute([$user['uid'], 'buy_package', $packageId, $price, 'Покупка пакета ' . $newPkg['title']]);
+
+    // Expand lines
+    expandLines($user['uid'], $oldLines, $newLines, $pdo);
+
+    // Load all packages for bonus calculation
+    $allPkgs = [];
+    foreach ($pdo->query('SELECT * FROM packages')->fetchAll(PDO::FETCH_ASSOC) as $pk) {
+        $allPkgs[$pk['id']] = $pk;
+    }
+
+    // Distribute bonuses to sponsors
+    $stmt = $pdo->prepare('SELECT * FROM sv_users WHERE uid = ? ORDER BY type ASC');
+    $stmt->execute([$user['uid']]);
+    $svUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($svUsers as $sv) {
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE uid = ? AND type = "fiz"');
+        $stmt->execute([$sv['sponsor']]);
+        $sponsor = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$sponsor) continue;
+
+        $spPkg = $allPkgs[$sponsor['package']] ?? null;
+        if (!$spPkg) continue;
+
+        $spLines = getEffectiveLines($sponsor, $spPkg);
+        $lineType = intval($sv['type']);
+        if ($lineType > $spLines) continue;
+
+        // Calculate bonus
+        $bonusField = 'bonus_l' . $lineType;
+        $percent = floatval($spPkg[$bonusField] ?? 0);
+        $bonusValue = 0;
+        if ($percent > 0) {
+            $bonusValue = floor($price / 100 * $percent);
+        }
+
+        // Update sale_volume
+        $saleVol = intval($sponsor['sale_volume']) + intval($price);
+        $privSaleVol = 0;
+        if ($lineType == 1) {
+            $privSaleVol = intval($price);
+        }
+
+        // Update sponsor
+        $pdo->prepare('UPDATE users SET balance = balance + ?, sale_volume = ?, priv_sale_volume = priv_sale_volume + ? WHERE uid = ?')
+            ->execute([$bonusValue, $saleVol, $privSaleVol, $sv['sponsor']]);
+
+        // Log bonus operation
+        if ($bonusValue > 0) {
+            $pdo->prepare('INSERT INTO operations (uid, type, value, amount, text, status, created_at) VALUES (?, ?, ?, ?, ?, 1, NOW())')
+                ->execute([$sv['sponsor'], 'bonus', $user['uid'], $bonusValue, 'Бонус за покупку пакета ' . $newPkg['title'] . ' (линия ' . $lineType . ', ' . $percent . '%)']);
+        }
+
+        // Check if this sponsor is a User that should be activated
+        if ($lineType == 1) {
+            checkUserActivation($sv['sponsor'], $pdo);
+        }
+    }
+
+    return ['success' => true, 'message' => 'Пакет ' . $newPkg['title'] . ' успешно куплен!'];
+}
+
 function route($path, $method, $input, $pdo) {
     switch ($path) {
         case 'auth/login': return handleLogin($input, $pdo);
@@ -90,6 +311,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/support': return handleSupport($input, $pdo);
         case 'cabinet/fees': return getFees($pdo);
         case 'cabinet/packages': return getPackagesList($pdo);
+        case 'cabinet/buy-package': return handleBuyPackage($input, $pdo);
         case 'cabinet/withdrawals': return handleWithdrawals($input, $pdo);
         case 'auth/debug-token': return handleDebugToken($input, $pdo);
         case 'profile':
@@ -165,18 +387,36 @@ function handleRegister($input, $pdo) {
         $stmt->execute([$uid]);
     } while ($stmt->fetch());
     
-    // Insert user
-    $stmt = $pdo->prepare('INSERT INTO users (user_id, uid, email, password, name, surname, type, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, NOW())');
+    // Get User package id and activation volume
+    $userPkg = $pdo->query("SELECT id FROM packages WHERE title = 'User' AND is_active = 1 LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+    $userPkgId = $userPkg ? $userPkg['id'] : 1;
+    $opts = $pdo->query('SELECT user_activation_volume FROM options LIMIT 1')->fetch(PDO::FETCH_ASSOC);
+    $reqVolume = $opts['user_activation_volume'] ?? 226000;
+
+    // Validate sponsor
+    $sponsor = $input['sponsor'] ?? 1;
+    if ($sponsor != 1) {
+        $chk = $pdo->prepare('SELECT id FROM users WHERE uid = ?');
+        $chk->execute([$sponsor]);
+        if (!$chk->fetch()) $sponsor = 1;
+    }
+
+    // Insert user with User package and fixed volume threshold
+    $stmt = $pdo->prepare('INSERT INTO users (user_id, uid, email, password, name, surname, type, is_active, package, user_required_volume, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, NOW())');
     $stmt->execute([
-        $input['sponsor'] ?? 1,
+        $sponsor,
         $uid,
         $input['email'],
         md5('dfg45' . $input['password'] . 'gg43'),
         $input['name'] ?? '',
         $input['surname'] ?? '',
-        $input['type'] ?? 'fiz'
+        $input['type'] ?? 'fiz',
+        $userPkgId,
+        $reqVolume
     ]);
-    
+
+    // Create sponsor relationships (sv_users)
+    createSvUsers($uid, $pdo);
     return ['success' => true, 'message' => 'Регистрация успешна', 'uid' => $uid];
 }
 
