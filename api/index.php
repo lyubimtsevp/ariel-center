@@ -41,12 +41,12 @@ try {
 session_start();
 
 // Restore user from Bearer token if session is empty
-if (empty($_SESSION['user_id'])) {
+if (empty($_SESSION['auth'])) {
     $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
     if (preg_match('/Bearer\s+(.+)/i', $authHeader, $m)) {
         $tokenData = json_decode(base64_decode($m[1]), true);
         if ($tokenData && !empty($tokenData['id']) && !empty($tokenData['exp']) && $tokenData['exp'] > time()) {
-            $_SESSION['user_id'] = $tokenData['id'];
+            $_SESSION['auth'] = $tokenData['id'];
             $_SESSION['user_uid'] = $tokenData['uid'] ?? null;
         }
     }
@@ -194,13 +194,13 @@ function checkUserActivation($sponsorUid, $pdo) {
 
 // === BUY PACKAGE ===
 function handleBuyPackage($input, $pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
 
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) return ['success' => false, 'error' => 'User not found'];
 
@@ -303,7 +303,7 @@ function route($path, $method, $input, $pdo) {
         case 'auth/logout': return handleLogout();
         case 'auth/check': return handleAuthCheck($pdo);
         case 'cabinet/dashboard': return getDashboard($pdo);
-        case 'cabinet/team': return getTeam($pdo);
+        case 'team': case 'cabinet/team': return getTeam($pdo);
         case 'cabinet/news': return getNews($pdo);
         case 'cabinet/events': return getEvents($pdo);
         case 'cabinet/info': return getInfo($pdo);
@@ -314,7 +314,7 @@ function route($path, $method, $input, $pdo) {
         case 'cabinet/buy-package': return handleBuyPackage($input, $pdo);
         case 'cabinet/withdrawals': return handleWithdrawals($input, $pdo);
         case 'auth/debug-token': return handleDebugToken($input, $pdo);
-        case 'profile':
+        case 'user': case 'profile':
             return $method === 'GET' ? getProfile($pdo) : updateProfile($input, $pdo);
         case 'transfer': return handleTransfer($input, $pdo);
         default:
@@ -347,7 +347,7 @@ function handleLogin($input, $pdo) {
     }
     
     // Save to session
-    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['auth'] = $user['id'];
     $_SESSION['user_uid'] = $user['uid'];
     
     // Generate token
@@ -426,12 +426,12 @@ function handleLogout() {
 }
 
 function handleAuthCheck($pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         return ['success' => false, 'authenticated' => false];
     }
     
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$user) {
@@ -444,13 +444,13 @@ function handleAuthCheck($pdo) {
 // ==================== PROFILE ====================
 
 function getProfile($pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
     
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return [
@@ -469,7 +469,7 @@ function getProfile($pdo) {
 }
 
 function updateProfile($input, $pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
@@ -486,7 +486,7 @@ function updateProfile($input, $pdo) {
     }
     
     if ($updates) {
-        $values[] = $_SESSION['user_id'];
+        $values[] = $_SESSION['auth'];
         $sql = 'UPDATE users SET ' . implode(', ', $updates) . ' WHERE id = ?';
         $pdo->prepare($sql)->execute($values);
     }
@@ -497,13 +497,13 @@ function updateProfile($input, $pdo) {
 // ==================== CABINET ====================
 
 function getDashboard($pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
     
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     // Team count
@@ -544,27 +544,32 @@ function getDashboard($pdo) {
 }
 
 function getTeam($pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
     
     $stmt = $pdo->prepare('SELECT uid FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $me = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $team = [];
-    $stmt = $pdo->prepare('SELECT sv.uid, sv.type as line, u.name, u.surname FROM sv_users sv JOIN users u ON u.uid = sv.uid WHERE sv.sponsor = ? AND u.type != "ur"');
+    $stmt = $pdo->prepare('SELECT sv.uid, sv.type as line, u.name, u.surname, u.package, u.is_active FROM sv_users sv JOIN users u ON u.uid = sv.uid WHERE sv.sponsor = ? AND u.type != "ur"');
     $stmt->execute([$me['uid']]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $team[] = [
-            'line' => $row['line'],
+        $line = $row['line'];
+        if (!isset($team[$line])) $team[$line] = [];
+        $team[$line][] = [
             'uid' => $row['uid'],
-            'name' => $row['name'] . ' ' . $row['surname']
+            'name' => $row['name'] . ' ' . $row['surname'],
+            'package' => $row['package'] ?? '',
+            'active' => (bool)$row['is_active']
         ];
     }
-    
-    return ['success' => true, 'team' => $team, 'totalCount' => count($team)];
+    $totalCount = 0;
+    foreach ($team as $members) $totalCount += count($members);
+    $activeLines = count($team);
+    return ['success' => true, 'team' => $team, 'total_count' => $totalCount, 'active_lines' => $activeLines];
 }
 
 function getNews($pdo) {
@@ -627,7 +632,7 @@ function getShop($pdo) {
 // ==================== TRANSFER ====================
 
 function handleTransfer($input, $pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
@@ -637,7 +642,7 @@ function handleTransfer($input, $pdo) {
     }
     
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $me = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $amount = floatval($input['amount']);
@@ -684,7 +689,7 @@ function handleDebugToken($input, $pdo) {
     if (!$user) {
         return ['success' => false, 'error' => 'User not found'];
     }
-    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['auth'] = $user['id'];
     $_SESSION['user_uid'] = $user['uid'];
     $token = base64_encode(json_encode([
         'id' => $user['id'],
@@ -704,13 +709,13 @@ function handleDebugToken($input, $pdo) {
 // ==================== FEES ====================
 
 function getFees($pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
 
     $stmt = $pdo->prepare('SELECT uid FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $me = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$me) return ['success' => false, 'error' => 'User not found'];
 
@@ -784,13 +789,13 @@ function getFees($pdo) {
 // ==================== WITHDRAWALS ====================
 
 function handleWithdrawals($input, $pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
 
     $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute([$_SESSION['auth']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) return ['success' => false, 'error' => 'User not found'];
 
@@ -919,7 +924,7 @@ function handleWithdrawals($input, $pdo) {
 // ==================== SUPPORT ====================
 
 function handleSupport($input, $pdo) {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['auth'])) {
         http_response_code(401);
         return ['success' => false, 'error' => 'Требуется авторизация'];
     }
