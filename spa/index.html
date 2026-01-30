@@ -2,6 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script>
+(function(){
+  var CR="© 2026 ООО «Аш Два Элемент». Все права защищены.";
+  function fixCR(){
+    document.querySelectorAll("*").forEach(function(el){
+      if(el.children.length>0)return;
+      var t=el.textContent||'';
+      if((t.indexOf('Албикс')!==-1||t.indexOf('О00')!==-1||t.indexOf('2019')!==-1) && t.indexOf('права')!==-1){
+        el.textContent=CR;
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded',function(){ setTimeout(fixCR,500); setTimeout(fixCR,2000); });
+})();
+</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello world project</title>
     <script>
@@ -26,7 +44,7 @@
       document.head.appendChild(style);
     })();
 </script>
-    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js?v=111"></script>
+    <script type="module" crossorigin src="/assets/index-z-l6LwOm2.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BEzxNODc.css">
     <script>
     // Заменить левое меню на страницах /cabinet и /cabinet/news
@@ -238,7 +256,7 @@
         const copyrightElements = document.querySelectorAll('[class*="bottom-"]');
 
         copyrightElements.forEach(function(el) {
-          if (el.textContent && el.textContent.includes('2019 © О00 Албикс')) {
+          if (el.textContent && el.textContent.includes('__NEVER_MATCH_OLD_COPYRIGHT__')) {
             el.remove();
             console.log('Old copyright removed');
           }
@@ -481,7 +499,7 @@
         footerBlock.className = 'flex items-center justify-between';
         footerBlock.style.cssText = 'position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;';
         footerBlock.setAttribute('data-content-footer', 'true');
-        footerBlock.innerHTML = '<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>';
+        footerBlock.innerHTML = '<span class="text-[#95b5de] text-base">© 2026 ООО «Аш Два Элемент». Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>';
 
         // ВСТАВИТЬ В BODY НАПРЯМУЮ
         document.body.appendChild(footerBlock);
@@ -543,7 +561,7 @@
         newHeader.setAttribute('data-header-fixed', 'true');
         newHeader.setAttribute('data-news-header-replaced', 'true');
         newHeader.style.cssText = 'position: fixed !important; top: 0px !important; left: 0px !important; right: 0px !important; z-index: 100000 !important; pointer-events: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; height: 60px !important;';
-        newHeader.innerHTML = '<a class="absolute top-[10px] left-[20px]" href="/"><img src="/images/logo.png?v=111" alt="Albixe" class="h-[40px] w-auto object-contain"></a><div class="absolute top-[38px] left-[72px] text-[#a8d4e5] text-[5px] font-semibold" style="font-family: Inter, sans-serif;">POWER TECH</div><a href="https://albixe.com" class="absolute top-[20px] left-[656px] text-[#7095b1] text-[16px] hover:underline" style="font-family: Inter, sans-serif;">albixe.com</a><div class="absolute top-[16px] right-[100px] flex items-center gap-2"><img src="/assets/flag_usa-CYCU23Vu.png" alt="EN" class="w-[30px] h-[21px]"><span class="text-[#7095b1] text-base">Eng</span></div><a class="absolute top-[21px] right-[20px] w-[18px] h-[18px] hover:opacity-80" href="/" style="display: block !important; width: 18px !important; height: 18px !important;"><img src="data:image/png;base64,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" alt="Exit" style="display: block !important; width: 18px !important; height: 18px !important; max-width: 18px !important; max-height: 18px !important; min-width: 18px !important; min-height: 18px !important; object-fit: contain !important; opacity: 1 !important; visibility: visible !important; filter: brightness(1.5) contrast(2) saturate(1.5) !important;"></a>';
+        newHeader.innerHTML = '<div class="absolute top-[10px] left-[20px]"><img src="/images/logo.png?v=111" alt="Albixe" class="h-[40px] w-auto object-contain"></div><div class="absolute top-[38px] left-[72px] text-[#a8d4e5] text-[5px] font-semibold" style="font-family: Inter, sans-serif;">POWER TECH</div><div class="absolute top-[16px] right-[100px] flex items-center gap-2"><img src="/assets/flag_usa-CYCU23Vu.png" alt="EN" class="w-[30px] h-[21px]"><span class="text-[#7095b1] text-base">Eng</span></div><a class="absolute top-[21px] right-[20px] w-[18px] h-[18px] hover:opacity-80" href="/" style="display: block !important; width: 18px !important; height: 18px !important;"><img src="data:image/png;base64,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" alt="Exit" style="display: block !important; width: 18px !important; height: 18px !important; max-width: 18px !important; max-height: 18px !important; min-width: 18px !important; min-height: 18px !important; object-fit: contain !important; opacity: 1 !important; visibility: visible !important; filter: brightness(1.5) contrast(2) saturate(1.5) !important;"></a>';
 
         // Добавить хедер в body как первый элемент
         document.body.insertBefore(newHeader, document.body.firstChild);
@@ -814,7 +832,7 @@
         
         var bottoms = document.querySelectorAll('[class*=bottom-]');
         bottoms.forEach(function(el) {
-          if (el.textContent && el.textContent.indexOf('Албикс') !== -1) {
+          if (el.textContent && false) {
             el.remove();
           }
         });
@@ -822,9 +840,9 @@
       setInterval(hideFooterNews, 100);
     })();
     </script>
-<script>    // Футер для /cabinet/cashback    (function() {      function fixCashbackFooter() {        var path = window.location.pathname;        if (path !== "/cabinet/cashback" && path !== "/cabinet/cashback/") return;                var oldFooter = document.querySelector("[data-content-footer]");        if (oldFooter) oldFooter.remove();                var existingFooter = document.querySelector("[data-footer-unified]");        if (existingFooter) {          existingFooter.style.cssText = "position: fixed; bottom: 0px; left: 69px; right: 0px; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0px 30px; background-color: transparent; z-index: 9999;";          return;        }                var footer = document.createElement("div");        footer.setAttribute("data-footer-unified", "true");        footer.style.cssText = "position: fixed; bottom: 0px; left: 69px; right: 0px; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0px 30px; background-color: transparent; z-index: 9999;";        document.body.appendChild(footer);      }      setInterval(fixCashbackFooter, 100);      [0,50,100,200,500,1000].forEach(function(t) { setTimeout(fixCashbackFooter, t); });    })();    </script>
-<script>    (function(){      function CASHBACK_FOOTER_ULTRA(){        if(location.pathname.indexOf("/cabinet/cashback")===-1)return;        document.querySelectorAll("[data-content-footer]").forEach(function(e){e.remove();});        var f=document.querySelector("[data-footer-unified]");        if(!f){          f=document.createElement("div");          f.setAttribute("data-footer-unified","true");          document.body.appendChild(f);        }        f.style.cssText="position:fixed!important;bottom:0!important;left:69px!important;right:0!important;height:60px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:0 30px!important;background-color:transparent!important;z-index:9999!important;";        f.innerHTML="<span style="color:#95b5de;font-size:16px;">2019 © ООО Албикс. Все права защищены.</span><div style="display:flex;align-items:center;gap:8px;"><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_yt-D-OAslMW.png" style="width:20px;height:20px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_vk-DVhhSvRr.png" style="width:18px;height:18px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_inst-Be0b4DfN.png" style="width:20px;height:20px;"></a><a href="#" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;"><img src="/assets/social_ok-1imOTysm.png" style="width:20px;height:20px;"></a></div>";      }      setInterval(CASHBACK_FOOTER_ULTRA,30);      new MutationObserver(CASHBACK_FOOTER_ULTRA).observe(document.documentElement,{childList:true,subtree:true});      for(var i=0;i<3000;i+=30)setTimeout(CASHBACK_FOOTER_ULTRA,i);    })();    </script>
-<script>    (function(){      function CASHBACK_FOOTER_EXACT(){        if(location.pathname.indexOf("/cabinet/cashback")===-1)return;        var old=document.querySelector("[data-cashback-footer-exact]");        if(old)return;        document.querySelectorAll("[data-content-footer]").forEach(function(e){e.remove();});        document.querySelectorAll("[data-footer-unified]").forEach(function(e){e.remove();});        var f=document.createElement("div");        f.className="flex items-center justify-between";        f.setAttribute("data-content-footer","true");        f.setAttribute("data-cashback-footer-exact","true");        f.style.cssText="position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;";        f.innerHTML="<span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div>";        document.body.appendChild(f);      }      setInterval(CASHBACK_FOOTER_EXACT,30);      new MutationObserver(CASHBACK_FOOTER_EXACT).observe(document.documentElement,{childList:true,subtree:true});      for(var i=0;i<3000;i+=30)setTimeout(CASHBACK_FOOTER_EXACT,i);    })();    </script>
+
+
+
   <script>
 (function() {
   function attachSupportHandler() {
@@ -1608,17 +1626,173 @@
   setInterval(setupRefLink2,500);
 })();
 </script>
+
+
+<style id="responsive-scale-styles">
+html, body {
+  background: #1a3d5c !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+#rotate-device-overlay { display: none !important; }
+#root { min-height: 100vh; }
+.lg\:block { display: block !important; }
+.lg\:hidden { display: none !important; }
+.hidden.lg\:block { display: block !important; }
+
+#profile-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  z-index: 9999;
+  background: #246393;
+  border: 1px solid #2a6a9a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  align-items: center;
+  gap: 6px;
+  font-family: sans-serif;
+}
+
+.profile-hidden {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+@media screen and (max-width: 1100px) {
+  #profile-toggle-btn { display: flex; }
+}
+</style>
+<script>
+(function(){
+  var BASE = 1440;
+
+  function applyScale() {
+    // zoom disabled - using w-full layout
+  }
+
+  function init() {
+    applyScale();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  window.addEventListener('resize', applyScale);
+  window.addEventListener('orientationchange', function(){ setTimeout(applyScale, 200); });
+})();
+</script>
 </head>
 
   <body>
+<div id="rotate-device-overlay">
+  <svg class="rotate-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="25" y="10" width="50" height="80" rx="8" stroke="white" stroke-width="3" fill="none"/>
+    <circle cx="50" cy="80" r="4" fill="white"/>
+    <path d="M75 50 L85 50 L80 40 Z" fill="white"/>
+    <path d="M85 50 Q85 25 60 15" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="rotate-text">Переверните устройство</div>
+</div>
+
     <div id=root></div>
-  </body>
+  
+<script>
+(function(){
+  function fillPersonalData() {
+    if (location.pathname.indexOf('/cabinet/profile') === -1) return;
+
+    var token = localStorage.getItem('token') || '';
+    fetch('/api/auth/check', {
+      method: 'GET',
+      headers: {'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d.success || !d.user) return;
+      var u = d.user;
+
+      // Map label text -> user field value
+      var map = {
+        'Имя': u.name || '',
+        'Фамилия': u.surname || '',
+        'Отчество': u.otchestvo || '',
+        'Дата рождения': u.birthdate || '',
+        'Пол': u.gender || '',
+        'Страна*': u.country || '',
+        'Город': u.city || '',
+        'Телефон': u.phone || '',
+        'E-mail*': u.email || ''
+      };
+
+      var inputs = document.querySelectorAll('input');
+      for (var i = 0; i < inputs.length; i++) {
+        var inp = inputs[i];
+        if (inp.type === 'password') continue;
+        var label = inp.parentElement ? inp.parentElement.querySelector('label') : null;
+        if (!label) continue;
+        var lt = label.textContent.trim();
+        if (map.hasOwnProperty(lt)) {
+          var val = map[lt];
+          // Set via native setter for React compatibility
+          var setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+          if (setter && setter.set) {
+            setter.set.call(inp, val);
+          } else {
+            inp.value = val;
+          }
+          inp.dispatchEvent(new Event('input', {bubbles: true}));
+          inp.dispatchEvent(new Event('change', {bubbles: true}));
+        }
+      }
+    })
+    .catch(function(){});
+  }
+
+  setTimeout(fillPersonalData, 800);
+  setTimeout(fillPersonalData, 2000);
+  setTimeout(fillPersonalData, 4000);
+
+  // SPA navigation
+  var _ps = history.pushState;
+  history.pushState = function() {
+    _ps.apply(this, arguments);
+    setTimeout(fillPersonalData, 800);
+    setTimeout(fillPersonalData, 2000);
+  };
+  window.addEventListener('popstate', function() {
+    setTimeout(fillPersonalData, 800);
+    setTimeout(fillPersonalData, 2000);
+  });
+})();
+</script>
+
+
+
+</body>
 </html>
+
+
+
 </body>
 </html>
 <script>
 (function(){
-var FOOTER_HTML='<div class="flex items-center justify-between" data-content-footer="true" data-ultra-footer="true" style="position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;"><span class="text-[#95b5de] text-base">2019 © ООО Албикс. Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div></div>';
+var FOOTER_HTML='<div class="flex items-center justify-between" data-content-footer="true" data-ultra-footer="true" style="position: fixed !important; bottom: 20px !important; left: 89px !important; right: 15px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; background-color: transparent !important; pointer-events: auto !important;"><span class="text-[#95b5de] text-base">© 2026 ООО «Аш Два Элемент». Все права защищены.</span><div class="flex items-center gap-[8px]"><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_yt-D-OAslMW.png" alt="YouTube" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_vk-DVhhSvRr.png" alt="VK" class="w-[18px] h-[18px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_inst-Be0b4DfN.png" alt="Instagram" class="w-[20px] h-[20px] object-contain"></a><a href="#" class="w-[32px] h-[32px] rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"><img src="/assets/social_ok-1imOTysm.png" alt="OK" class="w-[20px] h-[20px] object-contain"></a></div></div>';
 function ULTRA_FOOTER(){
 var p=location.pathname;
 if(p.indexOf('/cabinet/cashback')===-1 && p.indexOf('/cabinet/photo')===-1 && p.indexOf('/cabinet/info')===-1 && p.indexOf('/cabinet/news')===-1)return;
@@ -1770,17 +1944,17 @@ for(var i=0;i<5000;i+=50)setTimeout(MOVE_WITHDRAW_BTN,i);
 (function(){
 
 /* ===== FINANCE PAGE ===== */
-var FINANCE_HTML='<div style="padding:20px 30px;width:100%;max-width:1100px;margin:0 auto;"><h1 style="color:white;font-size:28px;font-weight:600;text-align:center;margin-bottom:25px;font-family:Inter,sans-serif;">Мои финансы</h1><div style="display:flex;gap:20px;margin-bottom:20px;"><div style="flex:1;display:flex;flex-direction:column;gap:15px;"><div style="display:flex;gap:15px;"><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">За личные продажи</div><div data-field="personal_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Лидерский бонус</div><div data-field="leader_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Бонус за статус</div><div data-field="status_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div></div><div data-orders-table style="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;overflow:hidden;display:none;"><div style="background:#1e5885;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;"><span style="color:#a8d4e5;font-size:14px;">История заказов</span><button data-close-orders style="background:#2a6a9a;border:none;width:24px;height:24px;border-radius:4px;color:#a8d4e5;cursor:pointer;font-size:14px;">✕</button></div><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#1e5885;"><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">№</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Дата</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Статус заказа</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Трек номер СДЭК</th></tr></thead><tbody><tr><td style="color:#c8dce8;font-size:13px;padding:10px 12px;border-bottom:1px solid #2a6a9a;">234</td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;border-bottom:1px solid #2a6a9a;">08.09.2025</td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;border-bottom:1px solid #2a6a9a;">Отправлено</td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;border-bottom:1px solid #2a6a9a;">10064302888</td></tr><tr><td style="color:#c8dce8;font-size:13px;padding:10px 12px;">234</td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;">08.09.2025</td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;">В обработке<br><span style="font-size:11px;color:#8ab4c8;">(ждем ответа от производителя)</span></td><td style="color:#c8dce8;font-size:13px;padding:10px 12px;">10064302888</td></tr></tbody></table></div></div><div style="width:320px;display:flex;flex-direction:column;gap:15px;"><div style="background:linear-gradient(135deg,#1a4a6e 0%,#2a6a9a 100%);border-radius:6px;overflow:hidden;position:relative;height:100px;"><img src="https://images.unsplash.com/photo-1561414927-6d86591d0c4f?w=400&h=150&fit=crop" style="position:absolute;right:0;top:0;height:100%;width:60%;object-fit:cover;opacity:0.7;"><div style="position:relative;z-index:1;padding:15px 20px;height:100%;display:flex;flex-direction:column;justify-content:center;"><div style="color:#a8d4e5;font-size:13px;margin-bottom:5px;">Текущий<br>баланс</div><div data-field="current_balance" style="color:white;font-size:32px;font-weight:700;">124 457 <span style="font-size:16px;font-weight:400;">РУБ.</span></div></div></div><div style="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:15px;"><div style="color:#a8d4e5;font-size:13px;margin-bottom:15px;">Общая сумма бонусов по годам, руб</div><div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2019</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">1 000 000</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2019</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">544 000</span></div><div style="display:flex;align-items:center;gap:10px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2017</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:25%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">244 450</span></div></div></div><div style="display:flex;flex-direction:column;gap:10px;"><button data-open-orders style="background:#1a4a6e;color:#a8d4e5;font-size:13px;font-weight:500;padding:12px 20px;border:1px solid #2a6a9a;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">История заказов</button><button data-action="withdrawals_history" style="background:#1a4a6e;color:#a8d4e5;font-size:13px;font-weight:500;padding:12px 20px;border:1px solid #2a6a9a;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">История выводов</button><button data-action="withdraw" style="background:#3bb4c1;color:white;font-size:13px;font-weight:500;padding:12px 20px;border:none;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">Вывод средств</button></div></div></div></div>';
+var FINANCE_HTML='<div style="padding:20px 30px;width:100%;max-width:1100px;margin:0 auto;"><h1 style="color:white;font-size:28px;font-weight:600;text-align:center;margin-bottom:25px;font-family:Inter,sans-serif;">Мои финансы</h1><div style="display:flex;gap:20px;margin-bottom:20px;"><div style="flex:1;display:flex;flex-direction:column;gap:15px;"><div style="display:flex;gap:15px;"><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">За личные продажи</div><div data-field="personal_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Лидерский бонус</div><div data-field="leader_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div><div style="flex:1;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:12px 15px;text-align:center;"><div style="color:#7db4d4;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Бонус за статус</div><div data-field="status_bonus" style="color:white;font-size:22px;font-weight:600;">10 758 <span style="font-size:14px;font-weight:400;">РУБ.</span></div></div></div><div data-orders-table style="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;overflow:hidden;display:none;"><div style="background:#1e5885;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;"><span style="color:#a8d4e5;font-size:14px;">История заказов</span><button data-close-orders style="background:#2a6a9a;border:none;width:24px;height:24px;border-radius:4px;color:#a8d4e5;cursor:pointer;font-size:14px;">✕</button></div><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#1e5885;"><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">№</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Дата</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Статус заказа</th><th style="color:#a8d4e5;font-size:12px;font-weight:500;padding:10px 12px;text-align:left;border-bottom:1px solid #2a6a9a;">Трек номер СДЭК</th></tr></thead><tbody data-orders-tbody></tbody></table></div></div><div style="width:320px;display:flex;flex-direction:column;gap:15px;"><div style="background:linear-gradient(135deg,#1a4a6e 0%,#2a6a9a 100%);border-radius:6px;overflow:hidden;position:relative;height:100px;"><img src="https://images.unsplash.com/photo-1561414927-6d86591d0c4f?w=400&h=150&fit=crop" style="position:absolute;right:0;top:0;height:100%;width:60%;object-fit:cover;opacity:0.7;"><div style="position:relative;z-index:1;padding:15px 20px;height:100%;display:flex;flex-direction:column;justify-content:center;"><div style="color:#a8d4e5;font-size:13px;margin-bottom:5px;">Текущий<br>баланс</div><div data-field="current_balance" style="color:white;font-size:32px;font-weight:700;white-space:nowrap;">124 457 <span style="font-size:16px;font-weight:400;">РУБ.</span></div></div></div><div style="background:#1a4a6e;border:1px solid #2a6a9a;border-radius:6px;padding:15px;"><div style="color:#a8d4e5;font-size:13px;margin-bottom:15px;">Общая сумма бонусов по годам, руб</div><div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2019</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">1 000 000</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2019</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">544 000</span></div><div style="display:flex;align-items:center;gap:10px;"><span style="color:#8ab4c8;font-size:12px;width:35px;">2017</span><div style="flex:1;height:8px;background:#0d3a5c;border-radius:4px;overflow:hidden;"><div style="width:25%;height:100%;background:linear-gradient(90deg,#3b82a0,#5ba3c0);border-radius:4px;"></div></div><span style="color:#c8dce8;font-size:12px;width:70px;text-align:right;">244 450</span></div></div></div><div style="display:flex;flex-direction:column;gap:10px;"><button data-open-orders style="background:#1a4a6e;color:#a8d4e5;font-size:13px;font-weight:500;padding:12px 20px;border:1px solid #2a6a9a;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">История заказов</button><button data-action="withdrawals_history" style="background:#1a4a6e;color:#a8d4e5;font-size:13px;font-weight:500;padding:12px 20px;border:1px solid #2a6a9a;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">История выводов</button><button data-action="withdraw" style="background:#3bb4c1;color:white;font-size:13px;font-weight:500;padding:12px 20px;border:none;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">Вывод средств</button></div></div></div></div>';
 
 function FINANCE_PAGE(){
 var p=location.pathname;
 if(p!=='/cabinet/finance'&&p!=='/cabinet/finance/')return;
-if(document.querySelector('[data-finance-page-ok]'))return;
+if(document.querySelector('[data-finance-page-ok]')){var m=document.querySelector('main');if(m&&m.style.display!=='none')m.style.display='none';return;}
 var root=document.getElementById('root');
 if(!root)return;
 var container=document.createElement('div');
 container.setAttribute('data-finance-page-ok','1');
-container.style.cssText='position:absolute;top:60px;left:69px;right:205px;bottom:60px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;';
+container.style.cssText='position:absolute;top:60px;left:69px;right:205px;bottom:60px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;z-index:100;';
 container.innerHTML=FINANCE_HTML;
 root.appendChild(container);
 var oldMain=document.querySelector('main');
@@ -1809,10 +1983,34 @@ var qtyValue=1;
 document.addEventListener('click',function(e){
 var t=e.target;
 
+// ORDER HISTORY LOADER
+function loadOrderHistory(){
+var tb=document.querySelector('[data-orders-tbody]');
+if(!tb)return;
+tb.innerHTML='<tr><td colspan="4" style="color:#a8d4e5;padding:15px;text-align:center;">\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...</td></tr>';
+fetch('/api/cabinet/order-history',{credentials:'include'}).then(function(r){return r.json();}).then(function(d){
+if(!d.success||!d.orders||!d.orders.length){
+tb.innerHTML='<tr><td colspan="4" style="color:#a8d4e5;padding:15px;text-align:center;">\u041d\u0435\u0442 \u0437\u0430\u043a\u0430\u0437\u043e\u0432</td></tr>';
+return;
+}
+var sm={0:'\u041d\u043e\u0432\u0430\u044f',1:'\u0412 \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0435',2:'\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e'};
+var h='';
+d.orders.forEach(function(o){
+var st=sm[o.status]||'\u041d\u043e\u0432\u0430\u044f';
+var reason=o.status_reason?'<br><span style="font-size:11px;color:#8ab4c8;">('+o.status_reason+')</span>':'';
+var track=o.track_number||'-';
+var dt=o.date?o.date.substring(0,10).split('-').reverse().join('.'):'';
+var cs='color:#c8dce8;font-size:13px;padding:10px 12px;border-bottom:1px solid #2a6a9a;';
+h+='<tr><td style="'+cs+'">'+o.id+'</td><td style="'+cs+'">'+dt+'</td><td style="'+cs+'">'+st+reason+'</td><td style="'+cs+'">'+track+'</td></tr>';
+});
+tb.innerHTML=h;
+}).catch(function(){tb.innerHTML='<tr><td colspan="4" style="color:#a8d4e5;padding:15px;text-align:center;">\u041e\u0448\u0438\u0431\u043a\u0430</td></tr>';});
+}
+
 // FINANCE PAGE BUTTONS
 if(t.matches('[data-open-orders]')||t.closest('[data-open-orders]')){
 var orders=document.querySelector('[data-orders-table]');
-if(orders)orders.style.display='block';
+if(orders){orders.style.display='block';loadOrderHistory();}
 return;
 }
 if(t.matches('[data-close-orders]')||t.closest('[data-close-orders]')){
@@ -1866,6 +2064,36 @@ if(t.matches('[data-qty-plus]')||t.closest('[data-qty-plus]')){
 qtyValue++;
 var span=document.querySelector('[data-modal-wholesale] [data-field="quantity"]');
 if(span)span.textContent=qtyValue;
+return;
+}
+
+// SUBMIT WHOLESALE ORDER
+if(t.matches('[data-action="submit_wholesale"]')||t.closest('[data-action="submit_wholesale"]')){
+e.preventDefault();
+var modal=document.querySelector('[data-modal-wholesale]');
+if(!modal)return;
+var data={
+order_type:'wholesale',
+product:modal.querySelector('[data-field="product"]').value,
+quantity:qtyValue,
+org_name:modal.querySelector('[data-field="organization_name"]').value,
+full_name:modal.querySelector('[data-field="full_name"]').value,
+address:modal.querySelector('[data-field="address"]').value,
+phone:modal.querySelector('[data-field="phone"]').value,
+email:modal.querySelector('[data-field="email"]').value,
+comments:modal.querySelector('[data-field="comments"]').value
+};
+var token=localStorage.getItem('auth_token')||'';
+var btn=t.closest('[data-action="submit_wholesale"]')||t;
+btn.disabled=true;btn.textContent='Отправка...';
+fetch('/api/cabinet/orders',{method:'POST',headers:{'Content-Type':'application/json','Authorization':token?'Bearer '+token:''},credentials:'include',body:JSON.stringify(data)})
+.then(function(r){return r.json();})
+.then(function(res){
+btn.disabled=false;btn.textContent='ОТПРАВИТЬ';
+if(res.success){alert(res.message||'Заказ оформлен!');modal.style.display='none';location.reload();}
+else{alert(res.error||'Ошибка');}
+})
+.catch(function(){btn.disabled=false;btn.textContent='ОТПРАВИТЬ';alert('Ошибка сети');});
 return;
 }
 
@@ -1968,7 +2196,7 @@ container.style.cssText='position:absolute;top:60px;left:69px;right:225px;bottom
 container.innerHTML='<h1 style="text-align:center;font-weight:500;font-size:24px;color:#fff;margin:0 0 30px 0;">Мероприятия</h1><div id="events-grid" style="display:flex;flex-wrap:wrap;margin:0 -10px;"><div style="color:#a8d4e5;text-align:center;width:100%;padding:20px;">Загрузка...</div></div>';
 root.appendChild(container);
 
-fetch('/get_events.php')
+fetch('/api/cabinet/events')
 .then(function(r){return r.json();})
 .then(function(data){
   var grid=document.getElementById('events-grid');
@@ -2091,14 +2319,14 @@ container.style.cssText='position:absolute;top:60px;left:69px;right:225px;bottom
 container.className='hide-scrollbar';
 container.innerHTML='<h1 style="text-align:center;font-weight:500;font-size:24px;color:#fff;margin:0 0 30px 0;">Магазин</h1><div id="shop-grid" style="display:flex;flex-wrap:wrap;gap:25px;justify-content:center;"><div style="color:#a8d4e5;text-align:center;width:100%;padding:20px;">Загрузка...</div></div>';
 root.appendChild(container);
-fetch('/get_shop.php')
+fetch('/api/cabinet/shop')
 .then(function(r){return r.json();})
 .then(function(data){
 var grid=document.getElementById('shop-grid');
 if(!grid)return;
-if(data.success&&data.items&&data.items.length>0){
+if(data.success&&data.shop&&data.shop.length>0){
 grid.innerHTML='';
-data.items.forEach(function(item){
+data.shop.forEach(function(item){
 var card=document.createElement('div');
 card.style.cssText='width:400px;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:8px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.3);cursor:pointer;transition:transform 0.2s;';
 card.onmouseenter=function(){this.style.transform='translateY(-5px)';};
@@ -2288,14 +2516,14 @@ container.style.cssText='position:absolute;top:60px;left:69px;right:225px;bottom
 container.className='hide-scrollbar';
 container.innerHTML='<h1 style="text-align:center;font-weight:500;font-size:24px;color:#fff;margin:0 0 30px 0;">Магазин</h1><div id="shop-grid" style="display:flex;flex-wrap:wrap;gap:25px;justify-content:center;"><div style="color:#a8d4e5;text-align:center;width:100%;padding:20px;">Загрузка...</div></div>';
 root.appendChild(container);
-fetch('/get_shop.php')
+fetch('/api/cabinet/shop')
 .then(function(r){return r.json();})
 .then(function(data){
 var grid=document.getElementById('shop-grid');
 if(!grid)return;
-if(data.success&&data.items&&data.items.length>0){
+if(data.success&&data.shop&&data.shop.length>0){
 grid.innerHTML='';
-data.items.forEach(function(item){
+data.shop.forEach(function(item){
 var card=document.createElement('div');
 card.style.cssText='width:400px;background:#1a4a6e;border:1px solid #2a6a9a;border-radius:8px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.3);cursor:pointer;transition:transform 0.2s;';
 card.onmouseenter=function(){this.style.transform='translateY(-5px)';};
@@ -2448,9 +2676,17 @@ bank_bik:step2.querySelector('[data-field="bank_bik"]').value,
 bank_corr_account:step2.querySelector('[data-field="bank_corr_account"]').value,
 bank_address:step2.querySelector('[data-field="bank_address"]').value
 };
-console.log('Legal order:',data);
-alert('Заявка как юр лицо отправлена!');
-step2.style.display='none';
+var token=localStorage.getItem('auth_token')||'';
+var btn=t.closest('[data-action="legal-submit"]')||t;
+btn.disabled=true;btn.textContent='Отправка...';
+fetch('/api/cabinet/orders',{method:'POST',headers:{'Content-Type':'application/json','Authorization':token?'Bearer '+token:''},credentials:'include',body:JSON.stringify(Object.assign(data,{order_type:'legal'}))})
+.then(function(r){return r.json();})
+.then(function(res){
+btn.disabled=false;btn.textContent='ОТПРАВИТЬ';
+if(res.success){alert(res.message||'Заявка отправлена!');step2.style.display='none';step1.style.display='none';location.reload();}
+else{alert(res.error||'Ошибка');}
+})
+.catch(function(){btn.disabled=false;btn.textContent='ОТПРАВИТЬ';alert('Ошибка сети');});
 return;
 }
 });
@@ -2578,9 +2814,17 @@ house:step2.querySelector('[data-field="house"]').value,
 agree_privacy:step2.querySelector('[data-field="agree_privacy"]').checked,
 agree_terms:step2.querySelector('[data-field="agree_terms"]').checked
 };
-console.log('Individual order:',data);
-alert('Заказ как физ лицо оформлен!');
-step2.style.display='none';
+var token=localStorage.getItem('auth_token')||'';
+var btn=t.closest('[data-action="ind-submit"]')||t;
+btn.disabled=true;btn.textContent='Отправка...';
+fetch('/api/cabinet/orders',{method:'POST',headers:{'Content-Type':'application/json','Authorization':token?'Bearer '+token:''},credentials:'include',body:JSON.stringify(Object.assign(data,{order_type:'individual'}))})
+.then(function(r){return r.json();})
+.then(function(res){
+btn.disabled=false;btn.textContent='ОФОРМИТЬ ЗАКАЗ';
+if(res.success){alert(res.message||'Заказ оформлен!');step2.style.display='none';step1.style.display='none';location.reload();}
+else{alert(res.error||'Ошибка');}
+})
+.catch(function(){btn.disabled=false;btn.textContent='ОФОРМИТЬ ЗАКАЗ';alert('Ошибка сети');});
 return;
 }
 });
@@ -2695,5 +2939,526 @@ forgotCenterDone=true;
 
 setInterval(REGISTER_PAGE_FIXES,100);
 new MutationObserver(REGISTER_PAGE_FIXES).observe(document,{childList:true,subtree:true});
+})();
+</script>
+
+<script>
+(function(){
+  fetch('/api/cabinet/copyright')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if(!d.success||!d.copyright)return;
+      window.__copyright_text=d.copyright;
+      updateAllCopyrights();
+    }).catch(function(){});
+  function updateAllCopyrights(){
+    var t=window.__copyright_text;
+    if(!t)return;
+    document.querySelectorAll('span,p,div').forEach(function(el){
+      var txt=el.textContent||'';
+      if(txt.indexOf('права защищены')!==-1 && el.children.length===0){
+        if(el.textContent!==t) el.textContent=t;
+      }
+    });
+  }
+  setInterval(updateAllCopyrights,1500);
+})();
+</script>
+
+<script>
+(function(){
+  if(location.pathname.indexOf('/cabinet/profile')===-1) return;
+
+  var token = localStorage.getItem('token') || '';
+  var selectedType = null; // Currently selected profile type
+
+  // === HEADER CIRCLES: determine type from header text ===
+  function getTypeFromHeader(span) {
+    var t = (span.textContent || '').toLowerCase();
+    if (t.indexOf('самозанятый') !== -1) return 'selfemployed';
+    if (t.indexOf('индивидуальный') !== -1) return 'ip';
+    if (t.indexOf('ооо') !== -1) return 'ooo';
+    return null;
+  }
+
+  // Find all 3 header bars (Самозанятый, ИП, ООО)
+  function getHeaderBars() {
+    var bars = [];
+    var allHeaders = document.querySelectorAll('.bg-\\[\\#1e5885\\].h-\\[39px\\]');
+    if (allHeaders.length === 0) {
+      // Fallback: find by span text
+      var spans = document.querySelectorAll('span');
+      for (var i = 0; i < spans.length; i++) {
+        var type = getTypeFromHeader(spans[i]);
+        if (type) {
+          var bar = spans[i].closest('.flex.items-center');
+          if (bar) {
+            var circle = bar.querySelector('.rounded-full');
+            if (circle && circle.classList.contains('w-5')) {
+              bars.push({el: bar, circle: circle, type: type, span: spans[i]});
+            }
+          }
+        }
+      }
+    } else {
+      for (var j = 0; j < allHeaders.length; j++) {
+        var span = allHeaders[j].querySelector('span');
+        if (!span) continue;
+        var type2 = getTypeFromHeader(span);
+        if (!type2) continue;
+        var circle2 = allHeaders[j].querySelector('.rounded-full');
+        if (circle2) {
+          bars.push({el: allHeaders[j], circle: circle2, type: type2, span: span});
+        }
+      }
+    }
+    return bars;
+  }
+
+  // Set active circle (green) and others gray
+  function setActiveType(type) {
+    selectedType = type;
+    var bars = getHeaderBars();
+    for (var i = 0; i < bars.length; i++) {
+      if (bars[i].type === type) {
+        bars[i].circle.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:#4ebfb5;cursor:pointer;transition:background 0.2s;';
+        bars[i].circle.className = 'w-5 h-5 rounded-full';
+      } else {
+        bars[i].circle.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:transparent;border:2px solid #4a7a9b;cursor:pointer;transition:background 0.2s;';
+        bars[i].circle.className = 'w-5 h-5 rounded-full';
+      }
+    }
+  }
+
+  // Make circles clickable
+  function hookCircles() {
+    var bars = getHeaderBars();
+    for (var i = 0; i < bars.length; i++) {
+      (function(bar) {
+        if (bar.circle.hasAttribute('data-circle-hooked')) return;
+        bar.circle.setAttribute('data-circle-hooked', '1');
+        bar.circle.style.cursor = 'pointer';
+        bar.circle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          setActiveType(bar.type);
+        });
+        // Also allow clicking the whole header bar
+        bar.el.style.cursor = 'pointer';
+        bar.el.addEventListener('click', function() {
+          setActiveType(bar.type);
+        });
+      })(bars[i]);
+    }
+    // Initially deactivate all (gray) if no type selected
+    if (!selectedType) {
+      for (var j = 0; j < bars.length; j++) {
+        bars[j].circle.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:transparent;border:2px solid #4a7a9b;cursor:pointer;transition:background 0.2s;';
+      }
+    }
+  }
+
+  // === GET ACTIVE BLOCK by selectedType ===
+  function getActiveBlock() {
+    if (!selectedType) return null;
+    var bars = getHeaderBars();
+    for (var i = 0; i < bars.length; i++) {
+      if (bars[i].type === selectedType) {
+        // The block with inputs is the parent container of this header
+        var block = bars[i].el.parentElement;
+        if (block) return {el: block, type: selectedType};
+      }
+    }
+    return null;
+  }
+
+  function collectData(block) {
+    var data = {};
+    var inputs = block.querySelectorAll('input, select');
+    for (var i = 0; i < inputs.length; i++) {
+      var inp = inputs[i];
+      var label = inp.parentElement ? inp.parentElement.querySelector('label') : null;
+      var key = label ? label.textContent.trim() : ('field_' + i);
+      data[key] = inp.value;
+    }
+    return data;
+  }
+
+  function showStatus(req) {
+    var blocks = document.querySelectorAll('.flex.items-center.gap-2');
+    var lampBlock = null;
+    blocks.forEach(function(b) {
+      var span = b.querySelector('span');
+      if (span && (span.textContent.indexOf('одобрено') !== -1 || span.textContent.indexOf('модерации') !== -1 || span.textContent.indexOf('тклонено') !== -1)) {
+        lampBlock = b;
+      }
+    });
+    if (!lampBlock) return;
+
+    var lamp = lampBlock.querySelector('.rounded-full');
+    var label = lampBlock.querySelector('span');
+    if (!lamp || !label) return;
+    if (!req) return;
+
+    if (req.status === 0) {
+      lamp.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:#f0ad4e;';
+      label.textContent = 'на модерации';
+    } else if (req.status === 1) {
+      lamp.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:#4ebfb5;';
+      label.textContent = 'одобрено';
+    } else if (req.status === 2) {
+      lamp.style.cssText = 'width:20px;height:20px;border-radius:9999px;background:#d9534f;';
+      var reason = req.reject_reason ? ': ' + req.reject_reason : '';
+      label.textContent = 'отклонено' + reason;
+    }
+  }
+
+  function hookSubmitButton() {
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      var btn = btns[i];
+      if (btn.textContent.trim() === 'ОТПРАВИТЬ' && btn.className.indexOf('w-[192px]') !== -1 && !btn.hasAttribute('data-profile-hooked')) {
+        btn.setAttribute('data-profile-hooked', 'true');
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (!selectedType) {
+            alert('Выберите тип профиля (Самозанятый, ИП или ООО)');
+            return;
+          }
+          var active = getActiveBlock();
+          if (!active) {
+            alert('Блок не найден');
+            return;
+          }
+          var data = collectData(active.el);
+          this.disabled = true;
+          this.textContent = 'ОТПРАВКА...';
+          var self = this;
+          fetch('/api/cabinet/profile-request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token ? 'Bearer ' + token : ''
+            },
+            credentials: 'include',
+            body: JSON.stringify({profile_type: selectedType, data: data})
+          })
+          .then(function(r){ return r.json(); })
+          .then(function(d){
+            if (d.success) {
+              self.textContent = 'ОТПРАВЛЕНО';
+              showStatus({status: 0, status_text: 'На модерации'});
+            } else {
+              alert(d.error || 'Ошибка');
+              self.disabled = false;
+              self.textContent = 'ОТПРАВИТЬ';
+            }
+          })
+          .catch(function(){
+            alert('Ошибка сети');
+            self.disabled = false;
+            self.textContent = 'ОТПРАВИТЬ';
+          });
+        });
+      }
+    }
+  }
+
+  function fillApprovedData(req) {
+    if (req.status !== 1 || !req.data) return;
+    var data = req.data;
+    if (typeof data === 'string') {
+      try { data = JSON.parse(data); } catch(e) { return; }
+    }
+    var allInputs = document.querySelectorAll('input, select');
+    for (var i = 0; i < allInputs.length; i++) {
+      var inp = allInputs[i];
+      var label = inp.parentElement ? inp.parentElement.querySelector('label') : null;
+      if (!label) continue;
+      var labelText = label.textContent.trim();
+      for (var key in data) {
+        if (key === labelText && data[key]) {
+          var setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+          if (setter && setter.set) {
+            setter.set.call(inp, data[key]);
+          } else {
+            inp.value = data[key];
+          }
+          inp.dispatchEvent(new Event('input', {bubbles: true}));
+          inp.dispatchEvent(new Event('change', {bubbles: true}));
+          break;
+        }
+      }
+    }
+  }
+
+  function loadStatus() {
+    fetch('/api/cabinet/profile-request', {
+      method: 'GET',
+      headers: {'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.success && d.request) {
+        showStatus(d.request);
+        // Highlight the circle for this profile type
+        if (d.request.profile_type) {
+          setActiveType(d.request.profile_type);
+        }
+        // Fill fields with approved data
+        if (d.request.status === 1) {
+          setTimeout(function(){ fillApprovedData(d.request); }, 500);
+          setTimeout(function(){ fillApprovedData(d.request); }, 1500);
+        }
+      }
+    })
+    .catch(function(){});
+  }
+
+  function init() {
+    if (location.pathname.indexOf('/cabinet/profile') === -1) return;
+    hookCircles();
+    hookSubmitButton();
+    loadStatus();
+  }
+
+  setTimeout(init, 500);
+  setTimeout(init, 1500);
+  setTimeout(init, 3000);
+})();
+</script>
+
+<script>
+(function(){
+  if(location.pathname.indexOf('/cabinet/finance')===-1) return;
+
+  var token = localStorage.getItem('auth_token') || '';
+  var profileApproved = null;
+
+  function checkProfile(cb) {
+    if (profileApproved !== null) { cb(profileApproved); return; }
+    fetch('/api/cabinet/profile-request', {
+      method: 'GET',
+      headers: {'Authorization': token ? 'Bearer ' + token : ''},
+      credentials: 'include'
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      profileApproved = (d.success && d.request && d.request.status === 1);
+      cb(profileApproved);
+    })
+    .catch(function(){ profileApproved = false; cb(false); });
+  }
+
+  function showProfileModal() {
+    if (document.getElementById('profile-required-modal')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'profile-required-modal';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#1a3a5c;border-radius:12px;padding:0;min-width:340px;max-width:400px;color:white;box-shadow:0 8px 32px rgba(0,0,0,0.4);overflow:hidden;';
+    var header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1);';
+    var title = document.createElement('span');
+    title.textContent = 'Профиль';
+    title.style.cssText = 'font-size:16px;font-weight:600;';
+    var closeBtn = document.createElement('span');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.style.cssText = 'font-size:24px;cursor:pointer;opacity:0.7;line-height:1;';
+    closeBtn.onclick = function(){ overlay.remove(); };
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+    var body = document.createElement('div');
+    body.style.cssText = 'padding:32px 20px;text-align:center;';
+    var msg = document.createElement('p');
+    msg.textContent = 'Заполните профиль';
+    msg.style.cssText = 'font-size:15px;margin:0;color:rgba(255,255,255,0.85);';
+    body.appendChild(msg);
+    box.appendChild(header);
+    box.appendChild(body);
+    overlay.appendChild(box);
+    overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+  }
+
+  // Intercept withdraw button - capture phase, runs before React/other handlers
+  var letting_through = false;
+  document.addEventListener('click', function(e) {
+    if (letting_through) return; // allow re-triggered click
+    var t = e.target;
+    var btn = t.matches && t.matches('[data-action="withdraw"]') ? t : (t.closest && t.closest('[data-action="withdraw"]'));
+    if (!btn) return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    checkProfile(function(approved) {
+      if (approved) {
+        letting_through = true;
+        btn.click();
+        letting_through = false;
+      } else {
+        showProfileModal();
+      }
+    });
+  }, true);
+
+})();
+</script>
+
+<script>
+(function(){
+  if(location.pathname.indexOf('/cabinet/profile')===-1) return;
+
+  function disableFields() {
+    var blocks = document.querySelectorAll('.flex.gap-4.mt-4 .rounded');
+    blocks.forEach(function(block) {
+      var inputs = block.querySelectorAll('input, select');
+      inputs.forEach(function(inp) {
+        if (!inp.hasAttribute('data-profile-disabled-init')) {
+          inp.setAttribute('data-profile-disabled-init', 'true');
+          inp.disabled = true;
+          inp.style.opacity = '0.6';
+          inp.style.cursor = 'not-allowed';
+        }
+      });
+    });
+  }
+
+  function hookEditButton() {
+    var btns = document.querySelectorAll('button');
+    btns.forEach(function(btn) {
+      if (btn.textContent.trim().toLowerCase() === 'редактировать' && !btn.hasAttribute('data-edit-hooked')) {
+        btn.setAttribute('data-edit-hooked', 'true');
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var blocks = document.querySelectorAll('.flex.gap-4.mt-4 .rounded');
+          blocks.forEach(function(block) {
+            var inputs = block.querySelectorAll('input, select');
+            inputs.forEach(function(inp) {
+              inp.disabled = false;
+              inp.style.opacity = '1';
+              inp.style.cursor = '';
+            });
+          });
+          btn.textContent = 'редактируется...';
+          btn.style.opacity = '0.6';
+          btn.disabled = true;
+        });
+      }
+    });
+  }
+
+  function init() {
+    disableFields();
+    hookEditButton();
+  }
+
+  setTimeout(init, 500);
+  setTimeout(init, 1500);
+  setTimeout(init, 3000);
+})();
+</script>
+
+<script>
+(function(){
+  if(location.pathname.indexOf('/cabinet')===-1) return;
+
+  var token = localStorage.getItem('auth_token') || '';
+
+  function findCameraBox() {
+    // Find by the camera image alt text
+    var camImg = document.querySelector('img[alt="Загрузить фото"]');
+    if (camImg) return camImg.parentElement;
+    // Fallback: find by data-photo-init
+    var el = document.querySelector('[data-photo-init]');
+    if (el) return el;
+    return null;
+  }
+
+  function initPhoto() {
+    var box = findCameraBox();
+    if (!box || box.hasAttribute('data-photo-ready')) return;
+    box.setAttribute('data-photo-ready', 'true');
+
+    // Ensure file input exists
+    var fileInput = box.querySelector('input[type="file"]');
+    if (!fileInput) {
+      fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.style.display = 'none';
+      box.appendChild(fileInput);
+    }
+
+    // Click handler
+    box.addEventListener('click', function(e) {
+      if (e.target === fileInput) return;
+      e.preventDefault();
+      e.stopPropagation();
+      fileInput.click();
+    });
+
+    // Upload handler
+    fileInput.addEventListener('change', function() {
+      if (!fileInput.files || !fileInput.files[0]) return;
+      var fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      box.style.opacity = '0.5';
+      var tk = localStorage.getItem('auth_token') || '';
+      fetch('/api/cabinet/upload-photo', {
+        method: 'POST',
+        headers: { 'Authorization': tk ? 'Bearer ' + tk : '' },
+        credentials: 'include',
+        body: fd
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        box.style.opacity = '1';
+        if (res.success && res.image) {
+          setPhoto(box, res.image);
+        } else {
+          alert(res.error || 'Ошибка загрузки');
+        }
+        fileInput.value = '';
+      })
+      .catch(function(){ box.style.opacity = '1'; alert('Ошибка загрузки'); });
+    });
+
+    // Load existing photo
+    fetch('/api/auth/check', {
+      method: 'GET',
+      headers: { 'Authorization': token ? 'Bearer ' + token : '' },
+      credentials: 'include'
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.success && d.user && d.user.image) {
+        setPhoto(box, d.user.image);
+      }
+    })
+    .catch(function(){});
+  }
+
+  function setPhoto(box, src) {
+    // Keep file input
+    var fi = box.querySelector('input[type="file"]');
+    box.innerHTML = '';
+    box.style.padding = '0';
+    box.style.overflow = 'hidden';
+    var img = document.createElement('img');
+    img.src = src + '?t=' + Date.now();
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;cursor:pointer;';
+    box.appendChild(img);
+    if (fi) box.appendChild(fi);
+    else {
+      var nfi = document.createElement('input');
+      nfi.type = 'file'; nfi.accept = 'image/*'; nfi.style.display = 'none';
+      box.appendChild(nfi);
+    }
+  }
+
+  setTimeout(initPhoto, 800);
+  setTimeout(initPhoto, 2000);
+  setTimeout(initPhoto, 4000);
 })();
 </script>
