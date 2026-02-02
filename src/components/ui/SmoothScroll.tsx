@@ -11,6 +11,9 @@ export default function SmoothScroll() {
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
+      prevent: (node) => {
+        return node.closest('.offer-scroll, .offer-scroll-orange') !== null;
+      },
     });
 
     function raf(time: number) {
@@ -27,4 +30,3 @@ export default function SmoothScroll() {
 
   return null;
 }
-
