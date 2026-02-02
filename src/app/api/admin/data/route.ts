@@ -15,7 +15,7 @@ function triggerRebuild() {
   } catch {}
 
   console.log('[rebuild] Starting background rebuild...');
-  exec('bash deploy.sh', { cwd: process.cwd() }, (error, stdout, stderr) => {
+  exec('bash deploy.sh --no-pull', { cwd: process.cwd() }, (error, stdout, stderr) => {
     if (error) {
       console.error('[rebuild] Build failed:', error.message);
       return;
