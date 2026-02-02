@@ -1,6 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile, writeFile } from 'fs/promises';
+import { exec } from 'child_process';
 import path from 'path';
+
+// Запуск пересборки в фоне после изменения данных
+function triggerRebuild() {
+  const lockFile = path.join(process.cwd(), '.deploy.lock');
+  // Проверяем lock — если сборка уже идёт, пропускаем
+  try {
+    if (require('fs').existsSync(lockFile)) {
+      console.log('[rebuild] Build already in progress, skipping');
+      return;
+    }
+  } catch {}
+
+  console.log('[rebuild] Starting background rebuild...');
+  exec('bash deploy.sh', { cwd: process.cwd() }, (error, stdout, stderr) => {
+    if (error) {
+      console.error('[rebuild] Build failed:', error.message);
+      return;
+    }
+    console.log('[rebuild] Build complete:', stdout);
+  });
+}
 
 // Проверка авторизации
 function checkAuth(request: NextRequest): boolean {
@@ -90,6 +112,9 @@ export async function POST(request: NextRequest) {
 
     // Сохраняем новые данные
     await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+
+    // Запускаем пересборку в фоне (не блокируем ответ)
+    triggerRebuild();
 
     return NextResponse.json({ success: true, message: 'Данные сохранены' });
   } catch (error) {
