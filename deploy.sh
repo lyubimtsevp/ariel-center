@@ -4,7 +4,7 @@
 
 APP_DIR="/var/www/u3358714/data/www/ariel-app"
 LOCK_FILE="/var/www/u3358714/data/www/ariel-app/.deploy.lock"
-PM2_PATH="pm2"
+PM2_PATH="/var/www/u3358714/data/.nvm/versions/node/v20.19.6/bin/pm2"
 NO_PULL=false
 
 if [ "$1" = "--no-pull" ]; then
