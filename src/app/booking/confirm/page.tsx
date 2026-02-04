@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Mail, AlertCircle, CheckCircle, Upload, Camera, ArrowLeft } from "lucide-react";
+import { Mail, AlertCircle, CheckCircle, Camera, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function BookingConfirmPage() {
@@ -18,10 +18,6 @@ export default function BookingConfirmPage() {
     housing: "no"
   });
 
-  const [paymentFile, setPaymentFile] = useState<File | null>(null);
-  const [paymentUrl, setPaymentUrl] = useState<string>('');
-  const [uploadingPayment, setUploadingPayment] = useState(false);
-
   const [childPhoto, setChildPhoto] = useState<File | null>(null);
   const [childPhotoUrl, setChildPhotoUrl] = useState<string>('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -29,31 +25,6 @@ export default function BookingConfirmPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-
-  const handlePaymentChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPaymentFile(file);
-      setUploadingPayment(true);
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('type', 'payment');
-        const res = await fetch('/api/upload-booking', { method: 'POST', body: formData });
-        const data = await res.json();
-        if (data.success) {
-          setPaymentUrl(data.url);
-        } else {
-          alert('Ошибка загрузки: ' + data.error);
-          setPaymentFile(null);
-        }
-      } catch (err) {
-        alert('Ошибка загрузки файла');
-        setPaymentFile(null);
-      }
-      setUploadingPayment(false);
-    }
-  };
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -83,11 +54,6 @@ export default function BookingConfirmPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!paymentUrl) {
-      setError('Необходимо прикрепить чек об оплате');
-      return;
-    }
-
     if (!childPhotoUrl) {
       setError('Необходимо прикрепить фото ребёнка');
       return;
@@ -111,7 +77,6 @@ export default function BookingConfirmPage() {
             email: formData.email,
             needsHousing: formData.housing === 'yes'
           },
-          paymentUrl: paymentUrl,
           childPhotoUrl: childPhotoUrl
         })
       });
@@ -160,7 +125,7 @@ export default function BookingConfirmPage() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Подтверждение бронирования</h1>
             <p className="text-gray-600">
-              Заполните форму и прикрепите необходимые документы для подтверждения вашей брони.
+              Заполните форму и прикрепите фото ребёнка для подтверждения вашей брони.
             </p>
           </div>
 
@@ -263,42 +228,6 @@ export default function BookingConfirmPage() {
                    </div>
                 </div>
 
-                {/* Чек об оплате */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Upload className="w-4 h-4 inline mr-1" />
-                    Чек об оплате брони *
-                  </label>
-                  <div
-                    onClick={() => document.getElementById('payment-file-confirm')?.click()}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition select-none"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*,.pdf"
-                      onChange={handlePaymentChange}
-                      className="sr-only"
-                      id="payment-file-confirm"
-                    />
-                    {uploadingPayment ? (
-                      <span className="text-gray-500">Загрузка...</span>
-                    ) : (
-                      <>
-                        <Upload className="w-5 h-5 text-gray-400" />
-                        <span className="text-gray-600">
-                          {paymentFile ? paymentFile.name : 'Выберите файл (изображение или PDF)'}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  {paymentUrl && (
-                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
-                      <CheckCircle className="w-4 h-4" />
-                      Файл загружен
-                    </p>
-                  )}
-                </div>
-
                 {/* Фото ребёнка */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -346,7 +275,7 @@ export default function BookingConfirmPage() {
                 <Button
                   size="lg"
                   className="w-full h-12 text-lg"
-                  disabled={isSubmitting || uploadingPayment || uploadingPhoto}
+                  disabled={isSubmitting || uploadingPhoto}
                 >
                   {isSubmitting ? (
                     <>
