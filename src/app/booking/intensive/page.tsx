@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { CustomScrollbar } from '@/components/CustomScrollbar';
-import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall, CreditCard, Upload, MapPin } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Shield, Calendar, User, Phone, Mail, ArrowLeft, Send, PhoneCall, CreditCard, Upload, MapPin, Camera } from 'lucide-react';
 import offerData from '@/data/offer-intensive.json';
 
 const ADMIN_PHONE = '+7 (383) 255-12-55';
@@ -21,6 +21,7 @@ export default function BookingIntensivePage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
+  const [childPhoto, setChildPhoto] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
     childName: '',
@@ -46,6 +47,13 @@ export default function BookingIntensivePage() {
     }
   };
 
+  const handleChildPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setChildPhoto(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canProceed) return;
@@ -61,7 +69,8 @@ export default function BookingIntensivePage() {
         body: JSON.stringify({
           type: 'intensive',
           data: formData,
-          paymentFileName: paymentFile?.name
+          paymentFileName: paymentFile?.name,
+          childPhotoFileName: childPhoto?.name
         })
       });
 
@@ -587,6 +596,39 @@ export default function BookingIntensivePage() {
                       </div>
                     )}
                   </div>
+                </div>
+
+
+                {/* Фото ребёнка */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Camera className="w-4 h-4 inline mr-1" />
+                    Фотография ребёнка *
+                  </label>
+                  <div
+                    onClick={() => document.getElementById('child-photo')?.click()}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition select-none"
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleChildPhotoChange}
+                      className="sr-only"
+                      id="child-photo"
+                      required
+                    />
+                    <Camera className="w-5 h-5 text-gray-400" />
+                    <span className="text-gray-600">
+                      {childPhoto ? childPhoto.name : 'Выберите фото ребёнка (JPG, PNG)'}
+                    </span>
+                  </div>
+                  {childPhoto && (
+                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                      <CheckCircle className="w-4 h-4" />
+                      Фото выбрано: {childPhoto.name}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">Обычная фотография ребёнка для идентификации</p>
                 </div>
 
                 <div className="md:col-span-2">
