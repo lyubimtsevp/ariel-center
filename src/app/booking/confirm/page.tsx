@@ -4,7 +4,8 @@ import { useState } from "react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Mail, AlertCircle } from "lucide-react";
+import { Mail, AlertCircle, CheckCircle, Upload, Camera, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function BookingConfirmPage() {
   const [formData, setFormData] = useState({
@@ -17,28 +18,140 @@ export default function BookingConfirmPage() {
     housing: "no"
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const subject = `Подтверждение бронирования: ${formData.childName}`;
-    const body = `
-Здравствуйте!
+  const [paymentFile, setPaymentFile] = useState<File | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string>('');
+  const [uploadingPayment, setUploadingPayment] = useState(false);
 
-Направляю информацию для подтверждения бронирования.
+  const [childPhoto, setChildPhoto] = useState<File | null>(null);
+  const [childPhotoUrl, setChildPhotoUrl] = useState<string>('');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-Родитель: ${formData.parentName}
-Ребенок: ${formData.childName} (ДР: ${formData.childDob})
-Даты интенсива: ${formData.dates}
-Телефон: ${formData.phone}
-Email: ${formData.email}
-Нужно жилье: ${formData.housing === 'yes' ? 'Да' : 'Нет'}
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-Во вложении прикрепляю чек об оплате брони.
-    `;
-
-    const mailtoLink = `mailto:829892@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+  const handlePaymentChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPaymentFile(file);
+      setUploadingPayment(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'payment');
+        const res = await fetch('/api/upload-booking', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          setPaymentUrl(data.url);
+        } else {
+          alert('Ошибка загрузки: ' + data.error);
+          setPaymentFile(null);
+        }
+      } catch (err) {
+        alert('Ошибка загрузки файла');
+        setPaymentFile(null);
+      }
+      setUploadingPayment(false);
+    }
   };
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setChildPhoto(file);
+      setUploadingPhoto(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'photo');
+        const res = await fetch('/api/upload-booking', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          setChildPhotoUrl(data.url);
+        } else {
+          alert('Ошибка загрузки: ' + data.error);
+          setChildPhoto(null);
+        }
+      } catch (err) {
+        alert('Ошибка загрузки файла');
+        setChildPhoto(null);
+      }
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!paymentUrl) {
+      setError('Необходимо прикрепить чек об оплате');
+      return;
+    }
+
+    if (!childPhotoUrl) {
+      setError('Необходимо прикрепить фото ребёнка');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'intensive',
+          data: {
+            parentName: formData.parentName,
+            childName: formData.childName,
+            childBirthDate: formData.childDob,
+            agreedDates: formData.dates,
+            phone: formData.phone,
+            email: formData.email,
+            needsHousing: formData.housing === 'yes'
+          },
+          paymentUrl: paymentUrl,
+          childPhotoUrl: childPhotoUrl
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError('Ошибка отправки. Попробуйте позже или позвоните нам.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center p-4">
+        <FadeIn>
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">Заявка отправлена!</h1>
+            <p className="text-gray-600 mb-6">
+              Мы получили ваше подтверждение бронирования. Наш специалист свяжется с вами в ближайшее время.
+            </p>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#4A90A4] text-white rounded-lg hover:bg-[#3b7d8f] transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Вернуться на главную
+            </Link>
+          </div>
+        </FadeIn>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -47,8 +160,7 @@ Email: ${formData.email}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Подтверждение бронирования</h1>
             <p className="text-gray-600">
-              Заполните форму ниже, чтобы сформировать письмо с данными для подтверждения вашей брони.
-              Не забудьте прикрепить файл с чеком (платёжкой) к письму!
+              Заполните форму и прикрепите необходимые документы для подтверждения вашей брони.
             </p>
           </div>
 
@@ -65,7 +177,7 @@ Email: ${formData.email}
                     onChange={e => setFormData({...formData, parentName: e.target.value})}
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                    <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">ФИО Ребенка *</label>
@@ -124,14 +236,14 @@ Email: ${formData.email}
                       />
                    </div>
                 </div>
-                
+
                 <div>
                    <label className="block text-sm font-medium text-gray-700 mb-2">Нуждаетесь ли вы в жилье? *</label>
                    <div className="flex gap-4">
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <input 
-                          type="radio" 
-                          name="housing" 
+                        <input
+                          type="radio"
+                          name="housing"
                           value="yes"
                           checked={formData.housing === 'yes'}
                           onChange={e => setFormData({...formData, housing: e.target.value})}
@@ -139,9 +251,9 @@ Email: ${formData.email}
                         <span>Да</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <input 
-                          type="radio" 
-                          name="housing" 
+                        <input
+                          type="radio"
+                          name="housing"
                           value="no"
                           checked={formData.housing === 'no'}
                           onChange={e => setFormData({...formData, housing: e.target.value})}
@@ -151,20 +263,102 @@ Email: ${formData.email}
                    </div>
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-lg flex items-start gap-3 text-sm text-blue-800 border border-blue-100">
-                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold mb-1">Важно!</p>
-                    <p>
-                      После нажатия кнопки откроется ваш почтовый клиент. 
-                      Пожалуйста, <b>прикрепите файл с чеком (платёжкой)</b> к письму перед отправкой!
-                    </p>
+                {/* Чек об оплате */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Upload className="w-4 h-4 inline mr-1" />
+                    Чек об оплате брони *
+                  </label>
+                  <div
+                    onClick={() => document.getElementById('payment-file-confirm')?.click()}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition select-none"
+                  >
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={handlePaymentChange}
+                      className="sr-only"
+                      id="payment-file-confirm"
+                    />
+                    {uploadingPayment ? (
+                      <span className="text-gray-500">Загрузка...</span>
+                    ) : (
+                      <>
+                        <Upload className="w-5 h-5 text-gray-400" />
+                        <span className="text-gray-600">
+                          {paymentFile ? paymentFile.name : 'Выберите файл (изображение или PDF)'}
+                        </span>
+                      </>
+                    )}
                   </div>
+                  {paymentUrl && (
+                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                      <CheckCircle className="w-4 h-4" />
+                      Файл загружен
+                    </p>
+                  )}
                 </div>
 
-                <Button size="lg" className="w-full h-12 text-lg">
-                  <Mail className="mr-2 w-5 h-5" />
-                  Сформировать письмо
+                {/* Фото ребёнка */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Camera className="w-4 h-4 inline mr-1" />
+                    Фотография ребёнка *
+                  </label>
+                  <div
+                    onClick={() => document.getElementById('child-photo-confirm')?.click()}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#4A90A4] hover:bg-gray-50 transition select-none"
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="sr-only"
+                      id="child-photo-confirm"
+                    />
+                    {uploadingPhoto ? (
+                      <span className="text-gray-500">Загрузка...</span>
+                    ) : (
+                      <>
+                        <Camera className="w-5 h-5 text-gray-400" />
+                        <span className="text-gray-600">
+                          {childPhoto ? childPhoto.name : 'Выберите фото ребёнка (JPG, PNG)'}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  {childPhotoUrl && (
+                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                      <CheckCircle className="w-4 h-4" />
+                      Фото загружено
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">Обычная фотография ребёнка для идентификации</p>
+                </div>
+
+                {error && (
+                  <div className="bg-red-50 p-4 rounded-lg flex items-start gap-3 text-sm text-red-800 border border-red-100">
+                    <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    <p>{error}</p>
+                  </div>
+                )}
+
+                <Button
+                  size="lg"
+                  className="w-full h-12 text-lg"
+                  disabled={isSubmitting || uploadingPayment || uploadingPhoto}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                      Отправка...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="mr-2 w-5 h-5" />
+                      Отправить заявку
+                    </>
+                  )}
                 </Button>
               </form>
             </CardContent>
