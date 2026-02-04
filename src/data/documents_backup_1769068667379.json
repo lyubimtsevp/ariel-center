@@ -1,0 +1,116 @@
+{
+  "groups": [
+    {
+      "id": "basic-info",
+      "title": "Основные сведения",
+      "items": [
+        {
+          "title": "Устав организации",
+          "file": "/docs/charter.html"
+        },
+        {
+          "title": "Свидетельство о государственной регистрации",
+          "file": "/docs/registration.html"
+        },
+        {
+          "title": "Лицензия на образовательную деятельность",
+          "file": "\"C:\\Users\\user\\Desktop\\Доки уставные\\Мед.ЛИцензия.pdf\""
+        },
+        {
+          "title": "Лицензия на медицинскую деятельность",
+          "file": "/docs/Лицензия_на_медицинскую_деятельность-1769068591601.pdf"
+        }
+      ]
+    },
+    {
+      "id": "structure",
+      "title": "Структура и органы управления",
+      "items": [
+        {
+          "title": "Структура организации",
+          "file": "/docs/structure.html"
+        }
+      ]
+    },
+    {
+      "id": "staff",
+      "title": "Руководство и педагогический состав",
+      "items": []
+    },
+    {
+      "id": "material-technical",
+      "title": "Материально-техническое обеспечение",
+      "items": []
+    },
+    {
+      "id": "financial",
+      "title": "Финансово-хозяйственная деятельность",
+      "items": []
+    },
+    {
+      "id": "vacancies",
+      "title": "Вакантные места для приёма",
+      "items": []
+    },
+    {
+      "id": "regulations",
+      "title": "Локальные нормативные акты",
+      "items": [
+        {
+          "title": "Правила внутреннего трудового распорядка",
+          "file": "/docs/internal-rules.html"
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "title": "Документы и оферты",
+      "items": [
+        {
+          "title": "Договор публичной оферты (Интенсив)",
+          "file": "/docs/offer-intensive.html"
+        },
+        {
+          "title": "Договор публичной оферты (Образовательные услуги)",
+          "file": "/docs/offer-education.html"
+        },
+        {
+          "title": "Политика конфиденциальности",
+          "file": "/docs/privacy-policy.html"
+        },
+        {
+          "title": "Положение об обработке персональных данных",
+          "file": "/docs/personal-data.html"
+        }
+      ]
+    },
+    {
+      "id": "paid-services",
+      "title": "Платные услуги",
+      "items": [
+        {
+          "title": "Положение об оказании платных образовательных услуг",
+          "file": "/docs/paid-services-regulation.html"
+        },
+        {
+          "title": "Образец договора об оказании платных образовательных услуг",
+          "file": "/docs/contract-sample.html"
+        },
+        {
+          "title": "Документ об утверждении стоимости обучения",
+          "file": "/docs/price-list-edu.html"
+        }
+      ]
+    },
+    {
+      "id": "accessible-environment",
+      "title": "Доступная среда",
+      "items": []
+    },
+    {
+      "id": "international",
+      "title": "Международное сотрудничество",
+      "items": []
+    }
+  ]
+}

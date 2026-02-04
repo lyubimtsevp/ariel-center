@@ -65,7 +65,7 @@
     },
     {
       "id": "monzhaeva-elena",
-      "name": "Манжаева Елена",
+      "name": "Монжаева Елена",
       "position": "Администратор ЦКРиП «Ариель»",
       "image": "/images/specialists/spec-МОНЖАЕВА_ЕЛЕНА-8353.jpg"
     },
@@ -86,6 +86,12 @@
       "name": "Ольга Лаврова",
       "position": "АВА-терапист, куратор, методист",
       "image": "/images/specialists/spec-Ольга_Лаврова-9693.jpg"
+    },
+    {
+      "id": "nesmachnaya-olga",
+      "name": "Ольга Несмашная",
+      "position": "АВА-инструктор, педагог, специалист по технике безопасности",
+      "image": "/images/specialists/spec-Ольга_Несмашная-0153.jpg"
     },
     {
       "id": "usmonov-fedor",
@@ -118,6 +124,12 @@
       "image": "/images/specialists/spec-Йонатан_Став-3443.jpg"
     },
     {
+      "id": "krivoruchko-anzhelika",
+      "name": "Анжелика Криворучко",
+      "position": "АВА-инструктор, психолог",
+      "image": "/images/specialists/spec-Анжелика_Криворучко-5023.jpg"
+    },
+    {
       "id": "feoktistova-natalya",
       "name": "Наталья Феоктистова",
       "position": "Логист ЦКРиП «Ариель»",
@@ -136,6 +148,18 @@
       "image": "/images/specialists/spec-Мишенина_Ольга-7085.jpg"
     },
     {
+      "id": "dmitrienko-irina",
+      "name": "Дмитриенко Ирина",
+      "position": "Педагог, АВА-инструктор",
+      "image": "/images/specialists/spec-Дмитриенко_Ирина-7332.jpg"
+    },
+    {
+      "id": "butakova-elina",
+      "name": "Бутакова Элина",
+      "position": "Педагог, АВА-инструктор",
+      "image": "/images/specialists/spec-Бутакова_Элина-7601.jpg"
+    },
+    {
       "id": "danilova-maria",
       "name": "Данилова Мария",
       "position": "Педагог-психолог",
@@ -146,6 +170,12 @@
       "name": "Гришанова Анастасия",
       "position": "Педагог-психолог, АВА-инструктор",
       "image": "/images/specialists/spec-Гришанова_Анастасия-8958.jpg"
+    },
+    {
+      "id": "golovina-alexandra",
+      "name": "Головина Александра Владимировна",
+      "position": "Психолог, АВА-инструктор",
+      "image": "/images/specialists/spec-Головина_Александра_Владимиров-9256.jpg"
     },
     {
       "id": "nikiforova-anna",
@@ -182,6 +212,12 @@
       "name": "Земцова Ольга Олеговна",
       "position": "АВА-инструктор",
       "image": "/images/specialists/spec-Земцова_Ольга_Олеговна-1261.jpg"
+    },
+    {
+      "id": "tolpekina-diana",
+      "name": "Толпекина Диана Луисовна",
+      "position": "АВА-инструктор",
+      "image": "/images/specialists/spec-Толпекина_Диана_Луисовна-1548.jpg"
     }
   ]
 }

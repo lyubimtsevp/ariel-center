@@ -3,16 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 interface ApplicationData {
   type: 'intensive' | 'matkapital' | 'contact' | 'callback';
   data: Record<string, any>;
-  paymentUrl?: string;
-  childPhotoUrl?: string;
+  paymentFileName?: string;
 }
 
+// Форматирование данных для email
 function formatEmailContent(appData: ApplicationData): string {
   const typeLabels: Record<string, string> = {
-    intensive: 'Заявка на интенсив',
-    matkapital: 'Заявка на интенсив (Маткапитал)',
-    contact: 'Обратный звонок',
-    callback: 'Обратный звонок'
+    intensive: '🔵 Заявка на интенсив',
+    matkapital: '🟠 Заявка на интенсив (Маткапитал)',
+    contact: '📞 Обратный звонок',
+    callback: '📞 Обратный звонок'
   };
 
   const fieldLabels: Record<string, string> = {
@@ -40,78 +40,49 @@ function formatEmailContent(appData: ApplicationData): string {
     postalAddress: 'Почтовый адрес',
     matkapSeries: 'Серия сертификата МК',
     matkapNumber: 'Номер сертификата МК',
-    matkapDate: 'Дата сертификата МК',
-    comment: 'Комментарий'
+    matkapDate: 'Дата сертификата МК'
   };
 
-  let content = typeLabels[appData.type] || 'Новая заявка';
-  content += '\nДата: ' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + '\n\n';
+  let content = `${typeLabels[appData.type] || 'Новая заявка'}\n`;
+  content += `Дата: ${new Date().toISOString()}\n\n`;
 
   for (const [key, value] of Object.entries(appData.data)) {
     if (value === null || value === undefined || value === '') continue;
+
     const label = fieldLabels[key] || key;
     let displayValue = value;
+
     if (typeof value === 'boolean') {
       displayValue = value ? 'Да' : 'Нет';
     }
-    content += label + ': ' + displayValue + '\n';
+
+    content += `${label}: ${displayValue}\n`;
   }
 
-  if (appData.paymentUrl) {
-    content += '\nПлатёжный документ (чек): ' + appData.paymentUrl;
-  }
-
-  if (appData.childPhotoUrl) {
-    content += '\nФото ребёнка: ' + appData.childPhotoUrl;
+  if (appData.paymentFileName) {
+    content += `\nПрикреплённый файл: ${appData.paymentFileName}`;
   }
 
   return content;
 }
 
+// POST - принять заявку
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { type, data, paymentUrl, childPhotoUrl } = body;
+    const { type, data, paymentFileName } = body;
 
-    const emailContent = formatEmailContent({ type, data, paymentUrl, childPhotoUrl });
-
+    // Логируем заявку (видно в Vercel logs)
+    const emailContent = formatEmailContent({ type, data, paymentFileName });
     console.log('=== НОВАЯ ЗАЯВКА ===');
     console.log(emailContent);
     console.log('====================');
 
-    const targetEmail = '829892@gmail.com';
-    const typeLabels: Record<string, string> = {
-      intensive: 'Заявка на интенсив',
-      matkapital: 'Заявка на интенсив (Маткапитал)',
-      contact: 'Обратный звонок',
-      callback: 'Обратный звонок'
-    };
-    const subject = typeLabels[type] || 'Новая заявка с сайта';
-
-    try {
-      const mailResponse = await fetch('https://mdi-ariel.ru/api/send-mail.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: targetEmail,
-          subject: subject,
-          body: emailContent
-        })
-      });
-      
-      if (!mailResponse.ok) {
-        console.error('Email send failed:', await mailResponse.text());
-      } else {
-        console.log('Email sent to', targetEmail);
-      }
-    } catch (mailError) {
-      console.error('Email error:', mailError);
-    }
-
+    // Всегда возвращаем успех - заявка принята
     return NextResponse.json({
       success: true,
       message: 'Заявка принята',
-      id: 'app_' + Date.now()
+      id: `app_${Date.now()}`
     });
   } catch (error) {
     console.error('Error processing application:', error);
@@ -119,9 +90,10 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// GET - информация
 export async function GET() {
   return NextResponse.json({
     status: 'ok',
-    message: 'API заявок работает'
+    message: 'API заявок работает. Заявки логируются в Vercel.'
   });
 }

@@ -21,7 +21,11 @@ export default function BookingIntensivePage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string>('');
+  const [uploadingPayment, setUploadingPayment] = useState(false);
   const [childPhoto, setChildPhoto] = useState<File | null>(null);
+  const [childPhotoUrl, setChildPhotoUrl] = useState<string>('');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const [formData, setFormData] = useState({
     childName: '',
@@ -40,17 +44,53 @@ export default function BookingIntensivePage() {
 
   const canProceed = agreePersonalData && agreeOffer;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setPaymentFile(file);
+      setUploadingPayment(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'payment');
+        const res = await fetch('/api/upload-booking', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          setPaymentUrl(data.url);
+        } else {
+          alert('Ошибка загрузки: ' + data.error);
+          setPaymentFile(null);
+        }
+      } catch (err) {
+        alert('Ошибка загрузки файла');
+        setPaymentFile(null);
+      }
+      setUploadingPayment(false);
     }
   };
 
-  const handleChildPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChildPhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setChildPhoto(file);
+      setUploadingPhoto(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'photo');
+        const res = await fetch('/api/upload-booking', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          setChildPhotoUrl(data.url);
+        } else {
+          alert('Ошибка загрузки: ' + data.error);
+          setChildPhoto(null);
+        }
+      } catch (err) {
+        alert('Ошибка загрузки файла');
+        setChildPhoto(null);
+      }
+      setUploadingPhoto(false);
     }
   };
 
@@ -69,8 +109,8 @@ export default function BookingIntensivePage() {
         body: JSON.stringify({
           type: 'intensive',
           data: formData,
-          paymentFileName: paymentFile?.name,
-          childPhotoFileName: childPhoto?.name
+          paymentUrl: paymentUrl,
+          childPhotoUrl: childPhotoUrl
         })
       });
 

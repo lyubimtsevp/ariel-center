@@ -1,0 +1,23 @@
+# Перенаправление API запросов на PHP прокси
+RewriteEngine On
+
+# API для отправки почты
+RewriteRule ^api/send-mail\.php$ api/send-mail.php [L,QSA]
+
+# API для заявок через PHP прокси к Node.js
+RewriteRule ^api/applications/?$ api/applications.php [L,QSA]
+
+# Остальные API запросы -> Node.js (порт 3000)
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L]
+
+# Статические файлы
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# SPA fallback для Next.js
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://mdi-ariel.ru/sitemap.xml
+
+# Запрет админки
+Disallow: /admin/
+Disallow: /api/
+
