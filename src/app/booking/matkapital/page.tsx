@@ -74,6 +74,7 @@ export default function BookingMatkapitalPage() {
     agreedDates: '',
     isFirstVisit: null as boolean | null,
     hadDiagnostics: null as boolean | null,
+    needsHousing: null as boolean | null,
     comment: ''
   });
 
@@ -789,6 +790,33 @@ export default function BookingMatkapitalPage() {
                             name="hadDiagnostics"
                             checked={formData.hadDiagnostics === false}
                             onChange={() => setFormData({ ...formData, hadDiagnostics: false })}
+                            className="w-4 h-4 text-[#F5A962]"
+                          />
+                          <span className="text-gray-700">Нет</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 mb-3">Нуждаетесь ли вы в жилье? *</p>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="needsHousing"
+                            checked={formData.needsHousing === true}
+                            onChange={() => setFormData({ ...formData, needsHousing: true })}
+                            className="w-4 h-4 text-[#F5A962]"
+                            required
+                          />
+                          <span className="text-gray-700">Да</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="needsHousing"
+                            checked={formData.needsHousing === false}
+                            onChange={() => setFormData({ ...formData, needsHousing: false })}
                             className="w-4 h-4 text-[#F5A962]"
                           />
                           <span className="text-gray-700">Нет</span>

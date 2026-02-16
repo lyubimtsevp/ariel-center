@@ -27,20 +27,27 @@ function formatEmailContent(appData: ApplicationData): string {
     hadDiagnostics: 'Была диагностика',
     throughFund: 'Через фонд',
     fundName: 'Название фонда',
+    needsHousing: 'Нужно жильё',
     name: 'Имя',
     service: 'Услуга',
     passportSeries: 'Серия паспорта',
     passportNumber: 'Номер паспорта',
     passportIssuer: 'Кем выдан',
+    passportIssuedBy: 'Кем выдан',
     passportDate: 'Дата выдачи паспорта',
+    passportIssuedDate: 'Дата выдачи паспорта',
     birthCertSeries: 'Серия св-ва о рождении',
     birthCertNumber: 'Номер св-ва о рождении',
     birthCertDate: 'Дата выдачи св-ва',
-    residentialAddress: 'Адрес проживания',
+    residentialAddress: 'Адрес прописки',
+    registrationAddress: 'Адрес прописки',
     postalAddress: 'Почтовый адрес',
     matkapSeries: 'Серия сертификата МК',
+    matkapitalSeries: 'Серия сертификата МК',
     matkapNumber: 'Номер сертификата МК',
+    matkapitalNumber: 'Номер сертификата МК',
     matkapDate: 'Дата сертификата МК',
+    matkapitalDate: 'Дата сертификата МК',
     comment: 'Комментарий'
   };
 
@@ -63,6 +70,10 @@ function formatEmailContent(appData: ApplicationData): string {
 
   if (appData.childPhotoUrl) {
     content += '\nФото ребёнка: ' + appData.childPhotoUrl;
+  }
+
+  if (appData.type === 'intensive' || appData.type === 'matkapital') {
+    content += '\n\nСОГЛАСИЕ ПОДТВЕРЖДЕНО: Да';
   }
 
   return content;
