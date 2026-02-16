@@ -101,7 +101,7 @@ export default function DocumentsAdmin() {
   const addDocument = (groupId: string) => {
     const newDoc: Document = {
       title: 'Новый документ',
-      file: '/docs/'
+      file: ''
     };
     setData(prev => ({
       groups: prev.groups.map(g =>
@@ -309,18 +309,7 @@ export default function DocumentsAdmin() {
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                           />
 
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1">
-                              <input
-                                type="text"
-                                value={doc.file}
-                                onChange={(e) => updateDocument(group.id, docIndex, 'file', e.target.value)}
-                                placeholder="/docs/filename.pdf"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono"
-                              />
-                            </div>
-
-                            <input
+                          <input
                               type="file"
                               id={`doc-${uploadKey}`}
                               accept=".pdf,.html"
@@ -331,27 +320,57 @@ export default function DocumentsAdmin() {
                               }}
                             />
 
-                            <button
-                              onClick={() => document.getElementById(`doc-${uploadKey}`)?.click()}
-                              disabled={uploadingDoc === uploadKey}
-                              className="flex items-center gap-1 px-3 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition text-sm disabled:opacity-50"
-                            >
-                              <Upload className="w-4 h-4" />
-                              {uploadingDoc === uploadKey ? '...' : 'Загрузить'}
-                            </button>
-
-                            {doc.file && doc.file !== '/docs/' && (
+                          {doc.file && doc.file.startsWith('/') ? (
+                            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                              <File className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span className="flex-1 text-sm text-green-800 font-medium truncate">{doc.file.split('/').pop()}</span>
                               <a
                                 href={doc.file}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                                title="Открыть файл"
+                                className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 rounded transition"
                               >
-                                <ExternalLink className="w-4 h-4" />
+                                <ExternalLink className="w-3.5 h-3.5" />
+                                Открыть
                               </a>
-                            )}
-                          </div>
+                              <button
+                                onClick={() => document.getElementById(`doc-${uploadKey}`)?.click()}
+                                disabled={uploadingDoc === uploadKey}
+                                className="flex items-center gap-1 px-2 py-1 text-xs text-orange-600 hover:bg-orange-50 rounded transition disabled:opacity-50"
+                              >
+                                <Upload className="w-3.5 h-3.5" />
+                                {uploadingDoc === uploadKey ? '...' : 'Заменить'}
+                              </button>
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => { if (uploadingDoc !== uploadKey) document.getElementById(`doc-${uploadKey}`)?.click(); }}
+                              className={`flex flex-col items-center justify-center gap-2 py-6 border-2 border-dashed rounded-lg cursor-pointer transition ${
+                                uploadingDoc === uploadKey
+                                  ? 'border-blue-300 bg-blue-50'
+                                  : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                              }`}
+                            >
+                              <Upload className={`w-8 h-8 ${uploadingDoc === uploadKey ? 'text-blue-400 animate-pulse' : 'text-gray-400'}`} />
+                              <span className="text-sm text-gray-600">
+                                {uploadingDoc === uploadKey ? 'Загрузка...' : 'Нажмите, чтобы загрузить файл'}
+                              </span>
+                              <span className="text-xs text-gray-400">PDF или HTML</span>
+                            </div>
+                          )}
+
+                          <details className="text-xs">
+                            <summary className="text-gray-400 cursor-pointer hover:text-gray-600">
+                              Указать URL вручную (для опытных)
+                            </summary>
+                            <input
+                              type="text"
+                              value={doc.file}
+                              onChange={(e) => updateDocument(group.id, docIndex, 'file', e.target.value)}
+                              placeholder="/docs/filename.pdf"
+                              className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono"
+                            />
+                          </details>
                         </div>
                       );
                     })}
